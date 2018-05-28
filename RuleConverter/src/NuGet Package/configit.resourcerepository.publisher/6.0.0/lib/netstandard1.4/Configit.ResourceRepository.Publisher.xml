@@ -1,0 +1,270 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.ResourceRepository.Publisher</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.ResourceRepository.Publisher.IPackageBuilder">
+            <summary>
+            Provides operations for building a package. The package is immutable once it is completed or aborted.
+            All methods are thread-safe.
+            The Dispose() method will call AbortAsync() if the package has not already been completed by CompleteAsync() or AbortAsync().
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackageBuilder.AddResourceAsync(System.Uri,System.Byte[])">
+            <summary>
+            Asynchronously adds a byte[] resource to the package.
+            </summary>
+            <param name="resourcePath">The relative Uri of the resource.</param>
+            <param name="resource">The resource value.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackageBuilder.AddResourceAsync(System.Uri,System.IO.Stream)">
+            <summary>
+            Asynchronously adds a Stream resource to the package.
+            </summary>
+            <param name="resourcePath">The relative Uri of the resource.</param>
+            <param name="resource">The resource value.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackageBuilder.AddResourceAsync(System.Uri,Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Asynchronously adds a JToken resource to the package.
+            </summary>
+            <param name="resourcePath">The relative Uri of the resource.</param>
+            <param name="resource">The resource value.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackageBuilder.AddResourceAsync(System.Uri,System.Action{System.IO.Stream})">
+            <summary>
+            Asynchronously adds a stream resource provided by an action to the package.
+            </summary>
+            <param name="resourcePath">The relative Uri of the resource.</param>
+            <param name="streamAction">The action providing the stream value to store.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackageBuilder.CompleteAsync">
+            <summary>
+            Asynchronously completes the package building and persists all resources added, creating a new package version and making the package immutable.
+            The usage of CompleteAsync() is not intended for parallel execution and therefore enforces serialized access.
+            </summary>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the version path of this new package version.</returns>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException">If the package building is completed or aborted.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackageBuilder.CompleteAsync(System.TimeSpan)">
+            <summary>
+            Asynchronously completes the package building and persists all resources added, creating a new package version and making the package immutable, given a timeout for the completion.
+            The usage of CompleteAsync() is not intended for parallel execution and therefore enforces serialized access.
+            </summary>
+            <param name="timeout">A TimeSpan value specifying the maximum period for the operation to complete; specifying TimeSpan.MaxValue denotes an infinite period.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the version path of this new package version.</returns>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException">If the package building is completed or aborted.</exception>
+            <exception cref="T:System.TimeoutException">If the specified timeout period is exceeded.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">If the specified timeout is negative or the number of ticks exceeds Int32.MaxValue.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackageBuilder.AbortAsync">
+            <summary>
+            Asynchronously aborts the package building and discards all resources added, making the package immutable.
+            The usage of AbortAsync() is not intended for parallel execution and therefore enforces serialized access.
+            </summary>
+            <returns>A task that represents the asynchronous abort operation.</returns>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException">If the package building is completed or aborted.</exception>
+        </member>
+        <member name="T:Configit.ResourceRepository.Publisher.IPackagePublisher">
+            <summary>
+            Provides operations for publishing packages.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackagePublisher.GetPackageBuilder(System.Uri)">
+            <summary>
+            Gets an instance of an <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> for a given package path, to enable resources to be stored in a new versioned package.
+            </summary>
+            <param name="packagePath">The path to the new package.</param>
+            <returns>An instance of an <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">If the package path is null but required.</exception>
+            <exception cref="T:System.ArgumentException">If the package path is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackagePublisher.CopyPackageAsync(Configit.ResourceRepository.Provider.IPackage,System.Uri)">
+            <summary>
+            Creates a new versioned package for the given package path by copying all resources from a source package.
+            </summary>
+            <param name="sourcePackage">The <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance of the package to be copied.</param>
+            <param name="targetPackagePath">The package path of the new package.</param>
+            <returns>A task that represents the asynchronous copy operation. The value of the TResult parameter is the Uri of the target versioned package path.</returns>
+            <exception cref="T:System.ArgumentNullException">If the targetPackagePath is null.</exception>
+            <exception cref="T:System.ArgumentException">If the targetPackagePath is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.IPackagePublisher.MergePackagesAsync(System.Collections.Generic.IEnumerable{Configit.ResourceRepository.Provider.IPackage},System.Uri)">
+            <summary>
+            Creates a new versioned package for the given package path by merging all resources from a collection of source packages.
+            </summary>
+            <param name="sourcePackages">The collection of <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> source package instances.</param>
+            <param name="targetPackagePath">The package path of the new package.</param>
+            <returns>A task that represents the asynchronous copy operation. The value of the TResult parameter is the Uri of the target versioned package path.</returns>
+            <exception cref="T:System.ArgumentNullException">If the targetPackagePath is null.</exception>
+            <exception cref="T:System.ArgumentException">If the targetPackagePath is invalid.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.DuplicateResourceException">If there are duplicate resource paths in the source packages.</exception>
+        </member>
+        <member name="T:Configit.ResourceRepository.Publisher.PackageBuilder">
+            <summary>
+            Provides operations for building versioned and un-versioned packages.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.#ctor(Configit.ResourceRepository.Storage.IStorage)">
+            <summary>
+            Constructs an instance of an <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> for building an un-versioned package.
+            </summary>
+            <param name="storage">The <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> instance in which a package can be created.</param>
+            <exception cref="T:System.ArgumentNullException">If the storage is null.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.#ctor(Configit.ResourceRepository.Storage.IStorage,System.Uri)">
+            <summary>
+            Constructs an instance of an <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> for building a new package version.
+            </summary>
+            <param name="storage">The <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> instance in which packages can be created.</param>
+            <param name="packagePath">The path to the package for which to build a new version.</param>
+            <exception cref="T:System.ArgumentNullException">If the storage is null.</exception>
+            <exception cref="T:System.ArgumentNullException">If the package path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the packagePath is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.#ctor(Configit.ResourceRepository.Storage.IStorage,System.Uri,System.Int32)">
+            <summary>
+            Constructs an instance of an <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> for building a new package version.
+            </summary>
+            <param name="storage">The <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> instance in which packages can be created.</param>
+            <param name="packagePath">The path to the package for which to build a new version. The resource hash level is set to the given partitionLevel parameter value.</param>
+            <param name="partitionLevel">The number of components to extract from the packagePath as the partition key.</param>
+            <exception cref="T:System.ArgumentNullException">If the storage is null.</exception>
+            <exception cref="T:System.ArgumentNullException">If the package path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the packagePath is invalid.</exception>
+            <exception cref="T:System.ArgumentException">If the partitionLevel parameter is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.#ctor(Configit.ResourceRepository.Storage.IStorage,System.Uri,System.Int32,System.Int32)">
+            <summary>
+            Constructs an instance of an <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> for building a new package version.
+            </summary>
+            <param name="storage">The <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> instance in which packages can be created.</param>
+            <param name="packagePath">The path to the package for which to build a new version.</param>
+            <param name="partitionLevel">The number of components to extract from the packagePath as the partition key.</param>
+            <param name="resourceHashLevel">The number of components to use as the resource hash location from the package path.</param>
+            <exception cref="T:System.ArgumentNullException">If the storage is null.</exception>
+            <exception cref="T:System.ArgumentNullException">If the package path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the packagePath is invalid.</exception>
+            <exception cref="T:System.ArgumentException">If the partitionLevel or resourceHashLevel parameters are invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.AddResourceAsync(System.Uri,System.Byte[])">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.AddResourceAsync(System.Uri,System.IO.Stream)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.AddResourceAsync(System.Uri,Newtonsoft.Json.Linq.JToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.AddResourceAsync(System.Uri,System.Action{System.IO.Stream})">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.CompleteAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.CompleteAsync(System.TimeSpan)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.AbortAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilder.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.Publisher.PackageBuilderServiceWrapper">
+            <summary>
+            Provides operations for building versioned packages using the Repository Service.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilderServiceWrapper.#ctor(System.Uri,System.Uri)">
+            <summary>
+            Creates an instance of an <see cref="T:Configit.ResourceRepository.Publisher.PackageBuilderServiceWrapper"/>, given a connection Uri for the Repository Service and a package version path.
+            </summary>
+            <param name="connectionUri">The connection Uri for the Repository Service.</param>
+            <param name="versionPath">The version path of the new package.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackageBuilderServiceWrapper.Dispose">
+            <summary>
+            Disposes the object by aborting the building of the package, if it has not already been completed or aborted.
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Publisher.PackagePublisher">
+            <summary>
+            Provides operations for publishing versioned or un-versioned packages to a given <see cref="T:Configit.ResourceRepository.Storage.IStorage"/>.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackagePublisher.#ctor(Configit.ResourceRepository.Storage.IStorage,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Constructs an instance of an <see cref="T:Configit.ResourceRepository.Publisher.PackagePublisher"/> for building an un-versioned package.
+            </summary>
+            <param name="storage">The <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> instance in which a package can be created.</param>
+            <param name="partitionLevel">The number of Uri components from which to generate a partition key from the package path.</param>
+            <param name="resourceHashLevel">The number of components to use as the resource hash location from the package path.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackagePublisher.GetPackageBuilder(System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackagePublisher.CopyPackageAsync(Configit.ResourceRepository.Provider.IPackage,System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackagePublisher.MergePackagesAsync(System.Collections.Generic.IEnumerable{Configit.ResourceRepository.Provider.IPackage},System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.Publisher.PackagePublisherServiceWrapper">
+            <summary>
+            Provides operations for publishing versioned or un-versioned packages using the Repository Service.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackagePublisherServiceWrapper.#ctor(System.Uri)">
+            <summary>
+            Creates an instance of an <see cref="T:Configit.ResourceRepository.Publisher.PackagePublisherServiceWrapper"/>, given a connection Uri for the Repository Service.
+            </summary>
+            <param name="connectionUri">The connection Uri for the Repository Service.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackagePublisherServiceWrapper.CopyPackageAsync(Configit.ResourceRepository.Provider.IPackage,System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PackagePublisherServiceWrapper.MergePackagesAsync(System.Collections.Generic.IEnumerable{Configit.ResourceRepository.Provider.IPackage},System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.Publisher.PublisherFactory">
+            <summary>
+            A factory for creating instances of an <see cref="T:Configit.ResourceRepository.Publisher.IPackagePublisher"/>.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PublisherFactory.Create(Configit.ResourceRepository.Storage.IStorage,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Creates an instance of an <see cref="T:Configit.ResourceRepository.Publisher.IPackagePublisher"/>, given an <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> in which packages can be created.
+            </summary>
+            <param name="storage">The <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> instance in which packages can be created.</param>
+            <param name="partitionLevel">The number of Uri components from which to generate a partition key from the package path.</param>
+            <param name="resourceHashLevel">The number of components to use as the resource hash location from the package path.</param>
+            <returns>The <see cref="T:Configit.ResourceRepository.Publisher.IPackagePublisher"/> instance.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Publisher.PublisherFactory.Create(System.Uri)">
+            <summary>
+            Creates an instance of an <see cref="T:Configit.ResourceRepository.Publisher.IPackagePublisher"/>, given a connection Uri for the Repository Service.
+            </summary>
+            <param name="connectionUri">The connection Uri for the Repository Service.</param>
+            <returns>The <see cref="T:Configit.ResourceRepository.Publisher.IPackagePublisher"/> instance.</returns>
+        </member>
+    </members>
+</doc>

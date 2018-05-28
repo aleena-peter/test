@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.ResourceRepository.Resource.Provider</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.Cached.InMemoryResourceProvider`1">
+            <summary>
+            Resource Provider that stores resources in memory. Should only be used for testing or sample applications. 
+            Is not thread safe and does not support versioning semantics (that is, does not resolve newest versions of a package path).
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.InMemoryResourceProvider`1.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{Configit.ResourceRepository.Resource.Provider.ResourceLocation,`0}})">
+            <summary>
+            Construct the provider based on a dictionary containing the resources.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.InMemoryResourceProvider`1.Set(Configit.ResourceRepository.Resource.Provider.ResourceLocation,`0)">
+            <summary>
+            Adds (or replaces) a resource identified by given <paramref name="resourceLocation"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.InMemoryResourceProvider`1.GetAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <summary>
+            Looks up a resource based on the exact <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocation"/> asynchronously.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.InMemoryResourceProvider`1.GetVersionedPackagePathAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <summary>
+            As this provider does not support versioning semantics, this method acts as the identity function.
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1">
+            <summary>
+            Timeout based cache that caches data for a certain time span.
+            The cache differentiates between entries which represent specific 
+            package versions, and entries which represent un-versioned packages.
+            </summary>
+            <typeparam name="TResource">Resource type</typeparam>
+        </member>
+        <member name="F:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1._underlyingProvider">
+            <summary>
+            The underlying provider being cached.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1.UnversionedCacheTime">
+            <summary>
+            Gets a TimeSpan value determining the duration each entry in an un-versioned package will remain in cache.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1.VersionedCacheTime">
+            <summary>
+            Gets a TimeSpan value determining the duration each entry in a versioned package will remain in cache.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1._cache">
+            <summary>
+            Underlying cache.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1.#ctor(Configit.ResourceRepository.Resource.Provider.IResourceProvider{`0},System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1"/>.
+            If a consumer ask for a specific resource in an un-versioned package, this time span indicates how long
+            it will be before the provider will consider the resolved versioned package path as the latest.
+            </summary>
+            <param name="underlyingProvider">A provider for which to cache resources.</param>
+            <param name="versionedCacheTime">The TimeSpan that each entry in a versioned package will remain in cache, subject also to the cache expiration scan frequency.</param>
+            <param name="unversionedCacheTime">The TimeSpan that each entry in an un-versioned package will remain in cache, subject also to the cache expiration scan frequency.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1.#ctor(Configit.ResourceRepository.Resource.Provider.IResourceProvider{`0},System.TimeSpan,System.TimeSpan,System.Nullable{System.TimeSpan})">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1"/>.
+            If a consumer ask for a specific resource in an un-versioned package, this time span indicates how long
+            it will be before the provider will consider the resolved versioned package path as the latest.
+            </summary>
+            <param name="underlyingProvider">The provider for which to cache resources.</param>
+            <param name="versionedCacheTime">The TimeSpan that each entry in a versioned package will remain in cache, subject also to the cache expiration frequency.</param>
+            <param name="unversionedCacheTime">The TimeSpan that each entry in an un-versioned package will remain in cache, subject also to the expiration frequency.</param>
+            <param name="expirationScanFrequency">The optional TimeSpan that determines how frequently the cache is scanned to remove expired entries. If null is provided, a default is used.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1.GetAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1.GetVersionedPackagePathAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.TimeOutCachedResourceProvider`1.ResourceLocationToString(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <summary>
+            Gets the key representation of resource location.
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.Cached.UpToDateCachedResourceProvider`1">
+            <summary>
+            Resource provider that caches resources, always ensuring that the most recent resource is provided from 
+            an underlying provider when requesting latest package.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.UpToDateCachedResourceProvider`1.#ctor(Configit.ResourceRepository.Resource.Provider.IResourceProvider{`0},System.Int32)">
+            <summary>
+            Create a new cache, wrapping another <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1"/>.
+            </summary>
+            <param name="provider">Resource provider to use when cache doesn't have requested resource.</param>
+            <param name="maxInstances">Max Number of instances to keep in cache.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.UpToDateCachedResourceProvider`1.GetAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.Cached.UpToDateCachedResourceProvider`1.GetVersionedPackagePathAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1">
+            <summary>
+            Interface defining a provider of resources. Resources are organized in packages, and packages might be available in multiple versions. A package path can contain information 
+            about which specific version of a package to use - but does not have to. If no specific version is specified in the package path, the resource provider
+            finds the package when calling <see cref="M:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1.GetAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)"/>. Depending on the type of the provider, this could either be by requesting the
+            latest package from the underlying storage (e.g. from the resource repository), or it could be that only one version of the package exist (e.g. package path points to a zip file on disk).
+            It is the job of the resource provider to know how to fetch the requested resource from within the package, by evaluating the type of the resource and the Id of the resource requested.
+            If resources are cached, and need to represent specific versions of packages, the <see cref="M:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1.GetVersionedPackagePathAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)"/> method is provided to resolve the latest version. The usage
+            of the resource provider should be to first resolve the package path, then fetch the resource with that package path, and finally cache the resource against the resolved
+            package path and resource Id.
+            </summary>
+            <typeparam name="TResource">The resource type, which can be any piece of data that can be fetched from a package. Can also be an aggregation of data entities in a data package.</typeparam>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1.GetAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <summary>
+            Retrieves the resource with given the Id from specified package path. If underlying storage supports different versions of packages, and the package path of the
+            resourceLocation does not contain a package version, the resource provider will automatically resolve the path to the latest package, and fetch the resource.
+            </summary>
+            <param name="resourceLocation">Id and package of resource. Semantics of <see cref="P:Configit.ResourceRepository.Resource.Provider.ResourceLocation.Id"/> resolution is handled by the concrete provider implementation.</param>
+            <exception cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException">If the resource with <see cref="P:Configit.ResourceRepository.Resource.Provider.ResourceLocation.Id"/> cannot be located in the specified package.</exception>
+            <exception cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException">If the package with the given <see cref="P:Configit.ResourceRepository.Resource.Provider.ResourceLocation.PackagePath"/> cannot be found.</exception>
+            <returns>A task that represents the asynchronous operation. The <see cref="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1"/> instance is returned in the TResult parameter.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1.GetVersionedPackagePathAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <summary>
+            Returns the resource location that references the latest package, if <see cref="P:Configit.ResourceRepository.Resource.Provider.ResourceLocation.PackagePath"/> does not
+            contain a version, otherwise it returns the value of the given versioned resource location unchanged.
+            </summary>
+            <exception cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException">If the package with the given <see cref="P:Configit.ResourceRepository.Resource.Provider.ResourceLocation.PackagePath"/> cannot be found.</exception>
+            <returns>A task that represents the asynchronous operation. The <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocation"/> instance is returned in the TResult parameter.</returns>
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.IResourceProviders">
+            <summary>
+            Defines a collection of <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1"/> over a <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>.
+            Main purposes are to :
+            <list type="bullet">
+            <item>share some core data entities amongst different services</item>
+            <item>allow different usage of same data entities, without loading them more than necessary</item>
+            <item>commonalize cache strategies by wrapping these shared providers in cached resource providers</item>
+            </list>
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.IResourceProviders.PackageProvider">
+            <summary>
+            Gets the package provider over which resource providers load data.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.IResourceProviders.GetProvider``1">
+            <summary>
+            Gives a <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1"/> able to provide <typeparamref name="TEntityType"/>.
+            </summary>
+            <returns>Null if no resource provider is available for specified type.</returns>
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1">
+            <summary>
+            Associates a package path and resource Id to a resource.
+            </summary>
+            <typeparam name="TResource">The resource type, which can be any piece of data that can be fetched from a package. Can also be an aggregation of data entities in a data package.</typeparam>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.PackagedResource`1.#ctor(Configit.ResourceRepository.Resource.Provider.ResourceLocation,`0)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1"/>.
+            </summary>
+            <param name="resourceLocation">The <see cref="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1"/> from which to construct a <see cref="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1"/> instance.</param>
+            <param name="resource">The resource to package into the <see cref="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1"/> instance.</param>
+            <exception cref="T:System.ArgumentNullException">If resourceLocation or resource are null.</exception>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.PackagedResource`1.ResourceLocation">
+            <summary>
+            Gets the <see cref="P:Configit.ResourceRepository.Resource.Provider.PackagedResource`1.ResourceLocation"/> instance for this <see cref="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.PackagedResource`1.Resource">
+            <summary>
+            Gets the resource for this <see cref="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.PackagedResource`1.PackagePath">
+            <summary>
+            Gets the package path of the ResourceLocation where the packaged resource is located.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.PackagedResource`1.Id">
+            <summary>
+            Gets the Id of the ResourceLocation where the packaged resource is located.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.PackagedResource`1.op_Implicit(Configit.ResourceRepository.Resource.Provider.PackagedResource{`0})~`0">
+            <summary>
+            Implicit conversion from a <see cref="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1"/> instance to the contained resource.
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.ResourceLocation">
+            <summary>
+            Representation of a key used to identify a <see cref="T:Configit.ResourceRepository.Resource.Provider.PackagedResource`1"/> instance.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.ResourceLocation.PackagePath">
+            <summary>
+            Gets the package path of a resource location, which can optionally represent version information about the package.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.ResourceLocation.Id">
+            <summary>
+            Gets the Id of a resource location.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocation.#ctor(System.String,System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocation"/> for the given package path and Id.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocation.Equals(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocation.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocation.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocation.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException">
+            <summary>
+            Exception class for denoting that a package cannot be found.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException.ResourceLocation">
+            <summary>
+            Gets the resource location of the package that cannot be found.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException.#ctor(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException"/> for a given resource location.
+            </summary>
+            <param name="resourceLocation">The resource location for this exception.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException.#ctor(Configit.ResourceRepository.Resource.Provider.ResourceLocation,System.Exception)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException"/> for a given resource location and inner exception.
+            </summary>
+            <param name="resourceLocation">The resource location for this exception.</param>
+            <param name="innerException">The inner exception that caused this <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException"/>.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException.#ctor(System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationPackageNotFoundException"/> for a given message.
+            </summary>
+            <param name="message">The message for this exception.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException">
+            <summary>
+            Exception class for denoting that a resource cannot be found.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException.ResourceLocation">
+            <summary>
+            Gets the resource location of the resource that cannot be found.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException.#ctor(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException"/> for a given resource location.
+            </summary>
+            <param name="resourceLocation">The resource location for this exception.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException.#ctor(Configit.ResourceRepository.Resource.Provider.ResourceLocation,System.Exception)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException"/> for a given resource location and inner exception.
+            </summary>
+            <param name="resourceLocation">The resource location for this exception.</param>
+            <param name="innerException">The inner exception that caused this <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException"/>.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException.#ctor(System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocationResourceNotFoundException"/> for a given message.
+            </summary>
+            <param name="message">The message for this exception.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.ResourceProviders">
+            <summary>
+            Default implementation of <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProviders"/> based on a fix set of <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1"/>.
+            This implementation is thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceProviders.#ctor(Configit.ResourceRepository.Provider.IPackageProvider,System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Default constructor over given <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/> and some <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1"/> instance.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceProviders.GetProvidedType(System.Object)">
+            <summary>
+            Detect the type the specified can provide. Throws <exception cref="T:System.ArgumentException"/> if does not implement <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.ResourceProviders.Providers">
+            <summary>
+            Gets the providers.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Resource.Provider.ResourceProviders.PackageProvider">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceProviders.GetProvider``1">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.Resource.Provider.ResourceProvidersExtensions">
+            <summary>
+            Extension methods for <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceProviders"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceProvidersExtensions.Merge(Configit.ResourceRepository.Resource.Provider.IResourceProviders,Configit.ResourceRepository.Resource.Provider.IResourceProviders,System.Boolean)">
+            <summary>
+            Merges <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProviders"/> with another <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProviders"/>.
+            </summary>
+            <exception cref="T:System.NotSupportedException">If merging is not supported for the type of <paramref name="providers"/> or <paramref name="additionalProviders"/></exception>
+            <exception cref="T:System.ArgumentException">If the package provider from different providers were not the same.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Resource.Provider.ResourceProvidersExtensions.Extends(Configit.ResourceRepository.Resource.Provider.IResourceProviders,System.Collections.Generic.IEnumerable{System.Type},System.Func{System.Type,System.Object})">
+            <summary>
+            Extends <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProviders"/> by adding <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1"/> if needed.
+            <paramref name="newProviders"/> is called if no <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1"/> for specified type could be found.
+            Result contains at least <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProvider`1"/> of <paramref name="expectedTypes"/>.
+            </summary>
+            <exception cref="T:System.NotSupportedException">If the providers is null.</exception>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Configit.ResourceRepository.Common</id>
+    <version>6.0.0</version>
+    <authors>Configit</authors>
+    <owners>Configit</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://www.github.com/configit/resource-repository</projectUrl>
+    <iconUrl>http://configit.github.io/core/images/core-logo.png</iconUrl>
+    <description>Contains common operations for the resource repository.</description>
+    <copyright>Configit A/S @ 2017</copyright>
+    <repository type="git" url="https://www.github.com/configit/resource-repository" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="Newtonsoft.Json" version="10.0.2" exclude="Build,Analyzers" />
+        <dependency id="System.ValueTuple" version="4.4.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard1.4">
+        <dependency id="NETStandard.Library" version="1.6.1" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="10.0.2" exclude="Build,Analyzers" />
+        <dependency id="System.ValueTuple" version="4.4.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

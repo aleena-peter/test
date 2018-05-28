@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Structure.SolutionSpace</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Structure.SolutionSpace.CprCell">
+            <summary>
+            A single cell in a <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionCpr"/> representation of a solution space
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.CprCell.Values">
+            <summary>
+            Values represented by cell. Vales for a multi-valued <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable"/>
+            is represented as either TRUE or FALSE, to indicate if the value is included 
+            or excluded in the set represented by the multi-valued variable.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.CprCell.IncludeValues">
+            <summary>
+            True if all <see cref="P:Configit.Core.Structure.SolutionSpace.CprCell.Values"/> are considered a positive set
+            (values which are included in a solution), false if values
+            are considered the complement of values to include (a negated
+            set of values). <see cref="P:Configit.Core.Structure.SolutionSpace.CprCell.IncludeValues"/> is false if <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable"/>
+            represents a string variable, and <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionGraphNode"/> is to 
+            represent "anything but red"
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.SolutionSpace.SolutionCpr">
+            <summary>
+            Representation of a solution space as a non-normalized tabular format. 
+            The Cartesian Product Representation allows each cell to contain multiple 
+            values.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionCpr.Cpr">
+            <summary>
+            Solution space represented as a list of rows, each contains a <see cref="T:Configit.Core.Structure.SolutionSpace.CprCell"/>
+            for each of the <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionSpace.Variables"/>. If a <see cref="T:Configit.Core.Structure.SolutionSpace.CprCell"/>
+            is null, it indicate that cell represents all values in domain of variable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.SolutionSpace.SolutionCpr.ToString">
+            <summary>
+            Get string representation of enumerated solution space
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.SolutionSpace.SolutionEnumeration">
+            <summary>
+            <para>Representation of a solution space as a fully enumerated tabular format. This is
+            equivalent to a tabular format, where each cell contains exactly one value. A value 
+            in a cell can be an interval in case it represents date-time or number variable.
+            </para>
+            </summary>
+            <remarks>Solution spaces for which a string variable can assume any-value cannot be represented
+            in this format. For such cases, use either <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionCpr"/> or <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionGraph"/>
+            </remarks>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionEnumeration.Enumeration">
+            <summary>
+            <para>Enumeration of solution space as list of rows, where each row contains a 
+            single value for each of the <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionSpace.Variables"/></para>
+            <para>Values for a multi-valued <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable"/>
+            is represented as either TRUE or FALSE, to indicate if the value is included 
+            or excluded in the set represented by the multi-valued variable.</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.SolutionSpace.SolutionEnumeration.ToString">
+            <summary>
+            Get string representation of enumerated solution space
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.SolutionSpace.SolutionGraph">
+            <summary>
+            Representation of a solution space as a graph. Graph is represented as a list of 
+            <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionGraphNode"/>. Multi valued groups are represented as variables, where
+            <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.IncludeValues"/> might be false.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionGraph.Nodes">
+            <summary>
+            All nodes in graph. Each node might be used in multiple paths
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionGraph.RootNodes">
+            <summary>
+            Indices in <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraph.Nodes"/> representing all nodes 
+            for the first variable in <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionSpace.Variables"/>. 
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.SolutionSpace.SolutionGraphNode">
+            <summary>
+            A node in a <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionGraph"/>. Each node represents 
+            a set of <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Values"/> for a specific variable. The values
+            should be read as a disjunction - a path leading through a node
+            thus represents a valid solution for any of the nodes in <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Values"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.#ctor(Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable,System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.IValue},System.Collections.Generic.IEnumerable{System.Int32},System.Boolean)">
+            <summary>
+            Create a new node representing given <paramref name="values"/> for specified
+            <paramref name="variable"/>. Values is considered a positive list (included) 
+            if <paramref name="includeValues"/> is true. If <paramref name="values"/>
+            is null, it indicates that node represents all values in domain of variable.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Values">
+            <summary>
+            <para>Valid values for any path in the graph which goes through this node. The values
+            have the same type as the domain specified for <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Variable"/>. If 
+            values is null, it indicate that node represents all values in domain of variable.</para>
+            <para>Vales for a multi-valued <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Variable"/>
+            is represented as either TRUE or FALSE, to indicate if the value is included 
+            or excluded in the set represented by the multi-valued variable.</para>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Variable">
+            <summary>
+            Variable for which the <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Values"/> in the node belongs.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Children">
+            <summary>
+            Index of all child nodes for current node. List is empty if node represent 
+            a leaf in the graph (tree). It is guaranteed that the index of all child nodes are 
+            larger than the index in the <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraph.Nodes"/> where 
+            current node is found.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.IncludeValues">
+            <summary>
+            True if all <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Values"/> are considered a positive set
+            (values which are included in a solution), false if values
+            are considered the complement of values to include (a negated
+            set of values). <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.IncludeValues"/> could e.g. be false if <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.Variable"/>
+            is of type string, and <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionGraphNode"/> is to represent "anything but red"
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.op_Equality(Configit.Core.Structure.SolutionSpace.SolutionGraphNode,Configit.Core.Structure.SolutionSpace.SolutionGraphNode)">
+            <summary>
+            Equality operator
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.SolutionSpace.SolutionGraphNode.op_Inequality(Configit.Core.Structure.SolutionSpace.SolutionGraphNode,Configit.Core.Structure.SolutionSpace.SolutionGraphNode)">
+            <summary>
+            In-equality operator
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.SolutionSpace.SolutionSpace">
+            <summary>
+            Base class for representing a solution space
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionSpace.Variables">
+            <summary>
+            List of variables represented by the solution space. For multi-valued
+            groups, each <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable"/> instance represents a single 
+            value in the group.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable">
+            <summary>
+            Representation of a variable in a solution space. When representing 
+            multi-valued groups, the value in each group is represented individually
+            by a <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable"/> object.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable.#ctor(Configit.Core.Model.VariableDefinitions.IVariableDefinition,Configit.Core.Model.IReadonlyMultiValuedGroupSet)">
+            <summary>
+            If <paramref name="variableDefinition"/> represents a Boolean variable
+            in a multi valued group, the group is extracted and <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable.GroupValue"/>
+            is updated.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable.Id">
+            <summary>
+            Id of variable. If <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable.GroupValue"/> is not null, the
+            <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable.Id"/> represents a multi valued group.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable.GroupValue">
+            <summary>
+            Populated when <see cref="P:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable.Id"/> refer to a multi valued group
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable.IsMultiValued">
+            <summary>
+            True when <see cref="T:Configit.Core.Structure.SolutionSpace.SolutionSpaceVariable"/> represents a single value in a 
+            multi valued group
+            </summary>
+        </member>
+    </members>
+</doc>

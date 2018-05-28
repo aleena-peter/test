@@ -1,0 +1,2414 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Model.Logic</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Model.Logic.BddCompatibilityRequirements">
+            <summary>
+            Definition of how the <see cref="M:Configit.Core.Model.Logic.LogicModel.TypeCheck(Configit.Core.Model.Logic.BddCompatibilityRequirements)"/> and
+            <see cref="M:Configit.Core.Model.Logic.LogicModel.Compile(System.Int32,System.Int32,Configit.Core.Model.Logic.BddCompatibilityRequirements)"/>
+            methods are to behave when checking if rules can be compiled into BDDs
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.BddCompatibilityRequirements.RequireBddCompatibility">
+            <summary>
+            Require that all <see cref="P:Configit.Core.Model.Logic.LogicModel.Rules"/> are compatible with
+            the BDD compiler. After a successful type check, all rules will
+            have <see cref="P:Configit.Core.Model.Logic.Rule.IsBddCompatible"/> set to true.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.BddCompatibilityRequirements.DetectBddCompatibility">
+            <summary>
+            Allow some rules to be incompatible with the BDD compiler. Using this option,
+            the type checker will set the value of each <see cref="P:Configit.Core.Model.Logic.Rule.IsBddCompatible"/>
+            property to indicate if each rule is compatible with the BDD compiler, but will not
+            raise any errors if any of the rules are not compatible with the BDD compiler.
+            Rules which are not compatible with the BDD compiler will be ignored when calling
+            <see cref="M:Configit.Core.Model.Logic.LogicModel.Compile(System.Int32,System.Int32,Configit.Core.Model.Logic.BddCompatibilityRequirements)"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.BddCompatibilityRequirements.IgnoreBddCompatibility">
+            <summary>
+            Do not check for compatibility with the BDD compiler. After type check,
+            none of the rules will have the <see cref="P:Configit.Core.Model.Logic.Rule.IsBddCompatible"/> set
+            to true. A logic model cannot be compiled into BDDs when this compatibility
+            check is used.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.BinExprEvaluator`1">
+            <summary>
+            Information about how to evaluate a binary constant expression
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.BinExprEvaluator`1.#ctor(Configit.Core.Model.Logic.Expression.IlOpr,System.Func{`0,`0,System.Object})">
+            <summary>
+            Create a binary evaluator that can be applied to given <see cref="T:Configit.Core.Model.Logic.Expression.IlOpr"/>,
+            using specified evaluation expression
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.BinExprEvaluator`1.Opr">
+            <summary>
+            The operator that can be evaluated
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.BinExprEvaluator`1.Evaluate(System.Object,System.Object)">
+            <summary>
+            Evaluate the result of applying <see cref="P:Configit.Core.Model.Logic.Expression.BinExprEvaluator`1.Opr"/> to <paramref name="left"/>
+            and <paramref name="right"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.BoolConst">
+            <summary>
+            Value stored in <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.BoolConst"/> operator support
+            defining value of boolean constant
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.CheckSimplifyArguments">
+            <summary>
+            Arguments for the <see cref="T:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify"/> visitor.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyArguments.CheckBddCompatible">
+            <summary>
+            If true the type checking will check if expressions can be compiled to a BDD.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyArguments.ConstantValues">
+            <summary>
+            Any constant values supplied for evaluation in
+            <see cref="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.Evaluate(Configit.Core.Model.Logic.Expression.Expr,System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.Assignment})"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.CheckSimplifyResult">
+            <summary>
+            Result of calling <see cref="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.CheckAndSimplify(Configit.Core.Model.Logic.Rule,Configit.Core.Model.Logic.BddCompatibilityRequirements)"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResult.ExprType">
+            <summary>
+            Type of expression
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResult.Expr">
+            <summary>
+            Simplified expression
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResult.SetOfResults">
+            <summary>
+            Set of simplified elements in set
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResult.IsConstant">
+            <summary>
+            True if result represents a static value
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.CheckSimplifyResultCprRow">
+            <summary>
+            Representation of a simplified expr row with multiple values per row
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResultCprRow.IsConstant">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResultExpr.Expr">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResultExpr.IsConstant">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.CheckSimplifyResultMultiValuedGroup">
+            <summary>
+            Result that represents a multi valued group
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResultMultiValuedGroup.IsConstant">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.CheckSimplifyResultNormalizedTblRow">
+            <summary>
+            Representation of a simplified expr row with one value per cell
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResultNormalizedTblRow.IsConstant">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.CheckSimplifyResultRange">
+            <summary>
+            Result is a set of elements, which is defined as a range between two numbers
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.CheckSimplifyResultSet">
+            <summary>
+            Result is a set of elements
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResultSet.SetOfResults">
+            <summary>
+            Simplified expressions used in a range or a set
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResultSet.IsConstant">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.CheckSimplifyResultTableRow">
+            <summary>
+            Representation of a simplified expr row with one value per cell
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.CheckSimplifyResultTableRow.ConstValue">
+            <summary>
+            If property has a value, it indicates that entire row evaluates to a constant value
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.Expr">
+            <summary>
+            <para>Representation of an expression, either being an expression tree or
+            an atomic variable/value (leafs of an expression tree)
+            This class is used as the most basic form for representing an expression
+            that is to be compiled into a BDD. Typically, domains specific language
+            expressions will be converted into this representation before being
+            compiled into a VT file</para>
+            <para>The internal representation utilizes a very compact list of bytes, making
+            it extremely easy to parse and very compact when transferring data.</para>
+            <para>When adding sub-expression trees to an expression, operator nodes
+            should be added as if they are represented using prefix operators representation
+            (that is, operator first followed by any sub-expressions).
+            A node in an expression tree is represented
+            by a single control byte (for e.g. the operator identifying the expression structure)
+            possibly followed by a number of bytes holding information relevant for the
+            operator. Example: the <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Variable"/> will be followed by
+            a number of bytes used to define the variable and the <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.IntConst"/>
+            will be followed by a number of bytes used to represent the constant.</para>
+            <para>There are two ways to build an expression. First and most efficient approach
+            is to manually add operators, values etc. using the ADD methods in this class.
+            This has the advantage that no intermediate
+            expression tree need to be build in memory, but requires that the user ensures that the
+            resulting expression is well formed (e.g. that each operator has the required
+            number of arguments). The second approach is to use the helper methods provided
+            in <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>.</para>
+            <para>An <see cref="T:Configit.Core.Model.Logic.Expression.Expr"/> is to be considered a low-level representation
+            of an expression. The internal storage of data is done on a fairly low level,
+            where e.g. enum values are stored as their corresponding integer value, not their
+            string representation. A number of helper functions for e.g. inserting
+            comparison of enum variables with string enum values exist, but it is the
+            responsibility of the user of this API to ensure that the resulting
+            expression being build is well formed.
+            </para>
+            <para>The control byte of the expression uses bit 0-5 to store the structure/operator
+            of the expression as an <see cref="T:Configit.Core.Model.Logic.Expression.IlOpr"/>. Bits 6-7 are used for operator
+            support.</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.#ctor(Configit.Core.Model.Logic.LogicModel)">
+            <summary>
+            Create an expression that belongs to a specific model. Any variable used in an expression
+            must be populated in the model.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.ToString">
+            <summary>
+            Get string representation of expression using IL syntax
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.ToString(System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Get string representation of sub-expression starting at specified index.
+            In order to use old printing method where indexes instead of string value are used for enumerated string variable, set <paramref name="prettyPrintEnum"/> to false.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.GetSupport(System.Int32)">
+            <summary>
+            Find all supported (mentioned) variables in expression
+            </summary>
+            <returns>Variables in expression sorted in ascending order.</returns>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.GetIndexOfTopConjunction">
+            <summary>
+            Find and return index of all sub-expressions in expression that
+            represents an argument to a conjunction. If top node in tree
+            is not conjunction, the index of the first operator (0) is
+            returned
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.Expr.IL">
+            <summary>
+            The IL bytes representing the expression tree.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.Expr.LogicModel">
+            <summary>
+            The model that the expression belongs to
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddVariable(System.Int32)">
+            <summary>
+            Add atomic expression representing a variable, identified by
+            index.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddMultiValuedGroup(System.Int32)">
+            <summary>
+            Add atomic expression representing a multi valued group, identified by
+            index
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddConstant(System.Object)">
+            <summary>
+            <para>Add constant to expression, inserting appropriate operator</para>
+            <para><see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.BoolConst"/> is inserted for Boolean constants,
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.IntConst"/> is
+            inserted for integer constant and <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.IndirectConst"/> is
+            inserted for double, string and date time constants</para>
+            <remarks>Note that all <see cref="T:System.DateTime"/> object are converted to
+            UTC time before they are stored. This is to ensure consistency between
+            <see cref="T:System.DateTime"/> object from different sources.</remarks>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.IndirectTypeIdxToType(System.Int32)">
+            <summary>
+            Get type corresponding to index of indirectly stored type. Returned type is either
+            <see cref="T:System.Decimal"/>, <see cref="T:System.DateTime"/> or <see cref="T:System.String"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.IndirectValueTypeIdxToExprType(System.Int32)">
+            <summary>
+            Get <see cref="T:Configit.Core.Model.VariableDefinitions.VarType"/> corresponding to index of indirectly stored type.
+            Return type is either <see cref="F:Configit.Core.Model.VariableDefinitions.VarType.Number"/>, <see cref="F:Configit.Core.Model.VariableDefinitions.VarType.DateTime"/>
+            or <see cref="F:Configit.Core.Model.VariableDefinitions.VarType.String"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.GetIndirectConstValue(System.Int32)">
+            <summary>
+            Get constant value represented by <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.IndirectConst"/> expression,
+            or null if expression does not represent a constant
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.ValueIndexToValueObject(Configit.Core.Model.VariableDefinitions.VarType,System.Int32,System.Boolean)">
+            <summary>
+            Convert index of a value that belongs to specified variable type into
+            the object that the value index represents
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.ValueIndexToValueObject(Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Int32,System.Boolean)">
+            <summary>
+            Convert index of a value that belongs to specified variable type into
+            the object that the value index represents.
+            if <paramref name="idxToEnum"/> is true and varDef is an enumerated string variable, returns enum instead of index.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.StoreIntConst(System.Int32)">
+            <summary>
+            Use Variant-Length-Quantity (VLQ) representation, holding
+            signed integers. First bit of segment indicated if there are
+            data in following segments. 7 Bits data in each segment,
+            except first segment that uses second bit to indicate sign bit.
+            </summary>
+            <remarks>See http://en.wikipedia.org/wiki/Variable-length_quantity</remarks>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.RetrieveIntConst(System.Int32)">
+            <summary>
+            Retrieve VQL encoded integer constant starting at specified index.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.RetrieveIntConstAndIncIdx(System.Int32@)">
+            <summary>
+            Retrieve VQL encoded integer constant starting at specified index.
+            Increment <paramref name="idx"/>
+            to point to first byte after integer data
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.IsConst(System.Int32)">
+            <summary>
+            Indication if expression starting at given index represent a constant value
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddOperator(Configit.Core.Model.Logic.Expression.IlOpr,System.Int32)">
+            <summary>
+            <para>Add prefix operator to expression. Should only add binary,
+            unary and if-then-else and range operators. Variable and constant operators cannot be added
+            using this method. If count is specified, will add as many operator
+            instances as specified.</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddIfThen">
+            <summary>
+            Add If-Then construct. The operation is equivalent to calling
+            <see cref="M:Configit.Core.Model.Logic.Expression.Expr.AddOperator(Configit.Core.Model.Logic.Expression.IlOpr,System.Int32)"/> with <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Imp"/>. It is expected that all
+            arguments are of type Boolean
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddIfThenElse">
+            <summary>
+            Add If-Then-Else construct. The operation is equivalent to calling
+            <see cref="M:Configit.Core.Model.Logic.Expression.Expr.AddOperator(Configit.Core.Model.Logic.Expression.IlOpr,System.Int32)"/> with <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Ite"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddVarCompareConst``1(Configit.Core.Model.Logic.Expression.IlOpr,System.Int32,``0)">
+            <summary>
+            <para> Helper method for easy inserting a comparison between variable and
+            constant. Enum type variables can be compared to both a string constant
+            representing an enum value in the domain, or an integer representing
+            index of enum in domain.</para>
+            <para>If constant is decimal or date time the constant is inserted into the
+            Model, and an <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.IndirectConst"/> operator is inserted to point
+            to the index of the model specific constant index</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddConstCompareVar``1(Configit.Core.Model.Logic.Expression.IlOpr,``0,System.Int32)">
+            <summary>
+            <para> Helper method for easy inserting a comparison between variable and
+            constant. Enum type variables can be compared to both string constant
+            representing an enum value in the domain, or an integer representing
+            index of enum in domain.</para>
+            <para>If constant is double or date time the constant is inserted into the
+            Model, and an <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.IndirectConst"/> operator is inserted to point
+            to the index of the model specific constant index</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddConstant``1(System.Int32,``0)">
+            <summary>
+            If the given varIdx corresponds to an enum variable and the constant is a string
+            the constant is translated to its corresponding index, before the constant is
+            inserted into the model.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddSet(System.Int32)">
+            <summary>
+            Add set containing <paramref name="elemCount"/> number of elements
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddExpression(Configit.Core.Model.Logic.Expression.Expr)">
+            <summary>
+            Add sub-expression to current expression
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.GetOprSupport(System.Int32)">
+            <summary>
+            Get the operator support part of a control byte
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.GetOperator(System.Int32)">
+            <summary>
+            Get the operator part of a control byte
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.GetVariable(System.Int32)">
+            <summary>
+            Get variable definition represented by expression, or null if expression does not
+            represent a variable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.GetConstant(System.Int32)">
+            <summary>
+            Get constant represented by expression at specified index, or null if expression
+            does not represent a constant. Integer constants are returned as decimal values
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.IsEqualConst(System.Object,System.Int32)">
+            <summary>
+            Check if expression represents specific <paramref name="constant"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.Evaluate(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.Assignment})">
+            <summary>
+            Evaluate this expression against a configuration, ie a list of <see cref="T:Configit.Core.Model.VariableDefinitions.Assignment"/>.
+            Evaluation expects one (and only one) value per variable and returns a single constant value.
+            Assignments on multi-valued group variables are currently not supported, but a good workaround it to use assignments on boolean variables underlying multi-valued groups.
+            "Exclusion" assignments are currently not supported.
+            Assumes assignments are type checked and that each assigned value is within variable domain.
+            Unknown variables of the associated <see cref="T:Configit.Core.Model.Logic.LogicModel"/> are ignored.
+            Returns null if evaluation does not result to a single constant or if expression is syntactically/semantically incorrect or if assignments are of wrong types.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.Evaluate(System.Collections.Generic.IReadOnlyList{Configit.Core.Model.ValueDefinitions.IValue})">
+            <summary>
+            Evaluate this expression against a configuration, represented as a list of values; one per variable of logic model <see cref="P:Configit.Core.Model.Logic.LogicModel.Variables"/>.
+            Evaluation expects exactly one value per variable of the <see cref="T:Configit.Core.Model.Logic.LogicModel"/>. Value can be null.
+            For enumerated string variables, the value must be the index (integer) of that value in its variable.
+            Values for multi-valued group variables are currently not supported. A good workaround it to use IValue on boolean variables underlying multi-valued groups.
+            Returns null if evaluation does not result to a single constant or if expression is syntactically/semantically incorrect or if assignments are of wrong types.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.Expr.TableAllValuesObject">
+            <summary>
+            Object used to mark that a cell in a CPR table represents all values for the 
+            column.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.Expr.TableInvalidValueObject">
+            <summary>
+            Object used internally to mark that a value in a cell does not match type of variable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddTable``1(System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}},System.Collections.Generic.IEnumerable{Configit.Core.Model.Logic.Expression.IlOpr})">
+            <summary>
+            <para>Add expression specifying a disjunctive normal form table with
+            one value in each cell.</para>
+            <para>The type of the values passed in each cell must match that of the <paramref name="variables"/>
+            for each of the columns. For date time and number, the value must be 
+            date time/decimal. For enum type variables both the string representing the enum
+            and an integer representing enum index can be used.</para>
+            </summary>
+            <param name="variables">Indices of variables that are used to defined the columns</param>
+            <param name="table">Content of table</param>
+            <param name="columnOperators">If specified, the value of of the cells are compared to the variable of 
+            the column using the specified operator. If not specified, the default operator is <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>.
+            Allowed operators are <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Neq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Gt"/>, 
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.GtEq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Lt"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.LtEq"/></param>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidTableFormatException">If number of values in each row does not match number of <paramref name="variables"/> or
+            if number of <paramref name="columnOperators"/> does not match number of <paramref name="variables"/>
+            </exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.AddCpr``1(System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}}},System.Collections.Generic.IEnumerable{Configit.Core.Model.Logic.Expression.IlOpr})">
+            <summary>
+            <para>Add expression specifying a table as a Cartesian Product Representation (CPR) where each
+            cell might contain multiple values.</para>
+            <para>Each cell is considered a disjunction of comparing the variable of the column
+            with each value in the cell.</para>
+            <para>The type of the values passed in each cell must match that of the <paramref name="variables"/>
+            for each of the columns. For date time and number, the value must be 
+            date time/decimal. For enum type variables both the string representing the enum
+            and an integer representing enum index can be used.</para>
+            <para>Intervals can be given by passing in a <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/>
+            object, containing values which type match the variable definition of the column.</para>
+            <para>Intervals and multuple values can only be passed to columns which column operator
+            is equality. Columns with other types of column operator can only use single values.</para>
+            <para>The input values are automatically converted, such that sequential values 
+            are converted into intervals and redundant values are removed. The resulting table might
+            therefore not contain the same values as the input, but the meaning of the input will be the
+            same. Example: a cell for an enum variable contains values 9,6,5,4,7,1 - the values
+            are automatically converted into 1,4-7,9.</para>
+            </summary>
+            <param name="variables">Indices of variables that are used to defined the columns</param>
+            <param name="table">Content of CPR table. Each cell is given as an <see cref="T:System.Collections.IEnumerable"/> of 
+            values (for single values, the singleton collection is used)</param>
+            <param name="columnOperators">If specified, the value of of the cells are compared to the variable of 
+            the column using the specified operator. If not specified, the default operator is <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>.
+            Allowed operators are <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Neq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Gt"/>, 
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.GtEq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Lt"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.LtEq"/></param>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidTableFormatException">If number of values in each row does not match number of <paramref name="variables"/> or
+            if number of <paramref name="columnOperators"/> does not match number of <paramref name="variables"/>
+            </exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.SortAndMergeValues(Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Convert collection of values into domain intervals. Returns null if just a single 
+            value cannot be converted. Result contains no duplicates, values are sorted (according 
+            to lower bound), and no adjacent values are overlapping.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.ValueNoConversion``1(System.Object)">
+            <summary>
+            Used in cases where no conversion is required, and we only accept single values (not intervals)
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.ValueWithConversion``1(Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Object,Configit.Core.Model.Logic.Expression.Expr.ConvertSingleValue{``0})">
+            <summary>
+            Convert a value in a table to an interval value of correct type. Return null
+            if conversion fails
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.IntervalForValue(Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Object)">
+            <summary>
+            Create interval representing value for variable. The type of the interval will be identical
+            to <see cref="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.ValueType"/>, except for enumerated strings where it will be
+            int. 
+            </summary>
+            <returns>Domain interval on success, null on failure</returns>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.StoreAllValuesRepresentation">
+            <summary>
+            Magic marker value that represents "all values". Stored as
+            FF,FF,FF,FF,FF as no integer could be stored like this,
+            as this would be an overflow in VLQ
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.StoreInvalidValueTypeRepresentation">
+            <summary>
+            Magic marker value that represents "value of wrong type". Stored as
+            FF,FF,FF,FF,FE as no integer could be stored like this,
+            as this would be an overflow in VLQ
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.CheckForAllValuesAndOptionalIncIdx(System.Int32@)">
+            <summary>
+            Check if value at given index represents "all values". 
+            All values are stored as FF,FF,FF,FF,FF
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.Expr.CheckForInvalidValueAndOptionalIncIdx(System.Int32@)">
+            <summary>
+            Check if value at given index represents an "invalid value"
+            (inserted if type of value does not match type of variable when
+            creating table).
+            Invalid values are stored as FF,FF,FF,FF,FE
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprBddCompiler">
+            <summary>
+            <para>Visitor for compiling an expression into a semantic representation, that being either
+            a <see cref="T:Configit.Core.Noddy.Bdd"/>, <see cref="T:Configit.Core.Noddy.FiniteDomain.BddFd"/> or an enumeration of one of those.</para>
+            <para>Indirectly stored constants and non-enumerated variables are returned as null, and handled as special
+            case. These can only be used in connection with comparison operators (or IN operator)</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBddCompiler.CompileExpr(Configit.Core.Model.Logic.Expression.Expr,System.Int32)">
+            <summary>
+            Compile expression into a <see cref="T:Configit.Core.Noddy.Bdd"/>
+            </summary>
+            <exception cref="T:System.ArgumentException">If expression cannot be compiled into a <see cref="T:Configit.Core.Noddy.Bdd"/>. This
+            can be the case if the expression to be compiled is not type checked or simplified.</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBddCompiler.CompareNonEnumeratedVarWithValue(Configit.Core.Model.Logic.Expression.Expr,Configit.Core.Noddy.Operators.FddCompOpr,System.Int32,System.Int32)">
+            <summary>
+            Build BDD representing comparison of non-enumerated variable with a value
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprBddCompileResult">
+            <summary>
+            Representation of compiling an expression representing a Boolean value
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprBddCompileResult.Bdd">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprBddFdCompileResult">
+            <summary>
+            Representation of compiling an expression representing an enumerated integer
+            type
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprBddFdCompileResult.BddFd">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprBld">
+            <summary>
+            <para>Class used for build up of IL code (internal representation of logic expression
+            in a <see cref="T:Configit.Core.Model.Logic.Expression.Expr"/>), ensuring
+            that the resulting IL code is well structured (e.g. that each operator
+            has the required number of operands).</para>
+            <para>In most cases, the builder methods automatically converts between string and
+            integer values for enum type variables, making it easier to assign
+            to these type of variables. This is done when e.g. inserting a comparison between
+            an enum variable and en enum value (a string), but also when using the
+            IN operator, checking if an enum variable is equal to a set of string values.</para>
+            <para>A number of operator overloads are provided, making it easier 
+            to write expressions.</para>
+            <para>This class builds up a parse-tree structure of an expression. Working with very deeply 
+            nested expressions might cause <see cref="!:StackOverflowException"/> when calling 
+            <see cref="M:Configit.Core.Model.Logic.LogicModel.AddRule(System.String,System.String,Configit.Core.Model.Logic.Expression.ExprBld)"/> (depending on nesting of expression and
+            available stack size. Processes running in e.g. IIS have a limited stack size). To avoid
+            this limitation, either balance your expressions (e.g. avoiding very deeply nested OR or AND
+            expressions), or consider using the <see cref="M:Configit.Core.Model.Logic.Expression.Expr.AddOperator(Configit.Core.Model.Logic.Expression.IlOpr,System.Int32)"/> and friends to build up
+            the expression.</para>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprBld.BuildAction">
+            <summary>
+            The action that when applied to a an <see cref="T:Configit.Core.Model.Logic.Expression.Expr"/> build up 
+            relevant IL code
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.#ctor(System.Action{Configit.Core.Model.Logic.Expression.Expr})">
+            <summary>
+            Manual usage of this constructor is provided when creating custom
+            <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/> for e.g. conversion of custom operators into
+            IL code.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Constant(System.Object)">
+            <summary>
+            <para>Create expression representing a constant. 
+            Can be called with integer, string, Boolean, double or DateTime.</para>
+            <para><see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.BoolConst"/> is inserted for Boolean constants,
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.IntConst"/> is
+            inserted for integer constant and <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.IndirectConst"/> is
+            inserted for double, string and date time constants.</para>
+            <remarks>If <paramref name="constant"/> is of type <see cref="T:System.String"/> and
+            the result is used when comparing or assigning the string 
+            constant to an enum type variable, the constant string is automatically
+            converted into the corresponding integer value for the string constant in 
+            the domain of the variable.</remarks>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprBld.Variables">
+            <summary>
+            Get <see cref="T:Configit.Core.Model.Logic.Expression.ExprBldVarCollection"/> allowing for easy reference to 
+            variable by name
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Variable(System.String)">
+            <summary>
+            Create expression representing either a variable or a multi valued group with given id.
+            Framework automatically detect if <paramref name="id"/> corresponds to a variable
+            or a multi valued group
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.UnknownIdReferenceException">If <paramref name="id"/> does not exist 
+            in model, either as a variable or as a multi valued group.</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.IfThen(System.Object,System.Object)">
+            <summary>
+            Add If-Then construct. The operator inserted is <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Imp"/>, that is, a 
+            logical implication. It is expected that all arguments are of type Boolean.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.IfThenElse(System.Object,System.Object,System.Object)">
+            <summary>
+            Add If-Then-Else construct. First argument must be of type Boolean.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.TrueCount(System.Object[])">
+            <summary>
+            Insert <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.TrueCount"/> operator and apply it to specified set of 
+            Boolean arguments. This is a shortcut to calling <see cref="M:Configit.Core.Model.Logic.Expression.ExprBld.TrueCount"/>
+            on expression created by the result of an expression created by the <see cref="M:Configit.Core.Model.Logic.Expression.ExprBld.Set(System.Object[])"/> 
+            method.
+            <remarks>Each argument should be either an <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>, or a constant
+            Boolean constant.
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.TrueCount">
+            <summary>
+            Create expression representing the true count of this expression. This method
+            should only be used on Boolean sets
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Table``1(System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}},System.Collections.Generic.IEnumerable{Configit.Core.Model.Logic.Expression.IlOpr})">
+            <summary>
+            <para>Add expression specifying a disjunctive normal form table with
+            one value in each cell.</para>
+            <para>The type of the values passed in each cell must match that of the <paramref name="variables"/>
+            for each of the columns. For date time and number, the value must be 
+            date time/decimal. For enum type variables both the string representing the enum
+            and an integer representing enum index can be used.</para>
+            </summary>
+            <param name="variables">Indices of variables that are used to defined the columns</param>
+            <param name="table">Content of table</param>
+            <param name="columnOperators">If specified, the value of of the cells are compared to the variable of 
+            the column using the specified operator. If not specified, the default operator is <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>.
+            Allowed operators are <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Neq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Gt"/>, 
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.GtEq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Lt"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.LtEq"/></param>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidTableFormatException">If number of values in each row does not match number of <paramref name="variables"/> or
+            if number of <paramref name="columnOperators"/> does not match number of <paramref name="variables"/>
+            </exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Table``1(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}},System.Collections.Generic.IEnumerable{Configit.Core.Model.Logic.Expression.IlOpr})">
+            <summary>
+            <para>Add expression specifying a disjunctive normal form table with
+            one value in each cell.</para>
+            <para>The type of the values passed in each cell must match that of the <paramref name="variables"/>
+            for each of the columns. For date time and number, the value must be 
+            date time/decimal. For enum type variables both the string representing the enum
+            and an integer representing enum index can be used.</para>
+            </summary>
+            <param name="variables">Name of variables that are used to defined the columns</param>
+            <param name="table">Content of table</param>
+            <param name="columnOperators">If specified, the value of of the cells are compared to the variable of 
+            the column using the specified operator. If not specified, the default operator is <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>.
+            Allowed operators are <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Neq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Gt"/>, 
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.GtEq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Lt"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.LtEq"/></param>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidTableFormatException">If number of values in each row does not match number of <paramref name="variables"/> or
+            if number of <paramref name="columnOperators"/> does not match number of <paramref name="variables"/>
+            </exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Cpr``1(System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}}},System.Collections.Generic.IEnumerable{Configit.Core.Model.Logic.Expression.IlOpr})">
+            <summary>
+            <para>Add a table as a Cartesian product representation where each
+            cell might contain multiple values.</para>
+            <para>If each cell contains multiple values, each cell is considered a disjunction 
+            of comparing the variable of the column with each value in the cell, disregarding
+            which <paramref name="columnOperators"/> are used.</para>
+            <para>The type of the values passed in each cell must match that of the <see><cref>VariableDefinition</cref></see>
+            for each of the specified variables. For date time and double, the value must be 
+            data time/double. For enum type variables both the string representing the enum
+            and an integer representing enum index can be used.</para>
+            <para>Method is generic to allow conversion of different types of IEnumerable.</para>
+            </summary>
+            <param name="variables">Indices of variables that are used to defined the columns</param>
+            <param name="table">Content of table. If generic type is an <see cref="T:System.Collections.Generic.IEnumerable`1"/>
+            then table is considered as Cartesian product representation.</param>
+            <param name="columnOperators">If specified, the value of of the cells are compared to the variable of 
+            the column using the specified operator. If not specified, the default operator is <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>.
+            Allowed operators are <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Neq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Gt"/>, 
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.GtEq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Lt"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.LtEq"/></param>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Cpr``1(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}}},System.Collections.Generic.IEnumerable{Configit.Core.Model.Logic.Expression.IlOpr})">
+            <summary>
+            <para>Add a table as a Cartesian product representation where each
+            cell might contain multiple values.</para>
+            <para>If each cell contains multiple values, each cell is considered a disjunction 
+            of comparing the variable of the column with each value in the cell, disregarding
+            which <paramref name="columnOperators"/> are used.</para>
+            <para>The type of the values passed in each cell must match that of the <see><cref>VariableDefinition</cref></see>
+            for each of the specified variables. For date time and double, the value must be 
+            data time/double. For enum type variables both the string representing the enum
+            and an integer representing enum index can be used.</para>
+            <para>Method is generic to allow conversion of different types of IEnumerable.</para>
+            </summary>
+            <param name="variables">Name of variables that are used to defined the columns</param>
+            <param name="table">Content of table. If generic type is an <see cref="T:System.Collections.Generic.IEnumerable`1"/>
+            then table is considered as Cartesian product representation.</param>
+            <param name="columnOperators">If specified, the value of of the cells are compared to the variable of 
+            the column using the specified operator. If not specified, the default operator is <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>.
+            Allowed operators are <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Neq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Gt"/>, 
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.GtEq"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Lt"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.LtEq"/></param>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.TableOrCpr(System.Collections.Generic.IEnumerable{System.String},System.Object,System.Collections.Generic.IEnumerable{Configit.Core.Model.Logic.Expression.IlOpr})">
+            <summary>
+            Identical to <see cref="M:Configit.Core.Model.Logic.Expression.ExprBld.Table``1(System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{``0}},System.Collections.Generic.IEnumerable{Configit.Core.Model.Logic.Expression.IlOpr})"/>,
+            but introduced for easier calling the table builder with for e.g. F# using the F# list type/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Set(System.Object[])">
+            <summary>
+            Create set containing specified arguments. If used with an IN operator,
+            values in set can represent string values even when comparing an enum variable
+            with contents in set. 
+            </summary>
+            <remarks>Each argument should be either an <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>, or a constant
+            value.
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Range(System.Object,System.Object)">
+            <summary>
+            Create a range representing values from <paramref name="lower"/> to
+            <paramref name="upper"/> bound. 
+            </summary>
+            <remarks>Each argument should be either an <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>, or a constant
+            decimal or integer.
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Binary(Configit.Core.Model.Logic.Expression.IlOpr,System.Object,System.Object)">
+            <summary>
+            Create binary expression using provided operand and arguments. 
+            Notice, that if <paramref name="opr"/> is <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.ShiftL"/>
+            or <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.ShiftR"/>, then <paramref name="right"/> must 
+            represent an integer constant.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.And(System.Object)">
+            <summary>
+            Create expression representing the conjunction of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Or(System.Object)">
+            <summary>
+            Create expression representing the disjunction of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Eq(System.Object)">
+            <summary>
+            Create expression representing the equality check of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Neq(System.Object)">
+            <summary>
+            Create expression representing the negated equality check this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Xor(Configit.Core.Model.Logic.Expression.ExprBld)">
+            <summary>
+            Create expression representing the exclusive or of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Imp(Configit.Core.Model.Logic.Expression.ExprBld)">
+            <summary>
+            Create expression representing the logical implication (if-then) of this 
+            with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Gt(System.Object)">
+            <summary>
+            Create expression representing the greater than this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.GtEq(System.Object)">
+            <summary>
+            Create expression representing the Greater than or equal of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Lt(System.Object)">
+            <summary>
+            Create expression representing the less than of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.LtEq(System.Object)">
+            <summary>
+            Create expression representing the less than or equal of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Plus(System.Object)">
+            <summary>
+            Create expression representing the addition of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Minus(System.Object)">
+            <summary>
+            Create expression representing the subtraction of <paramref name="other"/> from this
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Mult(System.Object)">
+            <summary>
+            Create expression representing the multiplication of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Div(System.Object)">
+            <summary>
+            Create expression representing the division of this with <paramref name="other"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.ShiftL(System.Object)">
+            <summary>
+            Create expression representing shifting this <paramref name="other"/> to the left
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.ShiftR(System.Object)">
+            <summary>
+            Create expression representing shifting this <paramref name="other"/> to the right
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.In(System.Object)">
+            <summary>
+            Create expression representing a check if this expression is equal to a set of other expressions. 
+            <paramref name="other"/> should represent a set or a range
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Unary(Configit.Core.Model.Logic.Expression.IlOpr,System.Object)">
+            <summary>
+            Create unary expression
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Not(System.Object)">
+            <summary>
+            Create unary expression representing negation of <paramref name="arg"/>
+            </summary>
+            <remarks>The <paramref name="arg"/> should be either an <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>, or a constant
+            Boolean constant.
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Not">
+            <summary>
+            Create expression representing the negation of this expression
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Negate(System.Object)">
+            <summary>
+            Create unary expression representing negation of <paramref name="arg"/> for integer and decimal values
+            </summary>
+            <remarks>The <paramref name="arg"/> should be either an <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>, or a constant number.
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Negate">
+            <summary>
+            Create expression representing the negation of this expression for integer and decimal values
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_LogicalNot(Configit.Core.Model.Logic.Expression.ExprBld)">
+            <summary>
+            Create expression representing the negation of this expression
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_BitwiseAnd(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing conjunction of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_BitwiseOr(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing disjunction of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_Equality(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing equality of expression with some const
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_Equality(Configit.Core.Model.Logic.Expression.ExprBld,Configit.Core.Model.Logic.Expression.ExprBld)">
+            <summary>
+            Create expression representing equality of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_Inequality(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing inequality of expression with some const
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_Inequality(Configit.Core.Model.Logic.Expression.ExprBld,Configit.Core.Model.Logic.Expression.ExprBld)">
+            <summary>
+            Create expression representing inequality of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_Addition(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing addition of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_Subtraction(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing subtraction of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_Multiply(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing multiplication of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_Division(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing division of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_GreaterThan(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing greater-than comparison of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_LessThan(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing less-than comparison of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_GreaterThanOrEqual(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing greater-than-or-equal comparison of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.op_LessThanOrEqual(Configit.Core.Model.Logic.Expression.ExprBld,System.Object)">
+            <summary>
+            Create expression representing less-than-or-equal comparison of two expressions
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.ObjectToExprBld(System.Object)">
+            <summary>
+            Internal helper for converting object to ExprBld. If object is 
+            already an ExprBld it is simply returned
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.ConvertIfEnumVarCompareString(Configit.Core.Model.Logic.Expression.ExprBld)">
+            <summary>
+            Helper methods ensuring that if this is a <see cref="T:Configit.Core.Model.Logic.Expression.ExprBldIdReference"/>
+            and other is a <see cref="T:Configit.Core.Model.Logic.Expression.ExprBldStringConst"/>, then other is 
+            converted into an standard integer constant
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Equals(Configit.Core.Model.Logic.Expression.ExprBld)">
+            <summary>
+            Test if <paramref name="other"/> is equal to this instance
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBld.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprBldIdReference">
+            <summary>
+            Class used to be able to identify an <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>
+            that represents adding a variable or a multi valued group. Used 
+            when e.g. comparing enum variable with enum string
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprBldIdReference.Id">
+            <summary>
+            Id used in reference
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprBldIdReference.GetVarIdx(Configit.Core.Model.Logic.Expression.Expr)">
+            <summary>
+            Index of variable to be inserted into expression
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprBldSet">
+            <summary>
+            Class used to be able to identify an <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>
+            that represents adding a set. Used when comparing enum
+            variable with set of values
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprBldSet.Values">
+            <summary>
+            Values in set
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprBldStringConst">
+            <summary>
+            Class used to be able to identify an <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>
+            that represents adding a string constant. Used when comparing enum
+            variable with enum string
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprBldVarCollection">
+            <summary>
+            Collection of variables, used to make it easier to build up
+            expressions without explicitly having to call <see cref="M:Configit.Core.Model.Logic.Expression.ExprBld.Variable(System.String)"/>
+            <example>
+            Consider the following example
+            <code>
+            var vars = new ExprBldVarCollection();
+            myModel.AddRule( "x=y", vars["x"] == vars["y"];
+            </code>
+            </example>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprBldVarCollection.Item(System.String)">
+            <summary>
+            Get representation of variable with specified id
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify">
+            <summary>
+            Class for both performing static semantic check and simplification of rules.
+            Simplified have same semantic as input rule, but all parts which can be constant
+            evaluated have been reduced.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.#ctor(Configit.Core.Model.Logic.LogicModel)">
+            <summary>
+            Instantiate a checker and simplifier which is tied to a specific <see cref="T:Configit.Core.Model.Logic.LogicModel"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.CheckAndSimplify(Configit.Core.Model.Logic.Rule,Configit.Core.Model.Logic.BddCompatibilityRequirements)">
+            <summary>
+            Check and simplify rule
+            </summary>
+            <returns>A <see cref="T:Configit.Core.Model.Logic.TypeCheckError"/> with information about error found, or null
+            if no type check error have been found.</returns>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.Evaluate(Configit.Core.Model.Logic.Expression.Expr,System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.Assignment})">
+            <summary>
+            Evaluate an expression against a configuration, i.e. a list of <see cref="T:Configit.Core.Model.VariableDefinitions.Assignment"/>.
+            Evaluation expects one (and only one) value per variable and returns a single constant value.
+            Assignments on multi-valued group variables and "exclusion" assignments are currently not supported.
+            Assumes assignments are type checked and that each assigned value is within variable domain.
+            Unknown variables of the associated <see cref="T:Configit.Core.Model.Logic.LogicModel"/> are ignored.
+            Returns null if evaluation does not result to a single constant or if expression is syntactically/semantically incorrect.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.Evaluate(Configit.Core.Model.Logic.Expression.Expr,System.Collections.Generic.IReadOnlyList{Configit.Core.Model.ValueDefinitions.IValue})">
+            <summary>
+            Evaluate an expression against a configuration, represented as a list of values;
+            one per variable of logic model <see cref="P:Configit.Core.Model.Logic.LogicModel.Variables"/>.
+            Evaluation expects one (and only one) value per variable of the <see cref="T:Configit.Core.Model.Logic.LogicModel"/>. Value can be null.
+            For enumerated string variables, the value must be the index (integer) of that value in its variable.
+            Values for multi-valued group variables are currently not supported.
+            Returns null if evaluation does not result to a single constant or if expression is syntactically/semantically incorrect.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.CompareCellValueWithColumn(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Object,Configit.Core.Model.Logic.Expression.IlOpr,Configit.Core.Model.Logic.Expression.CheckSimplifyArguments,System.Nullable{System.Boolean}@)">
+            <summary>
+            Observe <paramref name="opr"/> as comparison operator, and deduce if comparison of <paramref name="varIdx"/>
+            and <paramref name="cellValue"/> can be statically deduced. If cell value is all-values, it is considered
+            static true.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.ExprTypeOfConstant(System.Object)">
+            <summary>
+            Get expression type matching <paramref name="constant"/> value.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.CheckCompareExpr(Configit.Core.Model.Logic.Expression.CheckSimplifyResult,Configit.Core.Model.Logic.Expression.CheckSimplifyResult,Configit.Core.Model.Logic.Expression.IlOpr,Configit.Core.Model.Logic.Expression.Expr@,Configit.Core.Model.Logic.Expression.Expr@,Configit.Core.Model.Logic.Expression.IlOpr@)">
+            <summary>
+            <para>Try to simplify comparison expression. Handles cases where variable is compared
+            with constant, checking e.g. bounds of variable. </para>
+            </summary>
+            <returns>Returns either true / false if input could be evaluated to a constant Boolean
+            value. If input cannot be evaluated to a constant, null is returned.
+            The resulting expressions are identical to the input expressions, in case
+            nothing can be simplified.
+            </returns>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.EvaluateVarCompareConst(Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Object,Configit.Core.Model.Logic.Expression.IlOpr,System.Object@)">
+            <summary>
+            Compare variable with constant. Return a bool value if comparison can be statically evaluated. If
+            null is returned, it means comparison cannot be statically evaluated. In this case, use
+            <paramref name="constantInDomain"/> as result, as it is guaranteed to be in domain of variable.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.ValidateCombination(Configit.Core.Model.Logic.Expression.IlOpr,Configit.Core.Model.Logic.Expression.ValidTypeCombination[],Configit.Core.Model.Logic.Expression.CheckSimplifyResult,Configit.Core.Model.Logic.Expression.CheckSimplifyResult,System.Int32,System.Boolean)">
+            <summary>
+            Validate that combination of left and right is accepted. Throws <see cref="T:Configit.Core.Model.Logic.Expression.ExprTypeCheckException"/>
+            if combination is not valid.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprCompileResult">
+            <summary>
+            Internal result of compiling an expression using <see cref="T:Configit.Core.Model.Logic.Expression.ExprBddCompiler"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprCompileResult.Bdd">
+            <summary>
+            Result used when expression is Boolean
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprCompileResult.BddFd">
+            <summary>
+            Result used when expression represent enumerated integer
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprCompileResult.Idxs">
+            <summary>
+            List of indexes representing resulting <see cref="P:Configit.Core.Model.Logic.Expression.ExprCompileResult.Elements"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprCompileResult.Elements">
+            <summary>
+            Result when working on a range or a set of values
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprCompileResultSet">
+            <summary>
+            Representation of compiling an expression containing a range or a set
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprConjunctionSplitter">
+            <summary>
+            Visitor that traverses an expression for splitting it into the individual conjunctions 
+            it is composed of.
+            <example>If expression is composed as "a and b or c", the expression is considered
+            as being composed of the two sub expressions "a" and "b or c"</example>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprConjunctionSplitter.FindConjunctions(Configit.Core.Model.Logic.Expression.Expr)">
+            <summary>
+            Find the indices of the top conjunction for expression
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprConstEvaluator">
+            <summary>
+            Class used for evaluating constant <see cref="T:Configit.Core.Model.Logic.Expression.Expr"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprConstEvaluator.#cctor">
+            <summary>
+            Static constructor for building up dictionaries mapping <see cref="T:Configit.Core.Model.Logic.Expression.IlOpr"/>
+            to <see cref="T:Configit.Core.Model.Logic.Expression.BinExprEvaluator`1"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprConstEvaluator.EvaluateBinary(Configit.Core.Model.Logic.Expression.IlOpr,Configit.Core.Model.Logic.Expression.Expr,Configit.Core.Model.Logic.Expression.Expr)">
+            <summary>
+            Evaluate result of applying binary <paramref name="opr"/> on given expressions, which 
+            both represent a constant
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprConstEvaluator.EvaluateBinary(Configit.Core.Model.Logic.Expression.IlOpr,System.Object,System.Object)">
+            <summary>
+            Evaluate result of applying binary <paramref name="opr"/> on given constant arguments
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprDomainBuilder">
+            <summary>
+            Visitor for examining expressions and building up the non-enumerated domains.
+            It is assumed that the examined expressions are both type checked and simplified
+            before running this visitor.
+            Return value is index of arguments for multi-valued operators. Evaluation of everything
+            but multi-valued operators return null.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprDomainBuilder.CompareOperators">
+            <summary>
+            Compare operators used when comparing non-enumerated variable with constants
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprDomainBuilder.BuildDomains(Configit.Core.Model.Logic.Expression.Expr)">
+            <summary>
+            Examine expression, and insert information into the model about which constant and
+            which operators the non-enumerated variables are compared to.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprDomainBuilder.VisitBinaryAfterArguments(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Int32,System.Int32,System.Nullable{System.Int32},Configit.Core.Model.Logic.Expression.ExprVisitorArguments)">
+            <summary>
+            Check for comparisons of non-enumerated variables.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprStringifier">
+            <summary>
+            Class for visiting all nodes in expression and printing out the result
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.Stringify(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Get string representation of expression.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.PrettyPrintEnumIndex(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Int32)">
+            <summary>
+            Get string representation of a value (identified with <paramref name="valIdx"/>
+            of an enumerated string variable (identified with <paramref name="varIdx"/>).
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.Stringify(System.Object)">
+            <summary>
+            Internal helper function, ensuring that values are "boxed" when stringified
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.IdNeedEscaping(System.String)">
+            <summary>
+            True if <paramref name="id"/> can be printed without escaping it
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.PutArgForBinaryInParentheses(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Nullable{System.Int32},Configit.Core.Model.Logic.Expression.StringifierArguments)">
+            <summary>
+            Determine if we need to put expression in parentheses. This is the case when
+            we are not dealing with top-level expression, or if we have altered between
+            binary operators
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.IsEnumVariableOrIntConst(Configit.Core.Model.Logic.Expression.Expr,System.Int32@,System.Int32@)">
+            <summary>
+            Is an expression an identifier of an enumerated string variable or a constant integer or a set of constant integers.
+            If true, <paramref name="idx"/> is positioned just after the expression.
+            If it is a variable, <paramref name="varIdx"/> is set to the index of variable in LogicModel's <see cref="P:Configit.Core.Model.Logic.LogicModel.Variables"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.DetectPrettyPrintOfEnum(Configit.Core.Model.Logic.Expression.Expr,System.Int32,Configit.Core.Model.Logic.Expression.StringifierArguments)">
+            <summary>
+            Check whether expression matches pattern "variable operator IntConst*" (or inverted).
+            And that variable is an enumerated string variable. Also check if we could print
+            variable=value as variable.value (enum assignment)
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.PrintCprCellValuesForEnumeratedVariable(Configit.Core.Model.Logic.Expression.Expr,Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Collections.Generic.List{System.Object},System.Int32,System.Int32,Configit.Core.Model.Logic.Expression.StringifierArguments)">
+            <summary>
+            Print a Cpr cell according to enumerated variable: in order of the domain.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.PrintCprCellValuesForNonEnumeratedVariable(Configit.Core.Model.Logic.Expression.Expr,Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Collections.Generic.List{System.Object},System.Int32,System.Int32)">
+            <summary>
+            Print a Cpr cell according to non enumerated variable: in natural order.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprStringifier.OprToString(Configit.Core.Model.Logic.Expression.IlOpr,Configit.Core.Model.Logic.Expression.StringifierArguments)">
+            <summary>
+            Get string representation of opr
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprSupport">
+            <summary>
+            Find all supported variables in expression
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprType">
+            <summary>
+            Indication of expression type
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.Bool">
+            <summary>
+            Boolean constants and Boolean variables. Also, Boolean operators on
+            sub-expressions
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.Range">
+            <summary>
+            Positive enumerated integer numbers
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.Number">
+            <summary>
+            Non-enumerated number variable and number constants
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.DateTime">
+            <summary>
+            Date time variable and date time constants
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.String">
+            <summary>
+            Non-enumerated string variables and string constants
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.BoolSet">
+            <summary>
+            Set of Boolean values
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.RangeSet">
+            <summary>
+            Set of positive integer numbers
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.NumberSet">
+            <summary>
+            Set of number values
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.DateTimeSet">
+            <summary>
+            Set of DateTime values
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.StringSet">
+            <summary>
+            Set of string values
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprType.EmptySet">
+            <summary>
+            Special type used for the empty set
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprTypeExtensions">
+            <summary>
+            Diff extensions for <see cref="T:Configit.Core.Model.Logic.Expression.ExprType"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprTypeExtensions.TypeToString(Configit.Core.Model.Logic.Expression.ExprType)">
+            <summary>
+            Get a string representation of an <see cref="T:Configit.Core.Model.Logic.Expression.ExprType"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprTypeCheckException">
+            <summary>
+            Internal exception thrown by <see cref="M:Configit.Core.Model.Logic.Expression.ExprCheckAndSimplify.CheckAndSimplify(Configit.Core.Model.Logic.Rule,Configit.Core.Model.Logic.BddCompatibilityRequirements)"/>
+            to indicate semantic type check error
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprTypeCheckException.Idx">
+            <summary>
+            Index in check expression where static semantic type error is discovered
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.ExprTypeCheckException.ErrorMsg">
+            <summary>
+            String message describing the static semantic error, can be passed
+            to end user
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprVarReorderer">
+            <summary>
+            Class that can re-order variables. Returns a new expression, where the variable
+            references are re-ordered according to the specified new order
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVarReorderer.Reorder(Configit.Core.Model.Logic.Expression.Expr,System.Int32)">
+            <summary>
+            Get a version of the expression where the variables are re-ordered
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprVisitor`2">
+            <summary>
+            <para>Control class for implementing expression visitors. A number of worker method can be
+            implemented, depending on when an expression should be visited. </para>
+            <para>For binary operators, 3 methods exist that can be called before visiting
+            arguments, after only left argument is visited or after both arguments have
+            been visited. For unary expressions, 2 method exist, one called before the argument
+            is visited, one called after the argument has been visited.</para>
+            <para>The visitor is implemented as an iterative algorithm (instead of recursion).
+            It uses a number of stacks to keep track of previous (parent) expressions visited.
+            The control is done using an action stack, dictating which action to perform
+            next. Some actions represent the beginning of an expression, while other
+            actions represents that we are processing e.g. a child, which is also the
+            first or second argument in a parent binary expression. This approach makes
+            it possible to invoke the visit methods that are invoked between arguments in
+            an expression.</para>
+            </summary>
+            <typeparam name="TResult">Return type of all worker methods</typeparam>
+            <typeparam name="TArgs">Type of the context supplied to the <see cref="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.Visit(Configit.Core.Model.Logic.Expression.Expr,System.Int32,`1)"/> method</typeparam>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.ExprVisitor`2.IlOprToVisitAction">
+            <summary>
+            All <see cref="T:Configit.Core.Model.Logic.Expression.IlOpr"/> have a map to an action which represents the start
+            of a new expression.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitBinaryAfterArguments(Configit.Core.Model.Logic.Expression.Expr,System.Int32,`0,`0,System.Int32,System.Int32,System.Nullable{System.Int32},`1)">
+            <summary>
+            Method called on binary expressions after both arguments have been visited
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitBinaryBetweenArguments(Configit.Core.Model.Logic.Expression.Expr,System.Int32,`1)">
+            <summary>
+            Method called on binary expression after left argument has been visited, but before right
+            argument is visited
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitBinaryBeforeArguments(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Nullable{System.Int32},`1)">
+            <summary>
+            Method called on binary expressions before arguments are visited
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitUnaryBeforeArgument(Configit.Core.Model.Logic.Expression.Expr,System.Int32,`1)">
+            <summary>
+            Method called on unary expression before the argument is visited
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitUnaryAfterArgument(Configit.Core.Model.Logic.Expression.Expr,System.Int32,`0,`1)">
+            <summary>
+            Method called on unary expressions after the argument has been visited
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitMultiArgBetweenArguments(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Int32,System.Boolean,`1)">
+            <summary>
+            Method called between visiting individual arguments in a multi argument expression.
+            Method is used for operators such as <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Ite"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.TrueCount"/>
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.In"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitMultiArgBeforeArguments(Configit.Core.Model.Logic.Expression.Expr,System.Int32,`1)">
+            <summary>
+            Method called before visiting any arguments in a multi argument expression.
+            Method is used for operators such as <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Ite"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.TrueCount"/>,
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.In"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitMultiArgAfterArguments(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Collections.Generic.List{`0},System.Collections.Generic.List{System.Int32},`1)">
+            <summary>
+            Method called on multi argument expressions after all input arguments have
+            been evaluated.
+            Method is used for operators such as <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Ite"/>, <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.TrueCount"/>,
+            and <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.In"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitAtom(Configit.Core.Model.Logic.Expression.Expr,System.Int32,`1)">
+            <summary>
+            Method for visiting atomic expressions (constants and variables)
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitTableBetweenRows(Configit.Core.Model.Logic.Expression.Expr,Configit.Core.Model.Logic.Expression.TableType,System.Int32,`1)">
+            <summary>
+            Method for visiting table between each row
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitTableRow(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Int32[],System.Object[],System.Int32,Configit.Core.Model.Logic.Expression.IlOpr[],`1)">
+            <summary>
+            Method for visiting each row in a table, where cells in table only contains
+            a single value. Values are either of type <see cref="T:System.Int32"/> or
+            are <see cref="F:Configit.Core.Model.Logic.Expression.Expr.TableAllValuesObject"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitTableRow(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Int32[],System.Collections.Generic.List{System.Object}[],System.Int32[],System.Int32,Configit.Core.Model.Logic.Expression.IlOpr[],`1)">
+            <summary>
+            Method for visiting each row in a table, where cells in table may contain
+            multiple values. Values are either of type <see cref="T:System.Int32"/> or
+            are <see cref="F:Configit.Core.Model.Logic.Expression.Expr.TableAllValuesObject"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitTableBeforeRows(Configit.Core.Model.Logic.Expression.Expr,System.Int32,Configit.Core.Model.Logic.Expression.TableType,System.Int32[],Configit.Core.Model.Logic.Expression.IlOpr[],`1)">
+            <summary>
+            Method for visiting table before row has been visited
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitTableAfterRows(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Int32,System.Int32,System.Int32[],System.Collections.Generic.List{`0},Configit.Core.Model.Logic.Expression.IlOpr[],`1)">
+            <summary>
+            Method for visiting table after all rows have been processed.
+            <param name="expr">Expression containing table</param>
+            <param name="startIdx"> is the index where the index of the <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Table"/> operator</param>
+            <param name="endIdx"> is the index of index of the next operator in the expression.</param>
+            <param name="rowCountIdx">Index where row count starts</param>
+            <param name="variableIdxs">Index of variables for columns in table</param>
+            <param name="rowResults">Results of all rows in table</param>
+            <param name="columnOperators">Operators for columns in table</param>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.Visit(Configit.Core.Model.Logic.Expression.Expr,System.Int32,`1)">
+            <summary>
+            Visit all nodes in specified expression.
+            </summary>
+            <exception cref="T:System.ArgumentException">Is thrown in case the structure of the expression is invalid
+            e.g. a binary operator having only one argument.</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.CheckForOverride(Configit.Core.Model.Logic.Expression.Expr,System.Int32,System.Boolean@)">
+            <summary>
+            Allow visitor to override the result of an expression, thereby skipping any further
+            processing of the sub-expressions.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.Process(Configit.Core.Model.Logic.Expression.Expr,System.Int32,`1,Configit.Core.Model.Logic.Expression.ExprVisitor{`0,`1}.VisitState)">
+            <summary>
+            Main processing loop, running iteratively through an expression
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.GetParentIdx(Configit.Core.Model.Logic.Expression.ExprVisitor{`0,`1}.VisitState)">
+            <summary>
+            Get index of parent. Returns -1 if there is no parent (we are working on top expression)
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.UpdateStacksWithResult(System.Boolean,`0,System.Int32,Configit.Core.Model.Logic.Expression.ExprVisitor{`0,`1}.VisitState)">
+            <summary>
+            Helper method for updating stack one we are done processing the results
+            for an expression.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.PushAction(Configit.Core.Model.Logic.Expression.VisitAction,System.Int32,Configit.Core.Model.Logic.Expression.ExprVisitor{`0,`1}.VisitState)">
+            <summary>
+            Helper method for determining next action and putting on stack
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.PushAction(Configit.Core.Model.Logic.Expression.Expr,System.Int32,Configit.Core.Model.Logic.Expression.ExprVisitor{`0,`1}.VisitState)">
+            <summary>
+            Helper method for determining next action and putting on stack
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.PushResult(`0,System.Int32,Configit.Core.Model.Logic.Expression.ExprVisitor{`0,`1}.VisitState)">
+            <summary>
+            Helper method for getting result on stack
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.ExprVisitor`2.GetNumberOfArgsToMultiArgOprAndIncrementIdx(System.Int32@,Configit.Core.Model.Logic.Expression.Expr)">
+            <summary>
+            Find number of arguments for ITE, SET or RANGE. Increment idx past multi
+            arg operator and past any other argument to multi arg
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprVisitor`2.VisitState">
+            <summary>
+            Holds the stacks that contain the execution state of an ongoing visit.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ExprVisitorArguments">
+            <summary>
+            Base class for arguments supplied to a concrete instance of <see cref="T:Configit.Core.Model.Logic.Expression.ExprVisitor`2"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.IlOpr">
+            <summary>
+            Operator put on a control byte in an <see cref="T:Configit.Core.Model.Logic.Expression.Expr"/>. The operator
+            defines how to read the expression. Can support up to 64 operators.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Variable">
+            <summary>
+            Representation of both Boolean and Integer variables, value index 
+            in bytes following control byte
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.IntConst">
+            <summary>
+            Integer constant, values in bytes following control byte. If operator support 
+            is 1 then constant is negative
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.BoolConst">
+            <summary>
+            Boolean constant, value in opr support part of control byte
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.IndirectConst">
+            <summary>
+            A constant of type decimal, string or date time which is stored by a reference to a table in the 
+            corresponding <see cref="T:Configit.Core.Model.Logic.LogicModel"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.And">
+            <summary>
+            Binary conjunction
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Or">
+            <summary>
+            Binary disjunction
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Eq">
+            <summary>
+            Equality of two sub-expressions
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Neq">
+            <summary>
+            Difference of two sub-expressions
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Not">
+            <summary>
+            Boolean negation
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.TrueCount">
+            <summary>
+            Given a number of Boolean expressions, calculate how many evaluate to true. 
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Count">
+            <summary>
+            Count the number of values in a set
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Xor">
+            <summary>
+            Binary exclusive or
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Imp">
+            <summary>
+            Implication (if-then) operator
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Gt">
+            <summary>
+            Greater than comparison
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.GtEq">
+            <summary>
+            Greater than or equal comparison
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Lt">
+            <summary>
+            Less than comparison
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.LtEq">
+            <summary>
+            Less than or equal comparison
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Plus">
+            <summary>
+            Integer and double addition
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Minus">
+            <summary>
+            Integer and double subtraction
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Negation">
+            <summary>
+            Used for unary negation of integer and double values. Range variables
+            can be negated, but for integer and double type expressions, only
+            constant expressions can be negated (non-enumerated number variables cannot be negated).
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Mult">
+            <summary>
+            Integer and double multiplication
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Div">
+            <summary>
+            Integer and double division
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.ShiftL">
+            <summary>
+            Binary shift left on integer values
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.ShiftR">
+            <summary>
+            Binary shift right on integer values
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.In">
+            <summary>
+            Binary IN operator. Test that one expression belongs to a set of other expressions.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Table">
+            <summary>
+            Tabular representation of data. Tabular format saved in operator support 
+            (CPR or standard table)
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Ite">
+            <summary>
+            If-Then-Else operator. The operator must be followed by three operands.
+            The first operand must be a Boolean expression, the second and third can 
+            be of either type. If operator is used with only two operands, it is 
+            replaced with <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.Imp"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Set">
+            <summary>
+            A set of values. Used in conjunction with <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.In"/> operator and
+            <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.TrueCount"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.Range">
+            <summary>
+            A range of values, taking lower and upper bound as arguments. Used
+            with <see cref="F:Configit.Core.Model.Logic.Expression.IlOpr.In"/> operator
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IlOpr.MultiValuedGroup">
+            <summary>
+            Reference to a multi valued group
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.IntConstSign">
+            <summary>
+            Sign bit used when storing integer constants
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IntConstSign.Positive">
+            <summary>
+            Most important bit not set indicates positive integer constant
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.IntConstSign.Negative">
+            <summary>
+            Most important bit set indicates negative integer constant
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.NamespaceDoc">
+            <summary>
+            Structure and definition allowing a user to express Boolean expressions in 
+            a <see cref="T:Configit.Core.Model.Logic.LogicModel"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.StringifierArguments">
+            <summary>
+            Arguments for the <see cref="T:Configit.Core.Model.Logic.Expression.ExprStringifier"/> visitor.
+            It also holds some state.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.StringifierArguments.PrettyPrintEnum">
+            <summary>
+            Should print index or actual value for enumerated values.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.StringifierArguments.EnumAssignmentAsFullEnums">
+            <summary>
+            If this is true and <see cref="P:Configit.Core.Model.Logic.Expression.StringifierArguments.PrettyPrintEnum"/> is true, enum assignments
+            will be printed as VARIABLE.VALUE. This only works when both variable and value
+            is represented as a c-type identifier.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.StringifierArguments.StringBuilder">
+            <summary>
+            String accumulator where visitor adds string elements.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.StringifierArguments.LastEnumVarIdx">
+            <summary>
+            Variable index of the last visited enumerated variable.
+            -1 is last visited node is not an enumerated variable.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Expression.StringifierArguments.PrintEnumAsVarDotValue">
+            <summary>
+            If <see cref="P:Configit.Core.Model.Logic.Expression.StringifierArguments.EnumAssignmentAsFullEnums"/> is true, and we are handling
+            a valid VARIABLE = VALUE case, then print as VARIABLE.VALUE. When this is true
+            we know that <see cref="P:Configit.Core.Model.Logic.Expression.StringifierArguments.LastEnumVarIdx"/> is set to something other than .1
+            (it is set to the enum variable that the enum value belong to)
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.TableType">
+            <summary>
+            Definition of which type of table is stored in an expression
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.TableType.Normalized">
+            <summary>
+            Normalized table with one value per cell
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.TableType.Cpr">
+            <summary>
+            Cartesian Product Representation with possible multiple values per cell
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.ValidTypeCombination">
+            <summary>
+            Structure used to define which type combinations are valid for symmetrical
+            binary operators.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.VariableDefinitionExtensions">
+            <summary>
+            Extension methods used to make it easier to use <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/> in
+            an <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Expression.VariableDefinitionExtensions.GetExprBld(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <summary>
+            Get <see cref="T:Configit.Core.Model.Logic.Expression.ExprBld"/> representing the variable in the <see cref="T:Configit.Core.Model.VariableDefinitions.VariableDefinition`1"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Expression.VisitAction">
+            <summary>
+            Actions used to determine next state of visitor. 
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.None">
+            <summary>
+            Internal marker, only used to detect if we have forgotten a mapping from <see cref="T:Configit.Core.Model.Logic.Expression.IlOpr"/>
+            to <see cref="T:Configit.Core.Model.Logic.Expression.VisitAction"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.Atom">
+            <summary>
+            Atomic expression: variable or constant
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.Binary">
+            <summary>
+            Begin of binary expression
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.BinaryBetweenArguments">
+            <summary>
+            Between arguments in binary expression
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.BinaryAfterArguments">
+            <summary>
+            Done processing both arguments to binary expression
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.Unary">
+            <summary>
+            Start unary expression
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.UnaryAfterArgument">
+            <summary>
+            Done processing argument to unary expression
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.MultiArg">
+            <summary>
+            Begin multi arg expression
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.MultiArgArgument">
+            <summary>
+            Argument in multi-arg expression
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.MultiArgAfterArguments">
+            <summary>
+            Done processing all arguments to multi-arg expression
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.Logic.Expression.VisitAction.Table">
+            <summary>
+            Table expression
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.LogicModel">
+            <summary>
+            <para>Representation of a logic model product model. A model keeps track of
+            the variables and the domain of the variables plus all rules in a model</para>
+            <para>Some variables have an non-enumerated domain, such as integer, decimal, dateTime
+            or string. The Model store all values associated with different variables.
+            Note that all <see cref="T:System.DateTime"/> object are converted to
+            UTC time before they are stored. This is to ensure consistency between
+            <see cref="T:System.DateTime"/> object from different sources.</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.#ctor(System.String,System.String,System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.IVariableDefinition},System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.MultiValuedGroup},System.String)">
+            <summary>
+            Create new model with optional id, description and defined variables
+            </summary>
+            <param name="id">Optional Id of logic model. The Id is used when serializing the logic Model.
+            If no Id is explicitly given, a GUID is automatically assigned as Id</param>
+            <param name="description">Optional description of logic model</param>
+            <param name="variableDefinitions">Variables to be added to logic model. Variables can be added
+            after the logic model is created by calling <see cref="M:Configit.Core.Model.Logic.LogicModel.AddVariable(Configit.Core.Model.VariableDefinitions.IVariableDefinition)"/></param>
+            <param name="multiValuedGroups">Multi valued groups to be added to the logic model. Multi valued
+            groups can be added after the logic model is created by calling <see cref="M:Configit.Core.Model.Logic.LogicModel.AddMultiValuedGroup(Configit.Core.Model.VariableDefinitions.MultiValuedGroup)"/></param>
+            <param name="multiValuedSeparator">
+            Separator string used when creating <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>s. The separator
+            dictates the names of generated <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>s. If separator
+            is null, the Id of the generated <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>s are identical to
+            the Ids of the value in the group. If separator is not null, each value in the multi
+            valued groups will create a Boolean variable which Id is the concatenation of the
+            group Id, the separator and the value Id.
+            </param>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateVariableIdException">If <paramref name="variableDefinitions"/> contains
+            multiple variables with the same Id</exception>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateMultiValuedGroupIdIdException">If <paramref name="multiValuedGroups"/> contains
+            multiple multi valued groups with the same Id</exception>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.MultiValuedSeparator">
+            <summary>
+            Separator string used when creating <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>s
+            using <see cref="M:Configit.Core.Model.Logic.LogicModel.AddMultiValuedGroup(System.String,System.Collections.Generic.IEnumerable{System.String})"/>.
+            The separator dictates the names of generated <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>s. If separator
+            is null, the Id of the generated <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>s are identical to
+            the Ids of the value in the group. If separator is not null, each value in the multi
+            valued groups will create a Boolean variable which Id is the concatenation of the
+            group Id, the separator and the value Id.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.Id">
+            <summary>
+            Unique identifier for the model.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.Description">
+            <summary>
+            The description can any text that describe the model intention.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.ExprCheckAndSimplifier">
+            <summary>
+            Capability for checking and simplifying rules
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.ExprStringifier">
+            <summary>
+            Visitor that can print expressions
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.ExprDomainBuilder">
+            <summary>
+            Visitor for building up domains of non-enumerated variables, used after expressions have been
+            simplified.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.ExprConjunctionSplitter">
+            <summary>
+            Visitor for splitting an expression into the top conjunctions it is composed of
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.ExprBddCompiler">
+            <summary>
+            Visitor for compiling rule into a <see cref="T:Configit.Core.Noddy.Bdd"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.ExprSupport">
+            <summary>
+            Visitor for finding all supported variables in an expression
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.Variables">
+            <summary>
+            All declared variables in model. Add variables using the <see cref="M:Configit.Core.Model.Logic.LogicModel.AddVariable(Configit.Core.Model.VariableDefinitions.IVariableDefinition)"/>
+            method.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.Rules">
+            <summary>
+            Represent all inter-dependencies of the <see cref="P:Configit.Core.Model.Logic.LogicModel.Variables"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.GetNoddy(System.Int32,System.Int32)">
+            <summary>
+            The <see cref="T:Configit.Core.Noddy.Noddy"/> instance used for holding all compiled
+            <see cref="T:Configit.Core.Noddy.Bdd"/>s for the <see cref="P:Configit.Core.Model.Logic.LogicModel.Rules"/>.
+            If no <see cref="T:Configit.Core.Noddy.Noddy"/> instance has been created (model
+            has not been compiled yet) or if the variables have changed since last compile,
+            a new instance will be created.
+            </summary>
+            <param name="nodeSize">Initial number of nodes in the Noddy instance. The node table
+            will automatically be expanded when required, but the expansion is an expensive process.
+            The default size of BDD table is <see cref="F:Configit.Core.Noddy.Noddy.StandardNodeSize"/> nodes,
+            which is approx. 20mb used for the node table. If an existing <see cref="N:Configit.Core.Noddy"/> instance already
+            exist which matches the current variable definitions, the existing instance is returned
+            disregarding the number of nodes in it.
+            </param>
+            <param name="cacheRatio">Ratio between number of BDD nodes and nodes in cache tables. When
+            the BDD node table is expanded, the size of the cache is set to the maximum of minCacheSize and
+            BDD node size * cacheRatio</param>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.AddRule(System.String,System.String,Configit.Core.Model.Logic.Expression.Expr)">
+            <summary>
+            Create a new rule that belongs to this model instance. The content of the
+            rule is dictated by the given <paramref name="expr"/>. If <paramref name="id"/>
+            is null, a GUID as string is automatically assigned.
+            This method is provided to be used by APIs which incrementally builds up <see cref="T:Configit.Core.Model.Logic.Expression.Expr"/>
+            representing a rule.
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateRuleIdException">If model already contains a rule with specified Id</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.AddRule(System.String,System.String,Configit.Core.Model.Logic.Expression.ExprBld)">
+            <summary>
+            Create a new rule that belongs to this model instance. The content of the
+            rule is dictated by the given <paramref name="exprBld"/>. If <paramref name="id"/>
+            is null, a GUID as string is automatically assigned.
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateRuleIdException">If model already contains a rule with specified ID</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.AddRule(Configit.Core.Model.Logic.Rule)">
+            <summary>
+            Adds a rule that will now belong to this instance. Note that this rule should
+            refer to this instance and so should have been created with <see cref="M:Configit.Core.Model.Logic.LogicModel.NewRule(System.String,System.String,Configit.Core.Model.Logic.Expression.Expr)"/> or <see cref="M:Configit.Core.Model.Logic.LogicModel.NewRule(System.String,System.String,Configit.Core.Model.Logic.Expression.Expr)"/>.
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateRuleIdException">If model already contains a rule with same ID</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.NewRule(System.String,System.String,Configit.Core.Model.Logic.Expression.Expr)">
+            <summary>
+            Create a new rule that refers to this model instance but that do not belongs to this model.
+            This allows to type check a Rule before actually adding it to the logic model using <see cref="M:Configit.Core.Model.Logic.LogicModel.AddRule(Configit.Core.Model.Logic.Rule)"/>.
+            The content of the rule is dictated by the given <paramref name="expr"/>. If <paramref name="id"/>
+            is null, a GUID as string is automatically assigned.
+            This method is provided to be used by APIs which incrementally builds up <see cref="T:Configit.Core.Model.Logic.Expression.Expr"/> representing a rule.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.NewRule(System.String,System.String,Configit.Core.Model.Logic.Expression.ExprBld)">
+            <summary>
+            Create a new rule that refers to this model instance but that do not belongs to this model.
+            This allows to type check a Rule before actually adding it to the logic model using <see cref="M:Configit.Core.Model.Logic.LogicModel.AddRule(Configit.Core.Model.Logic.Rule)"/>.
+            The content of the rule is dictated by the given <paramref name="exprBld"/> that is used to build Expr. If <paramref name="id"/>
+            is null, a GUID as string is automatically assigned.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.GetEmptyExpr">
+            <summary>
+            Create empty expression that can be used to build up a syntactical rule.
+            Intended for being handed over and included in a rules using
+            <see cref="M:Configit.Core.Model.Logic.LogicModel.AddRule(System.String,System.String,Configit.Core.Model.Logic.Expression.Expr)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.AddVariable(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <summary>
+            Add variable to product model. Externally, a variable has an id. Internally
+            (in the rules) all variables are referenced by index
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.AddVariableInternal(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <summary>
+            Bypasses check on <see cref="P:Configit.Core.Model.Logic.LogicModel.MultiValuedSeparator"/> as well as copying.
+            Only intended to be called internally in this class or from unit tests.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.AddMultiValuedGroup(System.String,System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.BooleanVariable})">
+            <summary>
+            Create a <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>, which will appear as a string set type
+            variable in the logic model.
+            </summary>
+            <param name="id">Id of group. The Id can be used in rules, when referring to variables
+            with a string set type</param>
+            <param name="variables">Set of <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>s which defines the values
+            in the group. The Boolean variables are first added as if using <see cref="M:Configit.Core.Model.Logic.LogicModel.AddVariable(Configit.Core.Model.VariableDefinitions.IVariableDefinition)"/>,
+            and a mapping is created from the Id of each Boolean variable to the actual Boolean
+            variable itself. This mapping appears in the <see cref="P:Configit.Core.Model.VariableDefinitions.MultiValuedGroup.ValueMapping"/>
+            of the <see cref="P:Configit.Core.Model.Logic.LogicModel.MultiValuedGroups"/> in the logic model.</param>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateMultiValuedGroupIdIdException">If logic model already contains a multi valued
+            group with same <paramref name="id"/></exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.AddMultiValuedGroup(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Create a <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>, which will appear as a string set type
+            variable in the logic model.
+            </summary>
+            <param name="id">Id of group. The Id can be used in rules, when referring to variables
+            with a string set type</param>
+            <param name="values">Values in group. A <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/> is
+            created for each value in <paramref name="values"/>. The name of the
+            Boolean variable depends on the current value of
+            <see cref="P:Configit.Core.Model.Logic.LogicModel.MultiValuedSeparator"/>.</param>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateVariableIdException">If one of the values in combination with
+            <see cref="P:Configit.Core.Model.Logic.LogicModel.MultiValuedSeparator"/> and the group <paramref name="id"/> evaluates to an Id for which
+            a variable already exist in the logic model.</exception>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateMultiValuedGroupIdIdException">If logic model already contains a multi valued
+            group with same <paramref name="id"/></exception>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateVariableIdException">If model already contains a variable
+            with same names as one of the Boolean variables that a value maps to</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.AddMultiValuedGroup(System.String,System.String[])">
+            <summary>
+            <see cref="M:Configit.Core.Model.Logic.LogicModel.AddMultiValuedGroup(System.String,System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.BooleanVariable})"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.AddMultiValuedGroup(Configit.Core.Model.VariableDefinitions.MultiValuedGroup)">
+            <summary>
+            Add a <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>, which will appear as a string set type
+            variable in the logic model. All variables mentioned in <paramref name="multiValuedGroup"/>
+            must already exist in the logic model.
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateMultiValuedGroupIdIdException">If logic model already contains a multi valued
+            group with same Id as <paramref name="multiValuedGroup"/></exception>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.LogicModel.MultiValuedGroups">
+            <summary>
+            Collection of <see cref="P:Configit.Core.Model.Logic.LogicModel.MultiValuedGroups"/> for Logic Model. Each
+            group can be used as a string set type variable when defining rules
+            for the logic model.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.GetIndirectlyStoredConstIdx``1(``0)">
+            <summary>
+            Insert indirectly stored double, date time or string constant into model, and
+            get index used when later evaluating constant. All inserted constants
+            are global to the model instance.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.GetIndirectlyStoredConstFromIdx``1(System.Int32)">
+            <summary>
+            Get indirectly stored constant value from constant index.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.TypeCheck(Configit.Core.Model.Logic.BddCompatibilityRequirements)">
+            <summary>
+            Type check entire model, and create <see cref="P:Configit.Core.Model.Logic.Rule.SimpleExpression"/> for each rule
+            (where possible constant expressions are evaluated and rule is simplified). If no errors are found
+            during type check, the final <see cref="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.Domain"/> for all variables is calculated.
+            </summary>
+            <param name="bddCompatibilityRequirements">Indication if the type checker should check and or fail
+            if some of the rules are not compatible with the BDD compiler.</param>
+            <returns>Returns errors detected during type check. If no errors
+            are found, the empty list is returned</returns>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.Compile(System.Int32,System.Int32,Configit.Core.Model.Logic.BddCompatibilityRequirements)">
+            <summary>
+            <para>
+            Compile all <see cref="P:Configit.Core.Model.Logic.LogicModel.Rules"/> into BDDs. Compilation is a multistep
+            process. First all rules are type checked and simplified (constant expressions
+            evaluated, expressions made simpler where possible). If type check is successful,
+            the domains for each variable is build, the rules are split into smaller parts where possible
+            (split by conjunctions on top level) and finally a set of BDDs are compiled for each rule.
+            </para>
+            <para>Only rules that need to be recompiled (rule has changed or model variables
+            have changed) are processed. Nothing is performed for rules which are already compiled.</para>
+            <param name="nodeSize">Initial number of nodes in the <see cref="N:Configit.Core.Noddy"/> instance. The node table
+            will automatically be expanded when required, but the expansion is an expensive process.
+            Default size of BDD table is <see cref="F:Configit.Core.Noddy.Noddy.StandardNodeSize"/> nodes, which is approx. 20mb used for the node table.
+            </param>
+            <param name="cacheRatio">Ratio between number of BDD nodes and nodes in cache tables. When
+            the BDD node table is expanded, the size of the cache is set to the maximum of minCacheSize and
+            BDD node size * cacheRatio</param>
+            <param name="bddCompatibilityRequirements">Indication of how to handle rules which are not compatible
+            with the BDD compiler.</param>
+            <returns>List of type check errors. If the list of errors is empty, then
+            all rules were compiled into BDDs</returns>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.Compile(Configit.Core.Noddy.Noddy,Configit.Core.Model.Logic.BddCompatibilityRequirements)">
+            <summary>
+            Identical to <see cref="!:Compile(int,int)"/> except that the caller provides
+            a <see cref="N:Configit.Core.Noddy"/> instance.
+            </summary>
+            <param name="noddy">Instance to be used for compilation</param>
+            <param name="bddCompatibilityRequirements">Indication of how to handle rules which are not compatible
+            with the BDD compiler.</param>
+            <remarks>It's important to note that the <see cref="T:Configit.Core.Model.Logic.LogicModel"/> will take ownership
+            of the provided <see cref="N:Configit.Core.Noddy"/> instance so it should not be shared.</remarks>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.GetConjoinedRules(System.Int32,System.Int32,Configit.Core.Model.Logic.BddCompatibilityRequirements)">
+            <summary>
+            <para>Get conjunction of rules. <see cref="M:Configit.Core.Model.Logic.LogicModel.Compile(System.Int32,System.Int32,Configit.Core.Model.Logic.BddCompatibilityRequirements)"/> will be called automatically
+            to ensure that individual <see cref="P:Configit.Core.Model.Logic.LogicModel.Rules"/> are compiled into <see cref="T:Configit.Core.Noddy.Bdd"/>s
+            first. If any compilation errors exist, an exception will be thrown.</para>
+            <para>The last conjunction is automatically cached, so if no rules or any <see cref="P:Configit.Core.Model.Logic.LogicModel.Variables"/>
+            have changed since last compilation, the result can be returned without any re-compilation.</para>
+            </summary>
+            <param name="nodeSize">Initial number of nodes in the Noddy instance. The node table
+            will automatically be expanded when required, but the expansion is an expensive process.
+            Default size of BDD table is <see cref="F:Configit.Core.Noddy.Noddy.StandardNodeSize"/> nodes, which is approx. 20mb used for the node table.
+            </param>
+            <param name="cacheRatio">Ratio between number of BDD nodes and nodes in cache tables. When
+            the BDD node table is expanded, the size of the cache is set to the maximum of minCacheSize and
+            BDD node size * cacheRatio</param>
+            <param name="bddCompatibilityRequirements">Indication of how to handle rules which are not compatible
+            with the BDD compiler.</param>
+            <exception cref="T:System.InvalidOperationException">If <see cref="M:Configit.Core.Model.Logic.LogicModel.Compile(System.Int32,System.Int32,Configit.Core.Model.Logic.BddCompatibilityRequirements)"/> returns any
+            compilation errors.</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.ReorderVariables(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Re-order variables according to specified order. <paramref name="newOrder"/>
+            must specify the ID of all variables in the declared <see cref="P:Configit.Core.Model.Logic.LogicModel.Variables"/>
+            exactly once.
+            </summary>
+            <returns>This instance of the <see cref="T:Configit.Core.Model.Logic.LogicModel"/>, which has now been re-ordered</returns>
+            <exception cref="T:System.ArgumentException">If new input ordering is invalid</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.ReorderVariables(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Re-order variables. After reordering, the current i'th variable in will be put in
+            newOrder[i] index. Thus, <paramref name="newOrder"/> must contain as many values as
+            there are variables, the values must be in the range [0..N-1] where N is the the
+            size of <see cref="P:Configit.Core.Model.Logic.LogicModel.Variables"/> and every index must only appear once in
+            <paramref name="newOrder"/>.
+            </summary>
+            <example>If variables are {A,B,C,D} and <paramref name="newOrder"/> is
+            {1,2,3,0} the resulting variable order is {D,A,B,C}.</example>
+            <returns>This instance of the <see cref="T:Configit.Core.Model.Logic.LogicModel"/>, which has now been re-ordered</returns>
+            <exception cref="T:System.ArgumentException">If new input ordering is invalid</exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.GetPrivateVariableIndices">
+            <summary>
+            Returns the model variables indices of the
+            private variables in the model.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.ToString">
+            <summary>
+            Get string representation of Model. Syntax is internal to the IL language
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.GetStructureHash">
+            <summary>
+            Get MD5 hash value representing structure of variables in model. Only variable
+            type and domain sizes are hashed, not names of variables or enum values.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.GetRulesHash">
+            <summary>
+            Get MD5 hash value representing structure of all rules in model.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.LogicModel.GetModelHash">
+            <summary>
+            Get MD5 hash value representing both structure hash of all variables, as obtained
+            by <see cref="M:Configit.Core.Model.Logic.LogicModel.GetStructureHash"/>, and hash value of all rules as
+            obtained by <see cref="M:Configit.Core.Model.Logic.LogicModel.GetRulesHash"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.NonEnumeratedVariableDefinitionExtensions">
+            <summary>
+            Helper methods to handle values of non-enumerated variable definition, especially with scale (also called precision).
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.NonEnumeratedVariableDefinitionExtensions.CeilValue(Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Object)">
+            <summary>
+            Ceil value to next (or same) value that fits within scale of variable.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.NonEnumeratedVariableDefinitionExtensions.FloorValue(Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Object)">
+            <summary>
+            Floor value to next (or same) value that fits within scale of variable.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.NonEnumeratedVariableDefinitionExtensions.WithinDomainBounds(Configit.Core.Model.VariableDefinitions.IVariableDefinition,System.Object)">
+            <summary>
+            Adjust value to fit in the domain of the variable,
+            i.e. the lower/upper bound if it is less/more than corresponding bound
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.NonEnumeratedVariableDefinitionExtensions.Lower(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <summary>
+            Lower bound of variable domain for number and date time variables
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.NonEnumeratedVariableDefinitionExtensions.Upper(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <summary>
+            Upper bound of variable domain for number and date time variables
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.Rule">
+            <summary>
+            A rule defines a named Boolean expression that can be compiled into one or more BDDs
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Rule.#ctor(Configit.Core.Model.Logic.LogicModel,System.String,System.String,Configit.Core.Model.Logic.Expression.Expr)">
+            <summary>
+            When creating a new named rule, an <see cref="P:Configit.Core.Model.Logic.Rule.Expr"/> is automatically
+            created and associated with specified model. If no <paramref name="expr"/>
+            is given, a new expression is automatically created. If <paramref name="id"/> is
+            null, an GUID as string is automatically assigned.
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.DuplicateRuleIdException">If <paramref name="logicModel"/> already contains a rule having
+            the given <paramref name="id"/></exception>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Rule.TypeCheck(Configit.Core.Model.Logic.BddCompatibilityRequirements)">
+            <summary>
+            Type check expression in rule.
+            </summary>
+            <param name="bddCompatibilityRequirements">Specifies if the type checker should check if
+            this rule can be compiled to a BDD. </param>
+            <para>If the type check is successful and <paramref name="bddCompatibilityRequirements"/>
+            is either <see cref="F:Configit.Core.Model.Logic.BddCompatibilityRequirements.RequireBddCompatibility"/> or
+            <see cref="F:Configit.Core.Model.Logic.BddCompatibilityRequirements.DetectBddCompatibility"/> then
+            <see cref="P:Configit.Core.Model.Logic.Rule.IsBddCompatible"/> will be set to true, indicating that the rule
+            can be compiled into a BDD</para>
+            <returns>A <see cref="T:Configit.Core.Model.Logic.TypeCheckError"/> describing error static semantic error in
+            rule, or null if rule is static semantically valid</returns>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Rule.InvalidateLastCompile">
+            <summary>
+            Called when model changes in such a way that the last compilation result should
+            be invalidated
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Rule.CompileBdds">
+            <summary>
+            Compile rule into a set of <see cref="T:Configit.Core.Noddy.Bdd"/>s which conjunction represents the
+            semantic of the rule. <see cref="M:Configit.Core.Model.Logic.Rule.TypeCheck(Configit.Core.Model.Logic.BddCompatibilityRequirements)"/> must be called before compiling
+            a rule.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Rule.Model">
+            <summary>
+            The <see cref="P:Configit.Core.Model.Logic.Rule.Model"/> that the rule belongs to.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Rule.Id">
+            <summary>
+            it was originally defined in. All rules have an id, which is unique within the model
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Rule.Description">
+            <summary>
+            Optional textual description that can be associated with a rule
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Rule.Expr">
+            <summary>
+            Boolean expression representing product model logic
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Rule.SimpleExpression">
+            <summary>
+            <para>
+            A simplified version of <see cref="P:Configit.Core.Model.Logic.Rule.Expr"/>. Sub-expressions representing constant values
+            have been evaluated into constant value. When possible, the entire <see cref="P:Configit.Core.Model.Logic.Rule.Expr"/>
+            has been evaluated into a constant.
+            </para>
+            <para>Simplified expressions are created by calling <see cref="M:Configit.Core.Model.Logic.Rule.TypeCheck(Configit.Core.Model.Logic.BddCompatibilityRequirements)"/>.</para>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Rule.IsBddCompatible">
+            <summary>
+            When a rule has been through <see cref="M:Configit.Core.Model.Logic.Rule.TypeCheck(Configit.Core.Model.Logic.BddCompatibilityRequirements)"/> and a <see cref="P:Configit.Core.Model.Logic.Rule.SimpleExpression"/>
+            has been generated, this property reflect if the rule can be turned into a <see cref="T:Configit.Core.Noddy.Bdd"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.Rule.Bdds">
+            <summary>
+            <para>Collection of <see cref="T:Configit.Core.Noddy.Bdd"/>s which conjunction represents the semantics
+            of the <see cref="P:Configit.Core.Model.Logic.Rule.Expr"/> in the rule</para>
+            <para>This collection represents the last compilation. To ensure that the <see cref="T:Configit.Core.Noddy.Bdd"/>s
+            are updated, make sure to call <see cref="M:Configit.Core.Model.Logic.LogicModel.Compile(System.Int32,System.Int32,Configit.Core.Model.Logic.BddCompatibilityRequirements)"/></para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Rule.ToString">
+            <summary>
+            Create string version of rule, where rule name is shown in comment
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Rule.Evaluate(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.Assignment})">
+            <summary>
+            Evaluate this rule against a configuration according to <see cref="M:Configit.Core.Model.Logic.Expression.Expr.Evaluate(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.Assignment})"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.Rule.Evaluate(System.Collections.Generic.IReadOnlyList{Configit.Core.Model.ValueDefinitions.IValue})">
+            <summary>
+            Evaluate this rule against a configuration according to
+            <see cref="M:Configit.Core.Model.Logic.Expression.Expr.Evaluate(System.Collections.Generic.IReadOnlyList{Configit.Core.Model.ValueDefinitions.IValue})"/>.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.Logic.TypeCheckError">
+            <summary>
+            Description of an error that occurred while type checking all rules
+            in a <see cref="T:Configit.Core.Model.Logic.LogicModel"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.TypeCheckError.#ctor(Configit.Core.Model.Logic.Rule,System.Int32,System.String)">
+            <summary>
+            Describe type check error using rule and last found index of invalid sub expression
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.TypeCheckError.Rule">
+            <summary>
+            Rule that contains a type error
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.TypeCheckError.InvalidSubExpr">
+            <summary>
+            Index of first sub expression that was found to contain a type error
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.Logic.TypeCheckError.Message">
+            <summary>
+            Message describing cause of error
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.Logic.TypeCheckError.ToString">
+            <summary>
+            String representation of the error
+            </summary>
+        </member>
+    </members>
+</doc>

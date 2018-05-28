@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.ResourceRepository.Storage.Zip</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.ResourceRepository.Storage.Zip.ZipStorage">
+            <summary>
+            Provides operations for accessing compressed (zip) storage; keys are stored as file names and values as file contents.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.#ctor(System.IO.Stream,System.Boolean)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Storage.Zip.ZipStorage"/> given a stream and a read/write mode.
+            </summary>
+            <param name="stream">A zip stream to read entries from or write entries to, depending on the value of isWriteMode.</param>
+            <param name="isWriteMode">If set to true, the stream is used for creating entries only and existing entries cannot be updated or removed; otherwise the stream is used for reading entries only.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.ContainsKeyAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.GetAsync``1(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.TryGet``1(System.String,``0@)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,System.Decimal)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,System.Double)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,System.Action{System.IO.Stream})">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,System.Byte[])">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,System.IO.Stream)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.StoreAsync(System.String,Newtonsoft.Json.Linq.JToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.RemoveAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.RemoveAllAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.GetKeysStartWithAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.Flush">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Zip.ZipStorage.Dispose(System.Boolean)">
+            <summary>
+            Disposes the instance as part of the IDisposable pattern.
+            </summary>
+            <param name="disposing">Indicates if the method is called from the IDisposable.Dispose() method.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Storage.Zip.ZipStorage.StreamWrapper">
+            <summary>
+            This wrapper provides for 2 scenarios:
+            1. A work-around for a ZipArchive issue documented here: https://github.com/dotnet/corefx/issues/11497. It allows the ZipArchive to be used with ZipArchiveMode.Create for a non-seekable stream; the Position getter is now able to be called by ZipArchive, the position being maintained in all write operations.
+            2. A work-around for Core's usage of the stream in Configit.Core.Serialization.Helpers.BinaryStreamExtensions.ReadBytes(), whereby when reading the stream the Position property is used even though the stream is non-seekable.
+            </summary>
+        </member>
+    </members>
+</doc>

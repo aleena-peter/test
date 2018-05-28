@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Configit.Core.Capabilities" Version="4.0.0-internal012" />
+    <PackageReference Include="Configit.Core.Model" Version="4.0.0-internal012" />
+    <PackageReference Include="Configit.Core.Model.Logic" Version="4.0.0-internal012" />
+    <PackageReference Include="Configit.Core.Serialization" Version="4.0.0-internal012" />
+    <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
+    <PackageReference Include="NLog" Version="4.4.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Configit.Model.Serialization, Version=5.10.3.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Configit.Model.Serialization.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

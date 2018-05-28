@@ -1,0 +1,740 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Utils.Serialization</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Utils.Serialization.CapabilityType">
+            <summary>
+            Types used in the CapabilitiesMapping
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Utils.Serialization.CapabilityType.SolveSupported">
+            <summary>
+            True if this capability implements the IValidDomainSolveData interface
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Utils.Serialization.CapabilityType.ExplainWhySupported">
+            <summary>
+            True if this capability implements the IUnsatCoreData interface
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Utils.Serialization.CapabilityType.QueryProcessingSupported">
+            <summary>
+            True if this capability is a QueryProcessorData
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry">
+            <summary>
+            Reader specific to a given packaged model. An <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> can
+            contain multiple models. This class represents a reader for a single model.
+            </summary>
+            <remarks>
+            Provides functionality for adding shared stores (such as BDD store) for serialization
+            and methods to add and retrieve with entries.
+            </remarks>
+        </member>
+        <member name="P:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.EntryName">
+            <summary>
+            Name of the entry for the product model. Most often, the entry name is identical
+            to the ID of the <see cref="T:Configit.Core.Model.PackagedModel"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.#ctor(System.String,Configit.ResourceRepository.Provider.IPackage,Configit.ResourceRepository.Resource.Provider.IResourceProviders)">
+            <summary>
+            Construct a new <see cref="T:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry"/>, which reads resources from the specified
+            <paramref name="package"/>. If the <paramref name="sharedProviders"/> instance is not null,
+            lower level resources can be re-used by calling <see cref="M:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.GetSharedProvider``1"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.CreateSubcontainer(System.String[])">
+            <summary>
+            Creates a <see cref="T:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry"/> reading from a sub-path
+            of the model root.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.GetSharedProvider``1">
+            <summary>
+            To allow sharing of core data structures through a Provider over the package.
+            </summary>
+            <remarks>At runtime, we would expect these providers to cache data.</remarks>
+            <returns>null if no provider is available for specified type <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.GetSharedStoreAsync``1(System.String,System.String,System.Func{System.String,System.IO.Stream,``0})">
+            <summary>
+            To allow multiple runtime data sets to share the same stores
+            (e.g. to avoid loading the same BDDs twice).
+            </summary>
+            <remarks>
+            In most cases a single shared BDD store should suffice.
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.GetEntryAsync``1(System.String,System.String)">
+            <summary>
+            Gets stream for entry name, the entry name is prefixed with the base path.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.HasEntryAsync(System.String)">
+            <summary>
+            Checks whether a specific entry name exists, the entry name will be prefixed
+            with the product range entry path.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.GetEntryUri(System.String)">
+            <summary>
+            Provides Uri to specific entry in the package. The <paramref name="localName"/> will be prefix with the entry name.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry.PackagePath">
+            <summary>
+            The path of the underlying package.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry">
+            <summary>
+            Writer for writing a specific <see cref="T:Configit.Core.Model.PackagedModel"/>.
+            The <see cref="T:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder"/> can write multiple models, this
+            class represents a single of such models. 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry.CreateSubcontainer(System.String[])">
+            <summary>
+            Creates a <see cref="T:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry"/> writing to a sub-path of the model root.
+            <example>
+            If this has a base + entryname of productmodels/mypr/ and subname is {"myCapability", "1"}
+            then the created <see cref="T:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry"/> will write to productmodels/mypr/myCapability/1/.
+            </example>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry.EntryName">
+            <summary>
+            Entry name of the model.
+            <see cref="P:Configit.Core.Model.PackagedModelMetaData.Id"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry.CreateSharedStore``1(System.String,System.String,System.Func{System.String,``0})">
+            <summary>
+            To allow multiple runtime data sets to share the same stores
+            (e.g. to avoid loading the same BDDs twice).
+            </summary>
+            <remarks>
+            In most cases a single shared BDD store should suffice.
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry.AddEntryAsync(System.String,System.Byte[])">
+            <summary>
+            Adds product model specific data.
+            </summary>
+            <param name="localName">The extension of the resource entry to write.</param>
+            <param name="resource">The resource value.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry.AddEntryAsync(System.String,System.IO.Stream)">
+            <summary>
+            Adds product model specific data.
+            </summary>
+            <param name="localName">The extension of the resource entry to write.</param>
+            <param name="resource">The resource value.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry.AddEntryAsync(System.String,System.Action{System.IO.Stream})">
+            <summary>
+            Adds product model specific data.
+            </summary>
+            <param name="localName">The extension of the resource entry to write.</param>
+            <param name="streamAction">The action providing the stream value to store.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry.AddEntryAsync(System.String,Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Adds product model specific data.
+            </summary>
+            <param name="localName">The extension of the resource entry to write.</param>
+            <param name="resource">The resource value.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry.GetModelPath(System.String,System.String)">
+            <summary>
+            Gets the path within the package where all of the resources produced by the specified model entry are placed.
+            </summary>
+            <param name="basePath">The base path of model</param>
+            <param name="entryName">The name of the model</param>
+            <returns>The path of the model entry</returns>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Helpers.DateTimeExtensions">
+            <summary>
+            Extensions for converting to and from Unix Epoch time millis.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Helpers.DateTimeExtensions.ToUnixTimestampMillis(System.DateTime)">
+            <summary>
+            Convert <paramref name="dateTime"/> to Unix Timespam in millis. 
+            DateTime is converted to UniversialTime before converting
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Helpers.DateTimeExtensions.FromUnixTimestampMillis(System.Int64)">
+            <summary>
+            Create new <see cref="T:System.DateTime"/> from the <paramref name="millis"/> since
+            Unix Epoch.
+            DateTime returned is in Utc unless <paramref name="millis"/> represents a value which 
+            is smaller than <see cref="F:System.DateTime.MinValue"/> or larger than
+            <see cref="F:System.DateTime.MaxValue"/>. In this case, <see cref="F:System.DateTime.MinValue"/>
+            or <see cref="F:System.DateTime.MaxValue"/> in local time zone is returned.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Helpers.ISharedStore">
+            <summary>
+            Interface for stores that can be shared between runtime data sets.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Serialization.Helpers.ISharedStore.Name">
+            <summary>
+            Name of the store that acts as its identifier within a <see cref="T:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry"/> and <see cref="T:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Helpers.ISharedStore.Save(System.IO.Stream)">
+            <summary>
+            Saves store to a stream.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Helpers.JsonStreamSerializerExtension">
+            <summary>
+            Helper for Reading and Writing Json data in a uniform fashion
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Helpers.JsonStreamSerializerExtension.ReadJson``1(System.IO.Stream)">
+            <summary>
+            Read json from stream
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Helpers.JsonStreamSerializerExtension.WriteJson(Newtonsoft.Json.Linq.JToken,System.IO.Stream)">
+            <summary>
+            Write obj as json to stream
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Helpers.SharedStoreKey">
+            <summary>
+            Helper class representing a key consting of name and type
+            Used to store shared stores in dictionary
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder">
+            <summary>
+            Adapter class for using the IPackageBuilder interface for writing a collection of resources to an unversioned package, whose values are postponed until package completion time.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.#ctor(Configit.ResourceRepository.Storage.IStorage,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Constructs an instance of a CorePackageBuilder given an <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> object for which to write resources. 
+            </summary>
+            <param name="storage">The <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> instance.</param>
+            <param name="partitionLevel">The number of Uri components from which to generate a partition key from the package path.</param>
+            <param name="resourceHashLevel">The number of components to use as the resource hash location from the package path.</param>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.#ctor(Configit.ResourceRepository.Publisher.IPackageBuilder)">
+            <summary>
+            Constructs an instance of a CorePackageBuilder given an <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> object for which to write resources. 
+            </summary>
+            <param name="packageBuilder">The <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> instance.</param>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.AddResourceAsync(System.Uri,System.Byte[])">
+            <summary>
+            Asynchronously adds a byte[] resource to the package. This method is thread-safe.
+            </summary>
+            <param name="resourcePath">The relative Uri of the resource.</param>
+            <param name="resource">The resource value.</param>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.AddResourceAsync(System.Uri,System.IO.Stream)">
+            <summary>
+            Asynchronously adds a Stream resource to the package. This method is thread-safe.
+            </summary>
+            <param name="resourcePath">The relative Uri of the resource.</param>
+            <param name="resource">The resource value.</param>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.AddResourceAsync(System.Uri,Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Asynchronously adds a JToken resource to the package. This method is thread-safe.
+            </summary>
+            <param name="resourcePath">The relative Uri of the resource.</param>
+            <param name="resource">The resource value.</param>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.AddResourceAsync(System.Uri,System.Action{System.IO.Stream})">
+            <summary>
+            Asynchronously adds a stream resource provided by an action to the package. This method is thread-safe.
+            </summary>
+            <param name="resourcePath">The relative Uri of the resource.</param>
+            <param name="streamAction">The action providing the stream value to store.</param>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.CompleteAsync">
+            <summary>
+            Asynchronously completes the package building and persists all resources added, making the package immutable. This method is thread-safe.
+            The usage of CompleteAsync() is not intended for parallel execution and therefore enforces serialized access.
+            </summary>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException">If the package building is completed or aborted.</exception>
+            <returns>A task that represents the asynchronous complete operation. The versioned package Uri is returned in the value of the TResult parameter.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.CompleteAsync(System.TimeSpan)">
+            <summary>
+            Asynchronously completes the package building and persists all resources added, making the package immutable. This method is thread-safe.
+            The usage of CompleteAsync() is not intended for parallel execution and therefore enforces serialized access.
+            </summary>
+            <param name="timeout">A TimeSpan value specifying the maximum period for the operation to complete.</param>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException">If the package building is completed or aborted.</exception>
+            <exception cref="T:System.TimeoutException">If the specified timeout period is exceeded.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">If the specified timeout is negative or the number of ticks exceeds Int32.MaxValue.</exception>
+            <returns>A task that represents the asynchronous complete operation. The versioned package Uri is returned in the value of the TResult parameter.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.AbortAsync">
+            <summary>
+            Asynchronously aborts the package building and discards all resources added, making the package immutable. This method is thread-safe.
+            The usage of AbortAsync() is not intended for parallel execution and therefore enforces serialized access.
+            </summary>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException">If the package building is completed or aborted.</exception>
+            <returns>A task that represents the asynchronous abort operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder.RegisterPostponedResource(System.String,System.Action{System.IO.Stream})">
+            <summary>
+            Registers a resource whose value is postponed until package completion time.
+            </summary>
+            <param name="resourceKey">The key of the resource.</param>
+            <param name="streamAction">The action providing the stream value to store.</param>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Serializers.ICompliedDataEntrySerializer">
+            <summary>
+            Interface for using an <see cref="T:Configit.Core.Utils.Serialization.Serializers.IEntrySerializer`1"/> specifically for an <see cref="T:Configit.Core.Model.ICompiledData"/> runtime data interface.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Serialization.Serializers.ICompliedDataEntrySerializer.CapabilityTypes">
+            <summary>
+            List of capability types providing mapping for capabilities supporting ModelInfoService SolveSupported/ExplainWhySupported/QueryProcessingSupported
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.ICompliedDataEntrySerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <summary>
+             Creates an object of type <see cref="T:Configit.Core.Model.ICompiledData"/> by reading a <see cref="T:Newtonsoft.Json.Linq.JObject"/> instance along with external data from the reader.
+             </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.ICompliedDataEntrySerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <summary>
+            Create <see cref="T:Newtonsoft.Json.Linq.JObject"/> instance based on an object along with external data from the writer.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Serializers.IEntrySerializer`1">
+            <summary>
+            Serializer for <typeparam name="T"></typeparam>, used to serialize data to a
+            <see cref="T:Configit.Core.Model.PackagedModel"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.IEntrySerializer`1.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <summary>
+             Creates an object of type <typeparamref name="T"/> by reading a 
+             <see cref="T:Newtonsoft.Json.Linq.JObject"/> instance along with external data from the reader.
+             </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.IEntrySerializer`1.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <summary>
+            Create <see cref="T:Newtonsoft.Json.Linq.JObject"/> instance based on an object along with external data from the writer.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Serializers.IJsonSerializer`1">
+            <summary>
+            Interface describing a serializer capable of serializing and deserializing an object
+            of type <typeparamref name="T"/> to and from JSON
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.IJsonSerializer`1.ToJson(`0)">
+            <summary>
+            Create JSON representation of <paramref name="obj"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.IJsonSerializer`1.FromJson(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Deserialize given <paramref name="json"/>, and create object from
+            serialized data
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Serializers.ISerializer">
+            <summary>
+            Marker interface used by <see cref="T:Configit.Core.Utils.Serialization.Serializers.SerializerLookup`1"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Serialization.Serializers.ISerializer.SupportedType">
+            <summary>
+            The type used to identify a serialized object entry.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Serialization.Serializers.ISerializer.SupportedTypeIdentifier">
+            <summary>
+            The type name used to identify a serialized object entry, eg. could be json property name etc.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Serializers.JObjectExtensions">
+            <summary>
+            Methods provided for adding error handling when parsing JSON objects
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.JObjectExtensions.Get(Newtonsoft.Json.Linq.JToken,System.String)">
+            <summary>
+            Check that property exist, and return <see cref="T:Newtonsoft.Json.Linq.JToken"/> of property with specified name.
+            <paramref name="propName"/>. 
+            </summary>
+            <exception cref="T:System.IO.InvalidDataException">If property does not exist</exception>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.JObjectExtensions.GetArray(Newtonsoft.Json.Linq.JToken,System.String)">
+            <summary>
+            Get IEnumerable represented by property with name <paramref name="propName"/>
+            </summary>
+            <returns>Array of objects, or the empty enumeration if property does not exist.</returns>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Serializers.PartialJsonSerializer`1">
+            <summary>
+            Base class for managing serialization of objects that store part of their
+            information in an JSON file, and part as separate files using
+            <see cref="T:Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry"/> and <see cref="T:Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry"/>.
+            </summary>
+            <typeparam name="T">The object to be serialized</typeparam>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.PartialJsonSerializer`1.#ctor(System.Collections.Generic.IEnumerable{Configit.Core.Utils.Serialization.Serializers.IEntrySerializer{`0}},Configit.Core.Utils.Serialization.Serializers.IEntrySerializer{`0})">
+            <summary>
+            Create a class for managing serialization of objects.
+            </summary>
+            <param name="serializers">List of serializers that contribute</param>
+            <param name="defaultSerializer">
+            If multiple serializer can serialize the same type, the default serializer will be used
+            </param>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.PartialJsonSerializer`1.ReadEntriesAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <summary>
+            Reads an object from its dictionary. The dictionary can contain
+            references to files in the reader, these can be resolved using
+            <paramref name="modelReadEntry"/>. The reader's current node is the first node
+            of the serialized object.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.PartialJsonSerializer`1.ReadEntryAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <summary>
+            Convenience method for those cases where there is only a single element
+            and no root-element defined.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.PartialJsonSerializer`1.WriteEntry(Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry,`0)">
+            <summary>
+            Convenience method for those cases where there is only a single element
+             and no root-element defined.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.PartialJsonSerializer`1.WriteEntriesAsync(Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Get serializable object for a set of runtime data entries.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Serialization.Serializers.SerializerLookup`1">
+            <summary>
+            Lookup for serializers for (de)serializing objects implementing serialization through <see cref="T:Configit.Core.Utils.Serialization.Serializers.ISerializer"/>. 
+            The index is set up with a list of supported serializers of type <see cref="T:Configit.Core.Utils.Serialization.Serializers.ISerializer"/> that handles the serialization of type T.
+            Each <see cref="T:Configit.Core.Utils.Serialization.Serializers.ISerializer"/> knows the serialized type name it supports, allowing the manager to build a mapping from 
+            say xml element name to serializer as well as from instance type to serializer based on the type parameter.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.SerializerLookup`1.#ctor(System.Collections.Generic.IEnumerable{`0},`0)">
+            <summary>
+            Creates a serializer index, with an optional default serializer that will process types
+            that do not have a dedicated serializer
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.SerializerLookup`1.AddSerializer(`0)">
+            <summary>
+            Adds a serializer to the index.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.SerializerLookup`1.GetSerializer(System.String)">
+            <summary>
+            Gets a serializer by the type string (ie. for reading). 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.SerializerLookup`1.TryGetSerializer(System.String)">
+            <summary>
+            Tries to gets a serializer by the type string (ie. for reading). Returns null if 
+            no serializer can be found
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.SerializerLookup`1.TryGetSerializer(System.Type)">
+            <summary>
+            Tries to get a serializer based on the type of a given instance (ie. for writing).
+            Returns null if no serializer can be found
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Serialization.Serializers.SerializerLookup`1.GetSerializer(System.Type)">
+            <summary>
+            Gets a serializer based on the type of a given instance (ie. for writing).
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.BinarySerializerHelper">
+            <summary>
+            Provides helper methods for writing binary content
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BinarySerializerHelper.StringEncoding">
+            <summary>
+            Suggested encoding for readers and writers.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.GetListIndex``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Generates an element to index mapping from a list.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.ReadStringList(System.IO.BinaryReader)">
+            <summary>
+            Reads a list of strings written by <see cref="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.WriteStringList(System.IO.BinaryWriter,System.Collections.Generic.List{System.String})"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.WriteStringList(System.IO.BinaryWriter,System.Collections.Generic.List{System.String})">
+            <summary>
+            Writes a list of strings that can be read by <see cref="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.ReadStringList(System.IO.BinaryReader)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.WriteIntMapping(System.IO.BinaryWriter,System.Collections.Generic.IEnumerable{System.Tuple{System.Int32,System.Int32}})">
+            <summary>
+            Writes a mapping between ints (typically indices) that can be read by <see cref="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.ReadIntMapping(System.IO.BinaryReader)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.WriteIntMapping(System.IO.BinaryWriter,System.Linq.ILookup{System.Int32,System.Int32})">
+            <summary>
+            Writes a mapping between ints (typically indices) that can be read by <see cref="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.ReadIntMapping(System.IO.BinaryReader)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.ReadIntMappingFlat(System.IO.BinaryReader)">
+            <summary>
+            Reads a mapping between integers written by 
+            <see cref="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.WriteIntMapping(System.IO.BinaryWriter,System.Collections.Generic.IEnumerable{System.Tuple{System.Int32,System.Int32}})"/> 
+            as list of tuples.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.ReadIntMapping(System.IO.BinaryReader)">
+            <summary>
+            Reads a mapping between integers written by 
+            <see cref="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.WriteIntMapping(System.IO.BinaryWriter,System.Collections.Generic.IEnumerable{System.Tuple{System.Int32,System.Int32}})"/> 
+            as a lookup.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.WriteIntList(System.IO.BinaryWriter,System.Collections.Generic.ICollection{System.Int32})">
+            <summary>
+            Writes a list of integers that can be read by <see cref="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.ReadIntList(System.IO.BinaryReader)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.ReadIntList(System.IO.BinaryReader)">
+            <summary>
+            Reads a list of integers as written by <see cref="M:Configit.Core.Serialization.Helpers.BinarySerializerHelper.WriteIntList(System.IO.BinaryWriter,System.Collections.Generic.ICollection{System.Int32})"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.BinaryStreamExtensions">
+            <summary>
+            Extension to <see cref="T:System.IO.Stream" /> for reading and writing integer arrays
+            as binary data. The size of each array will only take up as much space as
+            is required by the largest element in the array.
+            </summary>
+            <remarks>
+            The data an array will be packed in a 8,16,32 bit scale that matches
+            the size of the largest element in the array.
+            </remarks>
+            <remarks>
+            By default arrays will be padded such that their offsets are multiple
+            by the byte per elements. This is nessesary inorder to efficiently
+            (without copying) read the data using javascripts typed arrays.
+            The padding is done with 0s before the array.
+            See: https://developer.mozilla.org/en-US/docs/Web/API/Int32Array#Exceptions_thrown
+            </remarks>
+            <remarks>
+            Along with the data a header is written to the stream. The header
+            contains 1) a byte reprenting the edianess of the data (1 is little, 0 is big)
+            2) a byte represented if the data is padded (1 it is padded, 0 is is not)
+            3) an int32 representing how many tables there are stored and
+            a segment with offset (int32), length (int32) and block size (int32) for
+            each array.
+            </remarks>
+            <remark>
+            NOTE: When Writing and Reading arrays the Endianness is the default
+            Endianness used in .NET, can be retrieved with
+            <see cref="F:System.BitConverter.IsLittleEndian"/>.
+            </remark>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.Header">
+            <summary>
+            Header stored before the data
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.Header.Endianness">
+            <summary>
+            Is data stored with Little Endian or Big Endian, when
+            writing <see cref="F:System.BitConverter.IsLittleEndian"/> is used.
+            </summary>
+            <remarks>
+            Stored in a byte for easy of implementation on the javascript side.
+            </remarks>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.Header.Padded">
+            <summary>
+            Is data padded so offsets are multiple by bytePerElements. Data needs
+            to be padded for the javascript side can use buffer as is, without
+            copying data into other structure.
+            </summary>
+            <remarks>
+            Stored in a byte for easy of implementation on the javascript side.
+            </remarks>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.Header.ArrayCount">
+            <summary>
+            How may arrays are store in datablock
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.Header.Segments">
+            <summary>
+            Information about each array segment in stored
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.HeaderSegment">
+            <summary>
+            Represents parts of the header which describes the bounds of an array
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.HeaderSegment.Offset">
+            <summary>
+            start offset of sub array
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.HeaderSegment.Length">
+            <summary>
+            Length of sub array
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.HeaderSegment.BytesPerElement">
+            <summary>
+            How many bytes are used to store one item
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.WriteArrays(System.IO.Stream,System.Collections.Generic.IEnumerable{System.Int32[]},System.Collections.Generic.IEnumerable{System.Int32},System.Boolean)">
+            <summary>
+            Write all <paramref name="arrays"/> to <paramref name="stream"/> as
+            binary data.
+            </summary>
+            <remarks>
+            <para>
+            How many bytes used to store an int in each array are determined by the
+            <paramref name="maxSizes"/> parameter.
+            </para>
+            <para>
+            The <paramref name="maxSizes"/> must match <paramref name="arrays"/>
+            such that the first value determines the number of bytes to use for
+            storing in the first array.
+            </para>
+            <para>
+            if <paramref name="maxSizes"/> is omitted it is calculated by finding
+            the max value for each array in <paramref name="arrays"/>.
+            </para>
+            </remarks>
+            <remarks>
+            By default arrays will be padded such that their offsets are multiple
+            by the byte per elements. This is necessary in order to efficiently
+            (without copying) read the data using JavaScripts typed arrays.
+            The padding behavior can be turned off by supplying <c>false</c> to the
+            <paramref name="padded"/> argument
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.WriteArrays(System.IO.Stream,System.Collections.Generic.IEnumerable{System.Int32[]},System.Collections.Generic.IEnumerable{System.Byte},System.Boolean)">
+            <summary>
+            Write all <paramref name="arrays"/> to <paramref name="stream"/> as
+            binary data.
+            </summary>
+            <remarks>
+            <para>
+            How many bytes used to store an in in each array are determined by
+            the <paramref name="bytesPerElement"/>.
+            </para>
+            <para>
+            The <paramref name="bytesPerElement"/> must match <paramref name="arrays"/>
+            such that the first value determines the number of bytes to use for
+            storing in the first array.
+            </para>
+            </remarks>
+            <remarks>
+            By default arrays will be padded such that their offsets are multiple
+            by the byte per elements. This is necessary in order to efficiently
+            (without copying) read the data using java scripts typed arrays.
+            The padding behavior can be turned off by supplying <c>false</c> to the
+            <paramref name="padded"/> argument
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.ReadArrays(System.IO.Stream)">
+            <summary>
+            Read arrays that was written with WriteArrays method
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.WriteHeader(System.IO.BinaryWriter,System.Int32[][],System.Byte[],System.Int32[],Configit.Core.Serialization.Helpers.BinaryStreamExtensions.Header)">
+            <summary>
+            Collect header infomation for iarrays.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.GetPaddings(System.Int32[][],System.Byte[],System.Boolean)">
+            <summary>
+            Calculate offsets for arrays in <paramref name="iarrays"/>, offsets
+            are padded such that they are multiple by the <paramref name="bytesPerElement"/>
+            that matches the data.
+            </summary>
+            <remarks>
+            Padded offsets are necessary in order to use the JavaScript typed arrays
+            (Int8Array, Int16Array and Int32Array) to access data in buffer without
+            copying.
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.GetPaddedOffset(System.Int32,System.Int32)">
+            <summary>
+            Find the next offset that is multiple by <paramref name="bytesPerElement"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.ReadHeader(System.IO.BinaryReader)">
+            <summary>
+            Read the header part of the stream. Returns a list of header segments
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.WriteBytes(System.IO.BinaryWriter,System.Int32[],System.Int32,System.Int32)">
+            <summary>
+            Write array with <paramref name="wrt"/> using size to determine how
+            many bytes to use per entry.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BinaryStreamExtensions.ReadBytes(System.IO.BinaryReader,Configit.Core.Serialization.Helpers.BinaryStreamExtensions.HeaderSegment)">
+            <summary>
+            Read bytes that matches a header segment.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.IntegerListHelper">
+            <summary>
+            Serializes a collection of integer lists by placing each collection on its own line.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.IntegerListHelper.ReadIntegerListAsync(System.String,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <summary>
+            Helper wrapper for the case where we want to store one entry on each line 
+            ( with longer lists we keep human readability på placing an entry on each line instead of all on one line)
+            </summary>
+        </member>
+    </members>
+</doc>

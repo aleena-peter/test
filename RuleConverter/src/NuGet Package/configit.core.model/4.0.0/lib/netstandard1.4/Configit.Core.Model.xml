@@ -1,0 +1,2189 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Model</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Model.ICompiledCapability">
+            <summary>
+            A compiled capability consumes a certain type of <see cref="T:Configit.Core.Model.ICompiledData"/> to provide a specific 
+            runtime functionality such as as a valid domain solve. It can be thought of as some kind of capability that
+            a <see cref="T:Configit.Core.Model.PackagedModel"/> supports that has been prepared at compile time.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ICompiledData">
+            <summary>
+            Marker interface used to identifying runtime data. Runtime data can be seen 
+            as a container wrapping the data required to support a certain functionality at runtime. 
+            <example>
+            An example is the NddSolveData that contains the data necessary for setting 
+            up a valid domain solver based on a single NDD.
+            </example>
+            <remarks>
+            <para>
+            Runtime data containing BDDs, will share the backing <see cref="T:Configit.Core.Noddy.Noddy"/> 
+            instance with other runtime data in the same <see cref="T:Configit.Core.Model.PackagedModel"/>. 
+            </para>
+            <para>
+            While the <see cref="T:Configit.Core.Noddy.Noddy"/> instance is thread-safe, it contains the 
+            global setting <see cref="P:Configit.Core.Noddy.Noddy.ApplyDomainConstraints"/>. 
+            Any consumers of data storing BDDs that require 
+            <see cref="P:Configit.Core.Noddy.Noddy.ApplyDomainConstraints"/> to be enabled must therefore copy 
+            the BDDs before use.
+            </para>
+            </remarks>
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Configit.Core.Model.ICompiledData.TypeIdentifier" -->
+        <member name="T:Configit.Core.Model.IdentifyableEntityList`1">
+            <summary>
+            An <see cref="T:System.Collections.Generic.IReadOnlyList`1"/> which contains elements of type
+            <see cref="T:Configit.Core.Model.IEntityWithId"/>. Indexer is provided to lookup entities
+            by Id
+            </summary>
+            <typeparam name="T">Type of values in collection</typeparam>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Create a new read only list from existing set of elements. Ids of
+            elements in list must be unique with <paramref name="elements"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.Add(`0)">
+            <summary>
+            Add element to collection.
+            </summary>
+            <exception cref="T:System.ArgumentException">
+            If collection already contains an element with same Id as <paramref name="element"/>
+            </exception>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Add a set of elements to collection
+            </summary>
+            <exception cref="T:System.ArgumentException">
+            If collection already contains an element with same Id as one of the <paramref name="elements"/>
+            </exception>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.GetIndex(System.String)">
+            <summary>
+            Get index of element with specified <paramref name="id"/>
+            </summary>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If collection does not contain an element with specified <paramref name="id"/></exception>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.GetEnumerator">
+            <summary>
+            Get enumerator for all elements in collection
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Get enumerator for all elements in collection
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.IdentifyableEntityList`1.Count">
+            <summary>
+            Gets the number of elements in the collection.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.IdentifyableEntityList`1.Item(System.Int32)">
+            <summary>
+            Get element by index
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">If index is invalid</exception>
+        </member>
+        <member name="P:Configit.Core.Model.IdentifyableEntityList`1.Item(System.String)">
+            <summary>
+            Get element by ID
+            </summary>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If collection does not contain any elements with specified Id</exception>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.Contains(System.String)">
+            <summary>
+            Test if collection contains element with specified Id
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.TryGetValue(System.String,`0@)">
+            <summary>
+            Get the element with specified <paramref name="id"/>, if such
+            an element exist.
+            </summary>
+            <param name="id">Id of element to obtain</param>
+            <param name="value">Return argument of element</param>
+            <returns>True of element with specified <paramref name="id"/> could be found, false otherwise</returns>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.TryGetIndex(System.String,System.Int32@)">
+            <summary>
+            Try to obtain index of element with specified Id.
+            <seealso cref="M:System.Collections.Generic.Dictionary`2.TryGetValue(`0,`1@)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IdentifyableEntityList`1.IndexOf(System.String)">
+            <summary>
+            Similar to <see cref="M:Configit.Core.Model.IdentifyableEntityList`1.GetIndex(System.String)"/> but returns -1 if an entity with the provided
+            <paramref name="id"/> is not found.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.IDomainSpecificModel">
+            <summary>
+            The domain specific model determines which implementation
+            of the runtime product model that is used when loading a <see cref="T:Configit.Core.Model.PackagedModel"/>.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.IEntityWithId">
+            <summary>
+            Interface defining an entity that has an ID defined by a string
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.IEntityWithId.Id">
+            <summary>
+            Identifier of entity
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.IEntityWithIdExtensions">
+            <summary>
+            Methods for validating an identifier used on an element
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IEntityWithIdExtensions.IsValidIdentifier(Configit.Core.Model.IEntityWithId,System.String)">
+            <summary>
+            Check if all characters in string are valid. Illegal characters are
+            control characters \\f, \\a and \\b
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ILogicModel">
+            <summary>
+            Simple marker interface for Logic Models. Allows implementation to
+            live in a separate assembly.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ILogicModel.Description">
+            <summary>
+            The description can any text that describe the model intention.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ILogicModel.Variables">
+            <summary>
+            All declared variables in model
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ILogicModel.MultiValuedGroups">
+            <summary>
+            Collection of <see cref="P:Configit.Core.Model.ILogicModel.MultiValuedGroups"/> for Logic Model. Each
+            group can be used as a string set type variable when defining rules 
+            for the logic model.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ILogicModel.GetModelHash">
+            <summary>
+            Hash code that uniquely defines content of logic model
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.IReadonlyMultiValuedGroupSet">
+            <summary>
+            A read-only index over <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IReadonlyMultiValuedGroupSet.IsPartOfGroup(System.String)">
+            <summary>
+            Checks whether the given <see cref="P:Configit.Core.Model.IEntityWithId.Id"/> is part of a multi valued group.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IReadonlyMultiValuedGroupSet.GetGroup(System.String)">
+            <summary>
+            Returns the <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/> that includes the variable with id <paramref name="varId"/>,
+            or null if the variable is not part of a group.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IReadonlyMultiValuedGroupSet.MultivaluedToBooleanAssignment(Configit.Core.Model.VariableDefinitions.Assignment)">
+            <summary>
+            Given an <see cref="T:Configit.Core.Model.VariableDefinitions.Assignment"/> with a value for a multi-valued group, get
+            <see cref="T:Configit.Core.Model.VariableDefinitions.Assignment"/> representing corresponding value to representing
+            <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IReadonlyMultiValuedGroupSet.BooleanAssignmentToMultivaluedAssignment(Configit.Core.Model.VariableDefinitions.Assignment)">
+            <summary>
+            Given an <see cref="T:Configit.Core.Model.VariableDefinitions.Assignment"/> to a <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>, get
+            <see cref="T:Configit.Core.Model.VariableDefinitions.Assignment"/> representing corresponding value to representing
+            multi-valued group. If <paramref name="assignment"/> is not part of multi
+            valued group, the original assignment is returned.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.ModelBuildException">
+            <summary>
+            Base class used for all exceptions representing an error that can occur when building up
+            a <see cref="T:Configit.Core.Model.ILogicModel"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.InvalidIdentifierException">
+            <summary>
+            Exception thrown when using an invalid identifier when building a product model.
+            Legal identifiers does not contain any control characters, \\f, \\a or \\b
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidIdentifierException.Id">
+            <summary>
+            Illegal identifier containing an invalid character
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidIdentifierException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.DuplicateRuleIdException">
+            <summary>
+            Exception thrown when a rule is added to a <see cref="T:Configit.Core.Model.ILogicModel"/>, where
+            the model already contains a rule with the same ID
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.DuplicateRuleIdException.Id">
+            <summary>
+            Id of rule that was added, but which already existed
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.DuplicateRuleIdException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.DuplicateVariableIdException">
+            <summary>
+            Exception thrown when a variable is added to a <see cref="T:Configit.Core.Model.ILogicModel"/>, where
+            the model already contains a variable with the same ID
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.DuplicateVariableIdException.Id">
+            <summary>
+            Id of variable that was added, but which already existed
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.DuplicateVariableIdException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.DuplicateMultiValuedGroupIdIdException">
+            <summary>
+            Exception thrown when a multi valued group is added to a <see cref="T:Configit.Core.Model.ILogicModel"/>, where
+            the model already contains a multi valued group with the same ID
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.DuplicateMultiValuedGroupIdIdException.Id">
+            <summary>
+            Id of multi valued group that was added, but which already existed
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ModelBuildException.DuplicateMultiValuedGroupIdIdException.#ctor(System.String)">
+            <param name="id">Duplicate id</param>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.DuplicateMultiValuedGroupIdIdException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.InvalidVariableIndexException">
+            <summary>
+            Exception thrown when trying to add a variable to a <see cref="T:Configit.Core.Model.ILogicModel"/>
+            but where the variable index falls outside the number of available variables
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidVariableIndexException.VariableIndex">
+            <summary>
+            Index used to reference invalid variable
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidVariableIndexException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ModelBuildException.InvalidVariableIndexException.#ctor(System.Int32)">
+            <param name="variableIndex">The invalid variable index</param>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.InvalidMultiValuedGroupIndexException">
+            <summary>
+            Exception thrown when trying to add a multi valued group to a <see cref="T:Configit.Core.Model.ILogicModel"/>
+            but where the group index falls outside the number of available groups
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidMultiValuedGroupIndexException.MultiValuedGroupIndex">
+            <summary>
+            Index used to reference multi valued group variable
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidMultiValuedGroupIndexException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ModelBuildException.InvalidMultiValuedGroupIndexException.#ctor(System.Int32)">
+            <param name="multiValuedGroupIndex">The incorrect group index</param>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.VariableAndMultiValuedGroupIdException">
+            <summary>
+            Exception thrown if a variable and a multi-valued group has been given same id
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.VariableAndMultiValuedGroupIdException.Id">
+            <summary>
+            Id of variable and multi valued group
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.VariableAndMultiValuedGroupIdException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ModelBuildException.VariableAndMultiValuedGroupIdException.#ctor(System.String)">
+            <param name="id">The duplicate id</param>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.MissingMappedVarInMultiValuedGroup">
+            <summary>
+            Exception thrown when adding a <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/> where 
+            one of the Boolean variables mapped to does not exist in the 
+            variables of the logic model
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.MissingMappedVarInMultiValuedGroup.GroupId">
+            <summary>
+            Id of multi valued group with missing mapping
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.MissingMappedVarInMultiValuedGroup.BoolVarId">
+            <summary>
+            Id of missing Boolean variable
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.MissingMappedVarInMultiValuedGroup.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.InvalidTableFormatException">
+            <summary>
+            Exception thrown when adding a table for with an invalid format
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidTableFormatException.RowIdx">
+            <summary>
+            Index of row that contains invalid data
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidTableFormatException.ColCount">
+            <summary>
+            Number of columns in specified <see cref="P:Configit.Core.Model.ModelBuildException.InvalidTableFormatException.RowIdx"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidTableFormatException.VariableCount">
+            <summary>
+            Number of available variables defining the table
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidTableFormatException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.OnlySingleValuesAllowedInTableException">
+            <summary>
+            Thrown when trying to insert multiple values in each cell of a normalized
+            table. 
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.OnlySingleValuesAllowedInTableException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.UnknownIdReferenceException">
+            <summary>
+            Exception thrown when referring to variable or a multi valued group with an Id
+            that does not exist in <see cref="T:Configit.Core.Model.ILogicModel"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.UnknownIdReferenceException.Id">
+            <summary>
+            ID that was referred to
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.UnknownIdReferenceException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ModelBuildException.UnknownIdReferenceException.#ctor(System.String)">
+            <param name="id">Id of <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/> or <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/></param>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.InvalidVariableTypeException">
+            <summary>
+            Exception thrown when defining a variable, but the type of the definition is 
+            invalid
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidVariableTypeException.VarId">
+            <summary>
+            ID of variable that is attempted to be added
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidVariableTypeException.TypeId">
+            <summary>
+            Id of type that is invalid
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidVariableTypeException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ModelBuildException.InvalidVariableTypeException.#ctor(System.String,System.String)">
+            <summary>
+            Create exception for the provided <paramref name="varId"/> and <paramref name="typeId"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.InvalidRuleFormatException">
+            <summary>
+            Exception thrown when trying to add a rule which has an inavalid format (cannot 
+            parse)
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidRuleFormatException.RuleId">
+            <summary>
+            Id of rule that does not parse
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidRuleFormatException.ParseError">
+            <summary>
+            Message from parser defining the parse error
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.InvalidRuleFormatException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ModelBuildException.InvalidRuleFormatException.#ctor(System.String,System.String)">
+            <summary>
+            Create new exception representing a parser error
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ModelBuildException.EnumNotInDomainException">
+            <summary>
+            Exception thrown when referring to an unknown enum value in an enumerated
+            string variable
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.EnumNotInDomainException.VarId">
+            <summary>
+            Varaible compared to invalid enum value
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.EnumNotInDomainException.EnumId">
+            <summary>
+            Invalid enum value referred to
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ModelBuildException.EnumNotInDomainException.Message">
+            <summary>
+            Message explaining the exception
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ModelBuildException.EnumNotInDomainException.#ctor(System.String,System.String)">
+            <summary>
+            Create an exception with the given <paramref name="varId"/> and <paramref name="enumId"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.MultiValuedGroupSet">
+            <summary>
+            Collection containing a definition of <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/> objects
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.MultiValuedGroupSet.#ctor">
+            <summary>
+            Creates an empty set.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.MultiValuedGroupSet.#ctor(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.MultiValuedGroup})">
+            <summary>
+            Creates a set containing the provided groups.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.MultiValuedGroupSet.Add(Configit.Core.Model.VariableDefinitions.MultiValuedGroup)">
+            <summary>
+            Add element to collection.
+            </summary>
+            <exception cref="T:System.ArgumentException">
+            If collection already contains an element with same Id as <paramref name="element"/>
+            </exception>
+        </member>
+        <member name="M:Configit.Core.Model.MultiValuedGroupSet.IsPartOfGroup(System.String)">
+            <summary>
+            Checks whether the given <see cref="P:Configit.Core.Model.IEntityWithId.Id"/> is part of a multi valued group.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.MultiValuedGroupSet.GetGroup(System.String)">
+            <summary>
+            Returns the <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/> that includes the variable with id <paramref name="varId"/>, 
+            or null if the variable is not part of a group.
+            </summary>
+            <param name="varId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Configit.Core.Model.MultiValuedGroupSet.MultivaluedToBooleanAssignment(Configit.Core.Model.VariableDefinitions.Assignment)">
+            <summary>
+            If <paramref name="assignment"/> contains reference to multi valued group, convert
+            to assignment to representing Boolean variable
+            </summary>
+            <returns>If assigning a single value to a multi valued group, returns an <see cref="T:Configit.Core.Model.VariableDefinitions.Assignment"/>
+            to the underlying Boolean variable. If <paramref name="assignment"/> to multi valued group is invalid,
+            return null. Otherwise, return the original <paramref name="assignment"/>.</returns>
+        </member>
+        <member name="M:Configit.Core.Model.MultiValuedGroupSet.BooleanAssignmentToMultivaluedAssignment(Configit.Core.Model.VariableDefinitions.Assignment)">
+            <summary>
+            Convert an assignment into a new assignment, ensuring that assignments to Boolean variables
+            in multi valued groups are represented as string assignments to multi valued groups.
+            </summary>
+            <returns>If <paramref name="assignment"/> does not represent an assignment to a Boolean
+            variable which is part of a multi valued group, the original <paramref name="assignment"/>
+            is returned. Otherwise, a new assignment representing an assignment to the corresponding
+            multi valued group is returned.</returns>
+        </member>
+        <member name="T:Configit.Core.Model.NamespaceDoc">
+            <summary>
+            Base definitions used when defining a product model
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ObjectStringifier">
+            <summary>
+            Class provided to handle stringification of objects used in both <see cref="T:Configit.Core.Model.ILogicModel"/>, 
+            and for <see cref="T:Configit.Core.Model.ValueDefinitions.IValue"/>"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.ObjectStringifier.DateTimeFormat">
+            <summary>
+            Format of date time used when serializing <see cref="T:System.DateTime"/> objects
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.ObjectStringifier.DateFormat">
+            <summary>
+            Format of date-only used when serializing <see cref="T:System.DateTime"/> objects 
+            where only the date part is required
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ObjectStringifier.Stringify(System.Object,System.Boolean)">
+            <summary>
+            <para>
+            Simple method for formatting basic <paramref name="value"/> to string
+            Accepted types are bool, int, decimal, string, DateTime
+            </para>
+            <para>This method is used both for serializing object for textual logic model code, and for 
+            serializing <see cref="T:Configit.Core.Model.ValueDefinitions.IValue"/> objects. When <paramref name="boxValues"/> is true,
+            string values are escaped using <see cref="M:Configit.Core.Model.ObjectStringifier.EscapeString(System.String,System.Char,System.Char,System.Char)"/> and are enclosed in hyphens, 
+            and date-time values are enclosed in bar symbols</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ObjectStringifier.EscapeString(System.String,System.Char,System.Char,System.Char)">
+            <summary>
+            Escape string, and put it within specified start and end tags
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.PackagedModel">
+            <summary>
+            An in-memory representation of the data packaged for a given logic model.
+            Packaged models are immutable.
+            </summary>
+            <remarks>
+            <example>
+            In case the data was compiled for a simple NDD based configurator,
+            the only compiled data in the model will be a single NDD, while for a
+            BDD/NDD based JIT, it will store several collections of BDDs as well as a
+            scope NDD.
+            </example>
+            All BDD content within a given <see cref="T:Configit.Core.Model.PackagedModel"/> will
+            be initialized as a single Noddy instance.
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Model.PackagedModel.#ctor(Configit.Core.Model.ILogicModel,System.Collections.Generic.IEnumerable{Configit.Core.Model.ICompiledData},Configit.Core.Model.IDomainSpecificModel,Configit.Core.Model.SolveBehavior)">
+            <summary>
+            Create a new empty <see cref="T:Configit.Core.Model.PackagedModel"/> based on the specified
+            <paramref name="logicModel"/>. The <see cref="P:Configit.Core.Model.PackagedModelMetaData.Id"/> of
+            the <see cref="P:Configit.Core.Model.PackagedModel.MetaData"/> of the packaged model is set to the id of the provided <paramref name="logicModel"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PackagedModel.#ctor(Configit.Core.Model.PackagedModelMetaData,System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.IVariableDefinition},Configit.Core.Model.IReadonlyMultiValuedGroupSet,System.Collections.Generic.IEnumerable{Configit.Core.Model.ICompiledData},Configit.Core.Model.IDomainSpecificModel,Configit.Core.Model.SolveBehavior,Configit.Core.Model.ILogicModel)">
+            <summary>
+            Constructs a packaged model used when de-serializing. In this case
+            the underlying source model might not be part of the packaged model.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.PackagedModel.ModelFormatVersion">
+            <summary>
+            The format version for the product model data definition
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModel.ConsumerVariables">
+            <summary>
+            Provides a view of the variables that is consistent with that exposed through the "end-user" services such as Core.Solve.
+            This means that multivalued groups are exposed as variables (as opposed to a list of Boolean variables)
+            <remarks>MultiValued variables are represented by a <see cref="T:Configit.Core.Model.VariableDefinitions.StringVariable"/>
+            with <see cref="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.IsMultiValued"/> set to true</remarks>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PackagedModel.CopyWithoutLogicModel">
+            <summary>
+            Creates a new <see cref="T:Configit.Core.Model.PackagedModel"/> without having the associated
+            <see cref="P:Configit.Core.Model.PackagedModel.LogicModel"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PackagedModel.CopyAndInclude(Configit.Core.Model.ICompiledData[])">
+            <summary>
+            Creates a new <see cref="T:Configit.Core.Model.PackagedModel"/> with additional compiled data.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PackagedModel.CopyAndInclude(Configit.Core.Model.SolveBehavior)">
+            <summary>
+            Creates a new <see cref="T:Configit.Core.Model.PackagedModel"/> with the specified <see cref="P:Configit.Core.Model.PackagedModel.SolveBehavior"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModel.Variables">
+            <summary>
+            Information about the domain and type of each variable defined in the
+            <see cref="P:Configit.Core.Model.PackagedModel.LogicModel"/> used to generated this compiled model.
+            This contains both private and public variables.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModel.MultiValuedGroups">
+            <summary>
+            Definition of <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>s that are associated with the packaged
+            model. Each group can be observed as a variable which type is string set. The group
+            contains information about the values in the group, and the Boolean variable that each
+            group value is represented by.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModel.SolveBehavior">
+            <summary>
+            Optionally used to customize how solve capabilities in
+            the model should be used for configuration. A <see cref="T:Configit.Core.Model.PackagedModel"/>
+            can be used to perform configuration solves without specifying a
+            <see cref="P:Configit.Core.Model.PackagedModel.SolveBehavior"/> as long as it has the pre-requisite
+            capabilities.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModel.DomainModel">
+            <summary>
+            Contains domain specific information, such as groupings of variables,
+            description, calculation layers etc. Domain models are used when
+            applications want to store additional data in a packaged model, which
+            is used when the application consumes the packaged model.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModel.CompiledData">
+            <summary>
+            Data for all possible usage scenarios of the compiled model.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModel.LogicModel">
+            <summary>
+            Definition of the source model definition for this model to support debugging scenarios. The
+            source model can be null, in cases where the packaged model has be serialized and
+            de-serialized without the original logic model.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModel.MetaData">
+            <summary>
+            Meta data of model, defining when it was compiled, with which version etc.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PackagedModel.GetCompiledData``1">
+            <summary>
+            Helper method that returns the first compiled data that is an instance
+            of the requested type. If no such compiled data instance is available, null is returned.
+            </summary>
+            <typeparam name="TCompiledData">The type of compiled data to look for</typeparam>
+        </member>
+        <member name="T:Configit.Core.Model.PackagedModelMetaData">
+            <summary>
+            Represents meta information for <see cref="T:Configit.Core.Model.PackagedModel"/>s
+            Allowing them to be paired with version of compiler used to build
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PackagedModelMetaData.#ctor(System.String,System.String,System.String,System.Int32,Configit.ResourceRepository.VersionFile.App)">
+            <summary>
+            Create meta info with specific values. Used e.g. when de-serializing a
+            <see cref="T:Configit.Core.Model.PackagedModel"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModelMetaData.Id">
+            <summary>
+            The Id is identical to the id of the <see cref="T:Configit.Core.Model.ILogicModel"/> used to create the
+            <see cref="T:Configit.Core.Model.PackagedModel"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModelMetaData.Description">
+            <summary>
+            Description of packaged model, as obtained from original logic model used
+            to create the <see cref="T:Configit.Core.Model.PackagedModel"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PackagedModelMetaData.LogicModelHash">
+            <summary>
+            Hash of content of the logic model as it was when <see cref="T:Configit.Core.Model.PackagedModel"/>
+            was created
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PackagedModelMetaData.ToJson">
+            <summary>
+            Serialization of a packaged model version file
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PackagedModelMetaData.FromJson(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Deserialization of a packaged model version file
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.PhaseDefinition">
+            <summary>
+            Represents a configuration phase.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PhaseDefinition.Equals(Configit.Core.Model.PhaseDefinition)">
+            <summary>
+            True if <paramref name="other"/> is identical to this phase definition
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PhaseDefinition.Equals(System.Object)">
+            <summary>
+            True if <paramref name="other"/> is identical to this phase definition
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PhaseDefinition.GetHashCode">
+            <summary>
+            Get hash code for this phase definition
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.PhaseDefinition.#ctor(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Boolean)">
+            <summary>
+            Create definition of phase using the specified <paramref name="variables"/>
+            in public variable index space.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PhaseDefinition.Variables">
+            <summary>
+            Variables included in phase. Variable indices are given as public variable indices.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PhaseDefinition.Number">
+            <summary>
+            Number of phase.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.PhaseDefinition.RequiresCompletion">
+            <summary>
+            Indicates whether the phase must be completed, before
+            the effect on variables in later phases can be reported.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.IReadOnlyIdentifyableEntityList`1">
+            <summary>
+            Read-only list of <see cref="T:Configit.Core.Model.IEntityWithId"/> elements
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IReadOnlyIdentifyableEntityList`1.GetIndex(System.String)">
+            <summary>
+            Get index of element with specified <paramref name="id"/>
+            </summary>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If collection does not contain an element with specified <paramref name="id"/></exception>
+        </member>
+        <member name="M:Configit.Core.Model.IReadOnlyIdentifyableEntityList`1.GetEnumerator">
+            <summary>
+            Get enumerator to iterate over elements in collection
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.IReadOnlyIdentifyableEntityList`1.Count">
+            <summary>
+            Number of elements in the collection
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.IReadOnlyIdentifyableEntityList`1.Item(System.Int32)">
+            <summary>
+            Get element by index
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">If index is invalid</exception>
+        </member>
+        <member name="P:Configit.Core.Model.IReadOnlyIdentifyableEntityList`1.Item(System.String)">
+            <summary>
+            Get element by ID
+            </summary>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If collection does not contain any elements with specified Id</exception>
+        </member>
+        <member name="M:Configit.Core.Model.IReadOnlyIdentifyableEntityList`1.Contains(System.String)">
+            <summary>
+            Test if collection contains element with specified Id
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.IReadOnlyIdentifyableEntityList`1.TryGetValue(System.String,`0@)">
+            <summary>
+            Get the element with specified <paramref name="id"/>, if such
+            an element exist.
+            </summary>
+            <param name="id">Id of element to obtain</param>
+            <param name="value">Return argument of element</param>
+            <returns>True of element with specified <paramref name="id"/> could be found, false otherwise</returns>
+        </member>
+        <member name="M:Configit.Core.Model.IReadOnlyIdentifyableEntityList`1.TryGetIndex(System.String,System.Int32@)">
+            <summary>
+            Try to obtain index of element with specified Id
+            </summary>
+            <returns>True if element was found and index returned, false otherwise. <paramref name="index"/>
+            is returned as -1 if element was not found</returns>
+        </member>
+        <member name="T:Configit.Core.Model.SolveBehavior">
+            <summary>
+            Container for information on how to structure configuration solves of a model.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.SolveBehavior.#ctor(System.Collections.Generic.IEnumerable{Configit.Core.Model.PhaseDefinition})">
+            <summary>
+            Create new definition of how to solve using provided <paramref name="phases"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.SolveBehavior.Phases">
+            <summary>
+            Specifies phases to apply during the solve process.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.SolveBehavior.Equals(Configit.Core.Model.SolveBehavior)">
+            <summary>
+            True if <paramref name="other"/> is identical to this solve behavior
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.SolveBehavior.Equals(System.Object)">
+            <summary>
+            True if <paramref name="other"/> is identical to this solve behavior
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.SolveBehavior.GetHashCode">
+            <summary>
+            Get hash code for solve behavior
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ValueDefinitions.IValue">
+            <summary>
+            Interface describing a value for a logic model variable. A value can both
+            represent a singleton value (e.g. a Boolean value) or an interval (e.g.
+            decimal interval [1.1;2.2])
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.IValue.SingleOrDefault">
+            <summary>
+            Single value or default({T}) if it represents multiple values (e.g. an interval)
+            or "any value" string
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.IValue.Lower">
+            <summary>
+            Lower bound (included) of interval. Same as <see cref="P:Configit.Core.Model.ValueDefinitions.IValue.SingleOrDefault"/> if
+            <see cref="P:Configit.Core.Model.ValueDefinitions.IValue.IsSingleton"/> is true. Null if value represents string
+            "any value"
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.IValue.Upper">
+            <summary>
+            Upper bound (included) of interval. Same as <see cref="P:Configit.Core.Model.ValueDefinitions.IValue.SingleOrDefault"/> if
+            <see cref="P:Configit.Core.Model.ValueDefinitions.IValue.IsSingleton"/> is true. Null if value represents string
+            "any value"
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.IValue.IsSingleton">
+            <summary>
+            True if value represents a singleton value (e.g. not an interval or
+            string "any value")
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.IValue.Contains(System.Object)">
+            <summary>
+            Check if <paramref name="value"/> is contained in the interval
+            (when <see cref="P:Configit.Core.Model.ValueDefinitions.IValue.IsSingleton"/> is false), or equal to <see cref="P:Configit.Core.Model.ValueDefinitions.IValue.SingleOrDefault"/>
+            (when <see cref="P:Configit.Core.Model.ValueDefinitions.IValue.IsSingleton"/> is true).
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ValueDefinitions.Value`1">
+            <summary>
+            Typed representation of <see cref="T:Configit.Core.Model.ValueDefinitions.IValue"/> representing a value for
+            a logic model variable.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.#ctor(`0,`0)">
+            <summary>
+            Construct an interval representing all values from and including <paramref name="lower"/>
+            to and including <paramref name="upper"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.#ctor(`0)">
+            <summary>
+            Construct a singleton value
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.op_Implicit(`0)~Configit.Core.Model.ValueDefinitions.Value{`0}">
+            <summary>
+            Implicit conversion for value of type <typeparamref name="T"/> to
+            a <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> object.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.#ctor(Configit.Core.Model.ValueDefinitions.Value{`0})">
+            <summary>
+            Construct a new values based on content of existing <paramref name="value"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.Value`1.Default">
+            <summary>
+            Returns a value object set to the default value for <typeparamref name="T"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.AsValue(System.Object)">
+            <summary>
+            Attempt to cast <paramref name="val"/> to <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/>.
+            </summary>
+            <returns>A <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> representing <paramref name="val"/> or 
+            null if cast fails</returns>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.Value`1.SingleOrDefault">
+            <summary>
+            Single value or default({T}) if it represents multiple values (e.g. an interval)
+            or "any value" string (in which case, it returns null)
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.op_Implicit(Configit.Core.Model.ValueDefinitions.Value{`0})~`0">
+            <summary>
+            Implicit conversion to type <typeparamref name="T"/> from <paramref name="value"/>
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.Value`1.Lower">
+            <summary>
+            Lower bound (included) of interval. Same as <see cref="P:Configit.Core.Model.ValueDefinitions.Value`1.SingleOrDefault"/> if
+            <see cref="P:Configit.Core.Model.ValueDefinitions.Value`1.IsSingleton"/> is true. Null if value represents string
+            "any value"
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.Value`1.Upper">
+            <summary>
+            Upper bound (included) of interval. Same as <see cref="P:Configit.Core.Model.ValueDefinitions.Value`1.SingleOrDefault"/> if
+            <see cref="P:Configit.Core.Model.ValueDefinitions.Value`1.IsSingleton"/> is true. Null if value represents string
+            "any value"
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.Value`1.IsSingleton">
+            <summary>
+            True if <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> represents a single value (e.g. not an interval or
+            string "any value")
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.Contains(`0)">
+            <summary>
+            Check if <paramref name="value"/> is contained in the interval
+            (when <see cref="P:Configit.Core.Model.ValueDefinitions.Value`1.IsSingleton"/> is false) or equal to <see cref="P:Configit.Core.Model.ValueDefinitions.Value`1.SingleOrDefault"/>
+            (when <see cref="P:Configit.Core.Model.ValueDefinitions.Value`1.IsSingleton"/> is true).
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.Contains(System.Object)">
+            <summary>
+            Check if <paramref name="value"/> is of correct type, and is contained
+            in the interval. <see cref="M:Configit.Core.Model.ValueDefinitions.Value`1.Contains(`0)"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.Value`1.IsAnyStringValue">
+            <summary>
+            True if {T} is string and value represents any string value
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object.
+            </summary>
+            <returns>
+            true if the specified object  is equal to the current object; otherwise, false.
+            </returns>
+            <param name="obj">The object to compare with the current object. </param>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.GetHashCode">
+            <summary>
+            Serves as the default hash function.
+            </summary>
+            <returns>
+            A hash code for the current object.
+            </returns>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.op_Equality(Configit.Core.Model.ValueDefinitions.Value{`0},Configit.Core.Model.ValueDefinitions.Value{`0})">
+            <summary>
+            Equality operator
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.op_Inequality(Configit.Core.Model.ValueDefinitions.Value{`0},Configit.Core.Model.ValueDefinitions.Value{`0})">
+            <summary>
+            In-equality operator
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.CompareTo(Configit.Core.Model.ValueDefinitions.IValue)">
+            <summary>
+            Values are considered identical if they have any overlap
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.Value`1.ToString">
+            <summary>
+            Printable string representation of value.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ValueDefinitions.ValueConverter">
+            <summary>
+            <para>Converter capable of converting an object into an <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> 
+            of correct type. Each conversion method either returns a <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/>
+            of expected type, or null if object cannot be converted.
+            </para>
+            <para>The input object can only be converted if it represents a singleton object</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueConverter.ToBool(System.Object)">
+            <summary>
+            Convert <paramref name="value"/> into <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> of type
+            <see cref="T:System.Boolean"/>.
+            </summary>
+            <returns>Converted value, or null if conversion failed</returns>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueConverter.ToDecimal(System.Object)">
+            <summary>
+            Convert <paramref name="value"/> into <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> of type
+            <see cref="T:System.Decimal"/>.
+            </summary>
+            <returns>Converted value, or null if conversion failed</returns>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueConverter.ToString(System.Object)">
+            <summary>
+            Convert <paramref name="value"/> into <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> of type
+            <see cref="T:System.String"/>.
+            </summary>
+            <returns>Converted value, or null if conversion failed</returns>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueConverter.EnsureUtc(System.DateTime)">
+            <summary>
+            Given a <see cref="T:System.DateTime"/> object, ensure it is converted to UTC
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueConverter.ToDateTime(System.Object)">
+            <summary>
+            Convert <paramref name="value"/> into <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> of type
+            <see cref="T:System.DateTime"/>.
+            </summary>
+            <returns>Converted value, or null if conversion failed</returns>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueConverter.ToInt(System.Object)">
+            <summary>
+            Convert <paramref name="value"/> into <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> of type
+            <see cref="T:System.Int32"/>.
+            </summary>
+            <returns>Converted value, or null if conversion failed</returns>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueConverter.ToIValue(System.Object)">
+            <summary>
+            Convert <paramref name="value"/> into <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/>
+            of type int, decimal, DateTime, string or bool.
+            </summary>
+            <returns>Converted value, or null if conversion failed</returns>
+        </member>
+        <member name="T:Configit.Core.Model.ValueDefinitions.ValueExtensions">
+            <summary>
+            Extensions for operating on <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> and collections 
+            of <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueExtensions.Sort``1(System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.Value{``0}})">
+            <summary>
+            Sort collection <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> by the <see cref="P:Configit.Core.Model.ValueDefinitions.Value`1.Lower"/>
+            bound
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueExtensions.Merge``1(System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.Value{``0}},System.Func{``0,``0})">
+            <summary>
+            Merge multiple intervals into a possibly smaller set of intervals. If two intervals are overlapping,
+            they will be merged into one interval. If calling <paramref name="increase"/> on upper of one interval
+            is identical to lower on other interval, the two intervals are merged. Input must be sorted by
+            lower bound.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueExtensions.ValueIntersection``1(System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.Value{``0}},System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.Value{``0}})">
+            <summary>
+            Create a collection of values representing the intersection of two
+            value collections. Both <paramref name="values1"/> and
+            <paramref name="values2"/> must be sorted by <see cref="P:Configit.Core.Model.ValueDefinitions.Value`1.Lower"/>
+            before calling this method (see <see cref="M:Configit.Core.Model.ValueDefinitions.ValueExtensions.Sort``1(System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.Value{``0}})"/>). Also, for each collection,
+            no values must be overlapping (see <see cref="M:Configit.Core.Model.ValueDefinitions.ValueExtensions.Merge``1(System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.Value{``0}},System.Func{``0,``0})"/>).
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ValueDefinitions.ValueFactory">
+            <summary>
+            Factory for creating <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> from two objects.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueFactory.Create(System.Object,System.Object)">
+            <summary>
+            Create a <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> with specified <paramref name="lower"/> and 
+            <paramref name="upper"/> values.
+            </summary>
+            <param name="lower"></param>
+            <param name="upper"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Configit.Core.Model.ValueDefinitions.ValueOrderingComparer`1">
+            <summary>
+            Comparer that orders values first by their lower bound and then by their upper bound.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.ValueOrderingComparer`1.Instance">
+            <summary>
+            Singleton thread-safe instance.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueOrderingComparer`1.Compare(Configit.Core.Model.ValueDefinitions.Value{`0},Configit.Core.Model.ValueDefinitions.Value{`0})">
+            <summary>
+            Considers values equivalent if they overlap.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.ValueDefinitions.ValueOverlapsComparer`1">
+            <summary>
+            Helper class that is useful for comparing values when looking for overlap.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.ValueDefinitions.ValueOverlapsComparer`1.Instance">
+            <summary>
+            Singleton thread-safe instance.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.ValueDefinitions.ValueOverlapsComparer`1.Compare(Configit.Core.Model.ValueDefinitions.Value{`0},Configit.Core.Model.ValueDefinitions.Value{`0})">
+            <summary>
+            Considers values equivalent if they overlap.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableCatalog">
+            <summary>
+            Wraps the variable index for model and public variables respectively. Provides
+            the capability to map between model variable index (with private variables) and 
+            public variable index (without private variables).
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCatalog.#ctor(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.IVariableDefinition})">
+            <summary>
+            Create mapper between public and model variable index. Input is model variables,
+            where some might be marked as private.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableCatalog.PublicVariables">
+            <summary>
+            Index of variables in public space. Contains no private variables
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableCatalog.ModelVariables">
+            <summary>
+            Index of variables in model space. Might contain private variables
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCatalog.ModelToPublic(System.Int32)">
+            <summary>
+            Get index of public variable matching specified model variable. 
+            </summary>
+            <returns>-1 if model variable is marked as private and thus does not have a
+            corresponding public index
+            </returns>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCatalog.PublicToModel(System.Int32)">
+            <summary>
+            Get index of model variable matching specified public variable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCatalog.PublicValueToModel(System.Int32)">
+            <summary>
+            Maps a public global value to its corresponding model global value.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCatalog.ModelValueToPublic(System.Int32)">
+            <summary>
+            Maps a model global value to its corresponding model global value.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableCollection">
+            <summary>
+            This class providers helper methods for navigating the variable index space.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCollection.#ctor(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.IVariableDefinition})">
+            <summary>
+            Create variable index based on a set of <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableCollection.DomainOffsets">
+            <summary>
+            Offset in global value index of each variable in catalog
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCollection.CreateValueBitArray">
+            <summary>
+            Create a <see cref="T:Configit.Core.Utils.SegmentedBitArray"/> for the variables in this catalog
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCollection.GlobalValuesFor(System.Int32)">
+            <summary>
+            Enumerates the global value indices (in order) for the given variable.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCollection.GetGlobalValueIndex(System.Int32,System.Int32)">
+            <summary>
+            Get global value index from index of variable and value.
+            Global variable index is an index of all values for all variables in sequence.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCollection.GetGlobalValueIndex(System.String,System.Object)">
+            <summary>
+            Returns the global index matching the provided
+            variable id and value object, or -1 if either
+            variable or value doesn't exist.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCollection.GetVariableAndValue(System.Int32,System.Int32@,System.Int32@)">
+            <summary>
+            Get variable and value index from global value index.
+            Global variable index is an index of all values for all variables in sequence.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCollection.GetVariableFromGlobalValue(System.Int32)">
+            <summary>
+            Returns the variable index that a global value index belongs to.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableCollection.GetValueFromGlobalValue(System.Int32)">
+            <summary>
+            Returns the domain value index that a global value index belongs to.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableCollection.VariableDomains">
+            <summary>
+            Domain sizes of all the variables
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableCollection.ValueCount">
+            <summary>
+            The sum of all domain sizes for all variables
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.Assignment">
+            <summary>
+            Indicates a value to assign to a variable
+            </summary>
+            <remarks>Assignments are immutable</remarks>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.Assignment.VariableId">
+            <summary>
+            Id of the variable the assignment applies to.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.Assignment.Value">
+            <summary>
+            The value to assign, this can be a formatted string that can be parsed to 
+            match the expected value type of the variable, or a value type
+            matching that of the target variable directly.
+            <example>
+            Both "1" and 1 will be accepted for a number variable
+            </example>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.Assignment.Priority">
+            <summary>
+            Priority of the assignment during conflict resolution. When assignments conflict,
+            the ones with lower priority will be removed. Multiple assignments are allowed
+            to have the same priority, indicating that it does not matter which of the assignments
+            in the same priority group that are removed first.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.Assignment.Include">
+            <summary>
+            For multi-valued variable values, when set to false this indicates the choice
+            of excluding a certain value.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.Assignment.#ctor(System.String,System.Object,System.Nullable{System.Int32},System.Nullable{System.Boolean})">
+            <summary>
+            Constructs and assignment for a variable with id <paramref name="variableId"/>.
+            </summary>
+            <remarks>
+            <paramref name="include"/> and <paramref name="priority"/> are Nullable instead of = true
+            to be compatible with the JSON serializers
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.Assignment.#ctor">
+            <summary>
+            Internal constructor used for serialization purposes.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.Assignment.Equals(Configit.Core.Model.VariableDefinitions.Assignment)">
+            <summary>
+            True if <paramref name="other"/> is identical to this assignment
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.Assignment.Equals(System.Object)">
+            <summary>
+            True if <paramref name="other"/> is identical to this assignment
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.Assignment.GetHashCode">
+            <summary>
+            Serves as the default hash function. 
+            </summary>
+            <returns>
+            A hash code for the current object.
+            </returns>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.Assignment.ToString">
+            <summary>
+            Returns a string that represents the current object.
+            </summary>
+            <returns>
+            A string that represents the current object.
+            </returns>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.Assignment.NormalizePriorities(System.Int32@,System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.Assignment})">
+             <summary>
+             Normalizes priorities among a set of assignments such that the highest priority used is
+             <paramref name="nextPriority"/> and all the priorities used are contiguous.
+             <example>
+             Assume <paramref name="nextPriority"/> is 10 and we have the following assignments:
+             X=1 priority: 100
+             X=2 priority: 50
+             Y=1 priority: -10
+            
+             The result will be:
+             nextPriority = 7
+             X=1 priority: 10
+             X=2 priority: 9
+             Y=1 priority: 8
+             </example>
+             </summary>
+             <param name="nextPriority">
+             The largest priority that is allowed to be used. Will be decremented to
+             the smallest priority used in the normalization minus one.
+             </param>
+             <param name="assignments">The assignments to normalize.</param>
+             <returns>A set of assignment objects</returns>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.BooleanVariable">
+            <summary>
+            Boolean variables only have information about their name
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.BooleanVariable.#ctor(System.String,System.Boolean)">
+            <summary>
+            Boolean type variable with specified name
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidIdentifierException">If id is invalid</exception>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.BooleanVariable.VarType">
+            <summary>
+            Boolean variable definitions has variable type <see cref="F:Configit.Core.Model.VariableDefinitions.VarType.Boolean"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.BooleanVariable.ValueType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.BooleanVariable.DistinctValueCount">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.BooleanVariable.TryFindDomainIndex(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.BooleanVariable.CreateAsNew(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.BooleanVariable.Clone(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.BooleanVariable.ToSingletonDomainValue(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.DateTimeVariable">
+            <summary>
+            Variable of type date time
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.DateTimeVariable.#ctor(System.String,System.Boolean)">
+            <summary>
+            DateTime variable with specified name
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidIdentifierException">If id is invalid</exception>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.DateTimeVariable.VarType">
+            <summary>
+            Date time variable definitions has variable type <see cref="F:Configit.Core.Model.VariableDefinitions.VarType.DateTime"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.DateTimeVariable.DistinctValueCount">
+            <summary>
+            For now (until we get variable granularity on date-time variables)
+            this is the number of seconds between <see cref="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Min"/> and <see cref="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Max"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.DateTimeVariable.TryFindDomainIndex(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.DateTimeVariable.CreateAsNew(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.DateTimeVariable.Clone(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.DateTimeVariable.TypeMin">
+            <summary>
+            Returns the minimum value allowed by the variable type.
+            This can be a smaller value than <see cref="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Min"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.DateTimeVariable.TypeMax">
+            <summary>
+            Returns the maximum value allowed by the variable type.
+            This can be a larger value than <see cref="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Max"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.DateTimeVariable.Increment(System.DateTime)">
+            <summary>
+            Obtains the next value in the domain
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.DateTimeVariable.Decrement(System.DateTime)">
+            <summary>
+            Obtains the previous value in the domain
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.DateTimeVariable.ToSingletonDomainValue(System.Object)">
+            <summary>
+            <para>
+            Converts an object into a singleton <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/>
+            representing a concrete value of type <see cref="T:System.DateTime"/>.
+            </para>
+            </summary>
+            <returns>A value object which type matches the variable, or null if <paramref name="value"/>
+            cannot be converted into a singleton of expected type</returns>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1">
+            <summary>
+            <para>Used for defining variables which can have a non-enumerated domain, such as
+            decimal, date time and string</para>
+            <para>The type <typeparamref name="T"/> defines the types of the values in the domain (e.g. decimal, string, DateTime)</para>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ContainedIntervalComparer">
+            <summary>
+            Comparer used when searching a decimal or date time domain for interval
+            which contains a specific value.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ContainedIntervalComparer.#ctor(System.Collections.Generic.Comparer{`0})">
+            <summary>
+            Create a new interval comparer using provided <paramref name="comparer"/> for elements
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ContainedIntervalComparer.Compare(Configit.Core.Model.ValueDefinitions.Value{`0},Configit.Core.Model.ValueDefinitions.Value{`0})">
+            <summary>
+            Compare <paramref name="domInterval"/> against <paramref name="searchValueAsInterval"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ContainedComparer">
+            <summary>
+            Comparer used for searching value domain for specific value
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.#ctor(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Create non-enumerated variable definition with specified name
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ConstCompares">
+            <summary>
+            Constant values that the variable is compared with in the rules, including
+            which operators it is compared with. All operators are defined as if
+            variable is on left side, and constant is on right side.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.AddConstCompare(`0,Configit.Core.Model.VariableDefinitions.NonEnumeratedCompareOperators)">
+            <summary>
+            Add information that variable is compared with a specific constant.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.IsEnumerated">
+            <summary>
+            Indication if domain of variable is enumerated, or should be calculated by the 
+            expression domain builder. This is the case for decimal, date time and string variables.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ResetDomain">
+            <summary>
+            Reset values calculated in final domain. This is typically done just
+            before compiling a model. Only has effect on domains for non-enumerated
+            variables.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ValueType">
+            <summary>
+            Returns the type of the values that this variable definition represents. For non-enumerated
+            variables of type decimal and date the final domain will contain intervals of this type.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.IntervalVariable`1">
+            <summary>
+            Represents a variable that has a domain of interval values.
+            </summary>
+            <typeparam name="T">The type of values in domain, e.g. decimal, DateTime, bool, string</typeparam>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.#ctor(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Create variable with specified <paramref name="id"/>
+            </summary>
+            <param name="id"><see cref="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.Id"/></param>
+            <param name="isPrivate"><see cref="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.Private"/></param>
+            <param name="isMultiValued"><see cref="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.IsMultiValued"/></param>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Step">
+            <summary>
+            The increment value between domain values as defined by <see cref="P:Configit.Core.Model.VariableDefinitions.NumberVariable.Scale"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Min">
+            <summary>
+            Any assignable value must be greater or equal to Min.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Max">
+            <summary>
+            Any assignable value must be less than or equal to Max.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.TypeMin">
+            <summary>
+            Returns the minimum value allowed by the variable type.
+            This can be a smaller value than <see cref="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Min"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.TypeMax">
+            <summary>
+            Returns the maximum value allowed by the variable type.
+            This can be a larger value than <see cref="P:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Max"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Increment(`0)">
+            <summary>
+            Obtains the next value in the domain
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.Decrement(`0)">
+            <summary>
+            Obtains the previous value in the domain
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IntervalVariable`1.BuildDomain">
+            <summary>
+            Build final domain from the values in <see cref="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ConstCompares"/>.
+            Only implemented for non-enumerated decimal and date type variables
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition`1">
+            <summary>
+            An <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/> where the <see cref="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.Domain"/>
+            is exposed with typed values in <see cref="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition`1.TypedDomain"/>
+            </summary>
+            <typeparam name="T">The type of values in domain, e.g. decimal, DateTime, bool, string</typeparam>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition`1.TypedDomain">
+            <summary>
+            <para>Values in final domain of variable definition. For unbound domain variables
+            the values might be represented as intervals.</para>
+            <para>For unbound decimal and date type variables, the values
+            represents the cut-points deduces from comparing the variable
+            with constants in the rules. These values are from the constants in
+            <see cref="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ConstCompares"/> that the
+            variable is compared to.</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition`1.ToSingletonDomainValue(System.Object)">
+            <summary>
+            <para>
+            Converts an object into a singleton <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/>
+            representing a concrete value that matches the type
+            of the variable. The type <typeparamref name="T"/>
+            is either string, decimal, DateTime or bool.
+            </para>
+            </summary>
+            <returns>A value object which type matches the variable, or null if <paramref name="value"/>
+            cannot be converted into a singleton of expected type</returns>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition">
+            <summary>
+            <para>Information about a variable in a product model, the values of the variable
+            and if non-enumerated, the calculated values inserted into the non-enumerated variable.
+            </para>
+            <para>The domain represents the values in the domain when variable has been prepared
+            for compilation. For non-enumerated variables, this corresponds to the intervals that the
+            domain has been reduced into.
+            </para>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.Private">
+            <summary>
+            Indicates that the variable is not needed at runtime.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.VarType">
+            <summary>
+            Type of variable
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.ValueType">
+            <summary>
+            Returns the type of the values that this variable definition represents.
+            For non-enumerated variables of type decimal, integer and dateTime the final
+            domain will contain intervals of this type.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.IsEnumerated">
+            <summary>
+            Indication if domain of variable is enumerated.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.IsMultiValued">
+            <summary>
+            Indicates whether this <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/> represent a variable that
+            can be assigned more than one value at a time.
+            <remarks>
+            Note that variables defined as as multivalued must be defined in the <see cref="T:Configit.Core.Model.ILogicModel"/> through
+            <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>s.
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.DistinctValueCount">
+            <summary>
+            The number of distinct values contained in the domain definition.
+            <example>A string variable defined with a domain of {A,B,C} has a 3 distinct values.
+            A number variable with min 0 and max 2 and scale 1 has 30 distinct values (0.0, 0.1, 0.2 .. 30.0)</example>
+            <remarks>
+            This information can be useful in determining whether it makes sense to list distinct values to a user.
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.DomainSize">
+            <summary>
+            Number of elements in the domain. For non-enumerated decimal, integer and date type
+            variables the elements are deduced from the
+            constants in <see cref="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ConstCompares"/>
+            that the variable is compared to.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.FindDomainIndex(System.Object)">
+            <summary>
+            Given a singleton value as object, finds the index of the final domain value
+            that represents the value object. Identical to calling <see cref="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.TryFindDomainIndex(System.Object)"/>,
+            but throws an exception if <paramref name="value"/> cannot be converted to the correct
+            type, or if converted value is not part of the domain.
+            </summary>
+            <exception cref="T:System.ArgumentException">If <paramref name="value"/> cannot be found in domain</exception>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.TryFindDomainIndex(System.Object)">
+            <summary>
+            Given an object representing a singleton value, convert the object using <see cref="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.ToSingletonDomainValue(System.Object)"/>,
+            and find the index of the final domain value that represents the singleton value object.
+            If no such value exits, it returns -1.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.ToSingletonDomainValue(System.Object)">
+            <summary>
+            <para>
+            Converts an object into a singleton <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/>
+            representing a concrete value that matches the type
+            of the variable. The type of the returned value object
+            is either string, decimal, DateTime or bool.
+            </para>
+            <para>The method attempt to be smart when converting the value. It will e.g. allow
+            integer and double values to be converted into decimal values for number variables, and
+            allows both string and integer (index) values to be used for enumerated string
+            variables.</para>
+            </summary>
+            <returns>A value object which type matches the variable, or null if <paramref name="value"/>
+            cannot be converted</returns>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.ResetDomain">
+            <summary>
+            Reset values calculated in final domain. This is typically done just
+            before compiling a model. Only has effect on domains for non-enumerated
+            variables.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.Domain">
+            <summary>
+            <para>Values in domain of variable definition. For non-enumerated domain variables
+            the values might be represented as intervals.</para>
+            <para>For non-enumerated integer, decimal and date type variables, the values
+            represents the cut-points deduces from comparing the variable
+            with constants in the rules. These values are from the constants in
+            <see cref="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ConstCompares"/> that the
+            variable is compared to.</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.IsInDomain(System.Object)">
+            <summary>
+            Returns true if the given value is in domain of the variable.
+            <para>This is identical to calling <see cref="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.TryFindDomainIndex(System.Object)"/> and checking
+            if return value is -1.</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.CreateAsNew(System.String)">
+            <summary>
+            Creates a copy of the variable definition, not copying the
+            finalized domain for non-enumerated variables, and optionally using another specified ID.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.IVariableDefinition.Clone(System.String)">
+            <summary>
+            Creates a copy of the variable definition, copying the final
+            domain and everything else, and optionally using another specified ID.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup">
+            <summary>
+            Information about how to group multiple Boolean variables into a multi-valued group. 
+            A multi-valued group is conceptually collection of enumerated string values. Each
+            multi-valued group can be consumed as a separate variable with a type representing 
+            string sets. 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.MultiValuedGroup.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}})">
+            <summary>
+            Multi valued groups should only be constructed when a group is added to a LogicModel
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.MultiValuedGroup.Id">
+            <summary>
+            Id of group. From a consumption perspective, the Id of the group can be consumed
+            just as if it was an Id of a variable. The Id is used when constructing rules in a LogicModel and 
+            when consuming the model in services such as the solve services. 
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.MultiValuedGroup.ValueMapping">
+            <summary>
+            Ordered mapping from value IDs to values representing <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.MultiValuedGroup.ValueFromGroupedVariable(System.String)">
+            <summary>
+            Maps an underlying Boolean variable id to its string value, or null
+            if the variable id does not exist.
+            </summary>  
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.MultiValuedGroup.GroupedVariableFromValue(System.String)">
+            <summary>
+            Given a value from a multivalued variable, returns
+            the <see cref="P:Configit.Core.Model.IEntityWithId.Id"/> of the backing <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>,
+            or null if the value has no mapping.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.MultiValuedGroup.GroupedVariableIds">
+            <summary>
+            Returns the variable ids contained in the <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.MultiValuedGroup.Equals(Configit.Core.Model.VariableDefinitions.MultiValuedGroup)">
+            <summary>
+            True if this group is equal to <paramref name="other"/> group
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.MultiValuedGroup.ToString">
+            <summary>
+            Stringification used for debugging
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.NonEnumeratedCompareOperators">
+            <summary>
+            Flags used to identify which comparison operators are used for non-enumerated
+            variables. This information is used when deducing the final domains for the 
+            variables
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.NonEnumeratedCompareOperators.NoComparison">
+            <summary>
+            Empty flag, used for testing
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.NonEnumeratedCompareOperators.Lt">
+            <summary>
+            Compared with less than operator
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.NonEnumeratedCompareOperators.LtEq">
+            <summary>
+            Compared with less than or equal operator
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.NonEnumeratedCompareOperators.Eq">
+            <summary>
+            Compared with equal operator
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.NonEnumeratedCompareOperators.Neq">
+            <summary>
+            Compared with diff operator
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.NonEnumeratedCompareOperators.Gt">
+            <summary>
+            Compared with greater than operator
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.NonEnumeratedCompareOperators.GtEq">
+            <summary>
+            Compared with greater than or equal operator
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.NumberVariable">
+            <summary>
+            Number variable
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidIdentifierException">If id is invalid</exception>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.NumberVariable.#ctor(System.String,System.Int32,System.Decimal,System.Decimal,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Number variable with specified name.
+            To be able to perform arithmetic operations on the variable <paramref name="scale"/>
+            and <paramref name="min"/> must be 0 and the domain must be enumerated.
+            </summary>
+            <param name="id">Public name of variable should be a valid C-type identifier</param>
+            <param name="scale">The maximal number of significant digits after the decimal separator</param>
+            <param name="min">The minimal value</param>
+            <param name="max">The maximal value</param>
+            <param name="enumerateDomain">Must be true to be able to perform arithmetic operations on the variable</param>
+            <param name="isPrivate">Indicates that the variable is private and isn't needed at runtime</param>
+            <param name="isMultivalued"><see cref="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.IsMultiValued"/></param>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidIdentifierException">If id is invalid</exception>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.NumberVariable.CreateAsNew(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.NumberVariable.Clone(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.NumberVariable.IsEnumerated">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.NumberVariable.DistinctValueCount">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.NumberVariable.ResetDomain">
+            <summary>
+            Reset values calculated in final domain. This is typically done just
+            before compiling a model. Only has effect on domains for non-enumerated
+            variables.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.NumberVariable.VarType">
+            <summary>
+            Number variable definitions have variable type <see cref="F:Configit.Core.Model.VariableDefinitions.VarType.Number"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.NumberVariable.Scale">
+            <summary>
+            The maximal number of decimal places any assignable value can have.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.NumberVariable.TryFindDomainIndex(System.Object)">
+            <summary>
+            Given a singleton value as object, finds the index of the final domain value
+            that represents the value object. If no such value exits, it returns -1.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.NumberVariable.TypeMin">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.NumberVariable.TypeMax">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.NumberVariable.Increment(System.Decimal)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.NumberVariable.Decrement(System.Decimal)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.NumberVariable.ToSingletonDomainValue(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.NumberVariable.DomainAsString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.StringVariable">
+            <summary>
+            String variable
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.StringVariable.OtherValuesId">
+            <summary>
+            Id used for value first in domain of non-enumerated string variables, used
+            to represent any other value than the string constants deduced from the rules.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.#ctor(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            String type variable with specified name
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidIdentifierException">If id is invalid</exception>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.#ctor(System.String,System.String[])">
+            <summary>
+            Creates a public variable with the provided values.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.Boolean)">
+            <summary>
+            String type variable with specified name and limited to the given values.
+            If <paramref name="values"/> contains no values, the variable will have
+            <see cref="P:Configit.Core.Model.VariableDefinitions.StringVariable.IsEnumerated"/> set to true.
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidIdentifierException">If id or any value in <paramref name="values"/> is invalid</exception>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.StringVariable.AllOtherValues">
+            <summary>
+            Object representing "all other values" than the ones mentioned in the domain
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.Create(System.String,System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.Value{System.String}},System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Creates a <see cref="T:Configit.Core.Model.VariableDefinitions.StringVariable"/> directly providing the final domain.
+            </summary>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidIdentifierException">If id is invalid</exception>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.StringVariable.VarType">
+            <summary>
+            String variable definitions have variable type <see cref="F:Configit.Core.Model.VariableDefinitions.VarType.String"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.StringVariable.IsEnumerated">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.StringVariable.DistinctValueCount">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.ToSingletonDomainValue(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.ResetDomain">
+            <summary>
+            Reset values calculated in final domain. This is typically done just
+            before compiling a model. Only has effect on domains for non-enumerated
+            variables.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.TryFindDomainIndex(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.CreateAsNew(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.Clone(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.StringVariable.BuildDomain">
+            <summary>
+            Build final domain from the values in <see cref="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ConstCompares"/>
+            This method is only called for string variables which are not <see cref="P:Configit.Core.Model.VariableDefinitions.StringVariable.IsEnumerated"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.StringVariable.DomainAsString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.VariableDefinition`1">
+            <summary>
+            <para>Information about a variable in a product model, the values of the variable
+            and if non-enumerated, the values inserted into the non-enumerated variable.
+            </para>
+            <para>The final domain represents the values in the domain when variable has been prepared
+            for compilation. For non-enumerated variables, this corresponds to the intervals that the
+            domain has been reduced into.
+            </para>
+            <typeparam name="T">The type of values in domain, e.g. decimal, DateTime, bool, string</typeparam>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.#ctor(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Create variable definition with specified name
+            </summary>
+            <param name="id">Public name of variable should be a valid C-type identifier</param>
+            <param name="isPrivate">Indicates that the variable is private and isn't needed at runtime</param>
+            <param name="isMultiValued"><see cref="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.IsMultiValued"/></param>
+            <exception cref="T:Configit.Core.Model.ModelBuildException.InvalidIdentifierException">If id is invalid</exception>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.Id">
+            <summary>
+            Unique id of variable
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.Private">
+            <summary>
+            Indicates that the variable is not needed at runtime.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.VarType">
+            <summary>
+            Type of variable
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.ValueType">
+            <summary>
+            Returns the type of the values that this variable definition represents. For non-enumerated
+            variables of type decimal and date the final domain will contain intervals of this type.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.IsEnumerated">
+            <summary>
+            Indication if domain of variable is enumerated.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.DistinctValueCount">
+            <summary>
+            The number of distinct values contained in the domain definition.
+            <example>A string variable defined with a domain of {A,B,C} has a 3 distinct values.
+            A number variable with min 0 and max 2 and scale 1 has 30 distinct values (0.0, 0.1, 0.2 .. 30.0)</example>
+            <remarks>
+            This information can be useful in determining whether it makes sense to list distinct values to a user.
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.ToString">
+            <summary>
+            Get string representation of variable definition
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.DomainAsString">
+            <summary>
+            String representation of typed domain
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.TypedDomain">
+            <summary>
+            <para>Values in final domain of variable definition. For non-enumerated domain variables
+            the values might be represented as intervals.</para>
+            <para>For non-enumerated decimal and date type variables, the values
+            represents the cut-points deduces from comparing the variable
+            with constants in the rules. These values are from the constants in
+            <see cref="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ConstCompares"/> that the
+            variable is compared to.</para>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.Domain">
+            <summary>
+            Non generic version of TypedDomain, for keeping types out of <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.IsInDomain(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.CreateAsNew(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.Clone(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.BuildDomain">
+            <summary>
+            Build final domain from the values in <see cref="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ConstCompares"/>.
+            Only implemented for non-enumerated decimal and date type variables
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.DomainSize">
+            <summary>
+            Number of elements in the final domain. For non-enumerated decimal and date type
+            variables the elements are deduced from the
+            constants in <see cref="P:Configit.Core.Model.VariableDefinitions.GenericNonEnumeratedVariableDefinition`1.ConstCompares"/>
+            that the variable is compared to.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.ToSingletonDomainValue(System.Object)">
+            <summary>
+            <para>
+            Converts an object into a singleton <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/>
+            representing a concrete value that matches the type
+            of the variable. The type <typeparamref name="T"/>
+            is either string, decimal, DateTime or bool.
+            </para>
+            </summary>
+            <returns>A value object which type matches the variable, or null if <paramref name="value"/>
+            cannot be converted into a singleton of expected type</returns>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.ResetDomain">
+            <summary>
+            Reset values calculated in final domain. This is typically done just
+            before compiling a model. Only has effect on domains for non-enumerated
+            variables.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.FindDomainIndex(System.Object)">
+            <summary>
+            Given a singleton value as object, finds the index of the final domain value
+            that represents the value object.
+            </summary>
+            <exception cref="T:System.ArgumentException">If <paramref name="value"/> cannot be found in domain</exception>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.TryFindDomainIndex(System.Object)">
+            <summary>
+            Given a singleton value as object, finds the index of the final domain value
+            that represents the value object. If no such value exits, it returns -1.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Model.VariableDefinitions.VariableDefinition`1.IsMultiValued">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.VariableDefinitionExtensions">
+            <summary>
+            Extension methods for validating variable definitions in different contexts
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinitionExtensions.GetNoddy(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.IVariableDefinition},System.Int32,System.Int32)">
+            <summary>
+            Create <see cref="T:Configit.Core.Noddy.Noddy"/> instance with finite domain variables
+            corresponding to defined <paramref name="variables"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Model.VariableDefinitions.VariableDefinitionExtensions.CheckDomainsAgainstNoddy(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.IVariableDefinition},Configit.Core.Noddy.Noddy)">
+            <summary>
+            Check that domains defined in <paramref name="variables"/> matches declared finite domains
+            in specified <paramref name="noddy"/> instance. Throws <see cref="T:System.ArgumentException"/> in
+            case there is a mis-match
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Model.VariableDefinitions.VarType">
+            <summary>
+            Type of domain for variable
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.VarType.Boolean">
+            <summary>
+            Boolean type variable
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.VarType.Number">
+            <summary>
+            General floating point number variable, actual values deduced by rules
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.VarType.DateTime">
+            <summary>
+            General date time type variable, actual values deduced by rules
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Model.VariableDefinitions.VarType.String">
+            <summary>
+            General string type variable
+            </summary>
+        </member>
+    </members>
+</doc>

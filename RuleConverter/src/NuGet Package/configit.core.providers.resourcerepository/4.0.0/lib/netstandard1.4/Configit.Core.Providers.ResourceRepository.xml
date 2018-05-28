@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Providers.ResourceRepository</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Providers.ResourceRepository.NddProvider">
+            <summary>
+            A provider of raw <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> over a <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>.
+            It helps reuse of the same data for different usage/services.
+            Ndd are identified with an id representing path from root of the package, for instance "myComponent/myNdd".
+            That path will be used to build the full path to the actual resource, for instance "myComponent/myNdd.ndd".
+            Id of the Ndd is specified at <see cref="P:Configit.ResourceRepository.Resource.Provider.ResourceLocation.Id"/>.
+             </summary>
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.NddProvider.#ctor(Configit.ResourceRepository.Provider.IPackageProvider)">
+            <summary>
+            Initializes <see cref="T:Configit.Core.Providers.ResourceRepository.NddProvider"/> based on the given <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>
+            </summary>
+            <param name="packageProvider">The <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/> instance.</param>
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.NddProvider.GetAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.NddProvider.GetVersionedPackagePathAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Providers.ResourceRepository.PackagedModelProvider">
+            <summary>
+            Provides a <see cref="T:Configit.Core.Model.PackagedModel"/> for the model identified by a given <see cref="T:Configit.ResourceRepository.Resource.Provider.ResourceLocation"/> within the given <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Providers.ResourceRepository.PackagedModelProvider._compiledDataSerializers">
+            <summary>
+            Custom <see cref="T:Configit.Core.Utils.Serialization.Serializers.ICompliedDataEntrySerializer"/>'s defined on this provider defined on this provider
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.PackagedModelProvider.#ctor(Configit.ResourceRepository.Resource.Provider.IResourceProviders,Configit.Core.Utils.Serialization.Serializers.ICompliedDataEntrySerializer[])">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.Core.Providers.ResourceRepository.PackagedModelProvider"/> for a given <see cref="T:Configit.ResourceRepository.Resource.Provider.IResourceProviders"/>.
+            </summary>
+            <param name="providers">The packaged model resources, also allowing access to underlying packages.</param>
+            <param name="compiledDataSerializers">Optional additional serializers for compiled data.</param>
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.PackagedModelProvider.#ctor(Configit.ResourceRepository.Provider.IPackageProvider)">
+            <summary>
+            Convenient constructor of a <see cref="T:Configit.Core.Providers.ResourceRepository.PackagedModelProvider"/> for a given <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>.
+            </summary>
+            <param name="packageProvider">The <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/> instance.</param>
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.PackagedModelProvider.GetAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.PackagedModelProvider.GetVersionedPackagePathAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Providers.ResourceRepository.VariableDefinitionsProvider">
+            <summary>
+            A provider of sets of  <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/> over a <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>.
+            It helps reuse of the same data for different usage/services.
+            A set of <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/> is identified with an id representing path from root of the package, for instance "myComponent/myVariableDefinition".
+            That path will be used to build the full path to the actual resource, for instance "myComponent/myVarDef.json".
+            Id of the set of variable definitions is specified at <see cref="P:Configit.ResourceRepository.Resource.Provider.ResourceLocation.Id"/>.
+             </summary>
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.VariableDefinitionsProvider.#ctor(Configit.ResourceRepository.Provider.IPackageProvider)">
+            <summary>
+            Initializes <see cref="T:Configit.Core.Providers.ResourceRepository.VariableDefinitionsProvider"/> based on the given <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.VariableDefinitionsProvider.GetAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Providers.ResourceRepository.VariableDefinitionsProvider.GetVersionedPackagePathAsync(Configit.ResourceRepository.Resource.Provider.ResourceLocation)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

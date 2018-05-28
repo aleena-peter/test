@@ -1,0 +1,438 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.ResourceRepository.Storage</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.ResourceRepository.Storage.CloudStorageKey">
+            <summary>
+            Defines a combination of a partition key and a data key to uniquely identify a cloud storage key.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.CloudStorageKey.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a <see cref="T:Configit.ResourceRepository.Storage.CloudStorageKey"/> instance from a partition key and data key.
+            </summary>
+            <param name="partitionKey">The partition key.</param>
+            <param name="dataKey">The data key.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.CloudStorageKey.#ctor(System.String)">
+            <summary>
+            Constructs a <see cref="T:Configit.ResourceRepository.Storage.CloudStorageKey"/> instance from a cloud storage key string.
+            </summary>
+            <param name="cloudStorageKey">The cloud storage key.</param>
+        </member>
+        <member name="P:Configit.ResourceRepository.Storage.CloudStorageKey.PartitionKey">
+            <summary>
+            Gets the partition key of the cloud storage key.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Storage.CloudStorageKey.DataKey">
+            <summary>
+            Gets the data key of the cloud storage key.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Storage.CloudStorageKey.StorageKey">
+            <summary>
+            Gets the storage key including the partition key and data key.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.CloudStorageKey.GetStorageKey(System.String,System.String)">
+            <summary>
+            Gets the storage key for the given partition key and data key.
+            </summary>
+            <param name="partitionKey">The partition key.</param>
+            <param name="dataKey">The data key.</param>
+            <returns>The storage key.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.CloudStorageKey.GetStoragePath(System.Uri,System.Uri)">
+            <summary>
+            Gets the storage path for the given partition path and data path.
+            </summary>
+            <param name="partitionPath">The partition path.</param>
+            <param name="dataPath">The data path.</param>
+            <returns>The storage path.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.CloudStorageKey.GetPackagePath(System.Uri)">
+            <summary>
+            Gets a package path from a cloud storage path be replacing the <see cref="F:Configit.ResourceRepository.Common.Metadata.PartitionKeySeparator"/> character with the <see cref="F:Configit.ResourceRepository.Common.Metadata.PathSeparator"/> character.
+            </summary>
+            <param name="cloudStoragePath">The cloud storage path.</param>
+            <returns>The package path.</returns>
+        </member>
+        <member name="T:Configit.ResourceRepository.Storage.ICloudStorage">
+            <summary>
+            Provides operations for accessing a cloud storage container of key/value pairs.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Storage.ICloudStorage.Namespace">
+            <summary>
+            Gets the namespace for this <see cref="T:Configit.ResourceRepository.Storage.ICloudStorage"/> instance.
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Storage.IStorage">
+            <summary>
+            Provides operations for accessing a storage container of key/value pairs.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.ContainsKeyAsync(System.String)">
+            <summary>
+            Asynchronously determines whether the given key exists.
+            </summary>
+            <param name="key">The key to locate.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is true if the key exists; otherwise false.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.GetAsync``1(System.String)">
+            <summary>
+            Asynchronously retrieves a value for the given key.
+            This method casts the stored value of a key to the requested type for most types, which means the same type that was stored should be also requested.
+            The exception to this is when requesting a Stream or byte[] type: the value is returned as a UTF-8 encoded string that is converted to the requested type.
+            </summary>
+            <typeparam name="T">The type of value to retrieve; this must match the type added for this key.</typeparam>
+            <param name="key">The key to locate.</param>
+            <returns>A task that represents the asynchronous get operation. The value is returned in the TResult parameter.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.ArgumentException">If the type T is not supported.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If the key is not found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.TryGet``1(System.String,``0@)">
+            <summary>
+            Tries to retrieve the value with the given key.
+            This method casts the stored value of a key to the requested type for most types, which means the same type that was stored should be also requested.
+            The exception to this is when requesting a Stream or byte[] type: the value is returned as a UTF-8 encoded string that is converted to the requested type.
+            </summary>
+            <typeparam name="T">The type of value to retrieve; this must match the type added for this key.</typeparam>
+            <param name="key">The key to locate.</param>
+            <param name="result">When this method returns true, it contains the result. Otherwise it contains the default result for type T.</param>
+            <returns>true if the key is found; otherwise false.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.ArgumentException">If the type T is not supported.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,System.Int32)">
+            <summary>
+            Stores the given key and value; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="value">The value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,System.String)">
+            <summary>
+            Stores the given key and value; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="value">The value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,System.Decimal)">
+            <summary>
+            Stores the given key and value; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="value">The value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,System.Double)">
+            <summary>
+            Stores the given key and value; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="value">The value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,System.Boolean)">
+            <summary>
+            Stores the given key and value; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="value">The value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,System.Byte[])">
+            <summary>
+            Stores the given key and value; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="value">The value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,System.IO.Stream)">
+            <summary>
+            Stores the given key and value; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="value">The value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Stores the given key and value; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="value">The value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,System.Guid)">
+            <summary>
+            Stores the given key and value; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="value">The value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.StoreAsync(System.String,System.Action{System.IO.Stream})">
+            <summary>
+            Stores the given key providing an action that supplies a stream value to be stored; if the key already exists the value is updated, provided that this storage type supports updating.
+            </summary>
+            <param name="key">The key to store.</param>
+            <param name="storeAction">The action supplying the value of the key to store.</param>
+            <returns>A task that represents the asynchronous store operation.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.RemoveAsync(System.String)">
+            <summary>
+            Removes the given key if it exists.
+            </summary>
+            <param name="key">The key of the element to remove.</param>
+            <returns>A task that represents the asynchronous remove operation. The value of the TResult parameter is true if the key was found and removed; otherwise false.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key is null.</exception>
+            <exception cref="T:System.ArgumentException">If the key is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the key is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.RemoveAllAsync(System.String)">
+            <summary>
+            Removes all keys which have the given prefix.
+            Using string.Empty as a prefix will delete everything from this storage.
+            </summary>
+            <param name="prefix">The prefix.</param>
+            <returns>A task that represents the asynchronous remove operation.</returns>
+            <exception cref="T:System.FormatException">If the format of the prefix is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.GetKeysStartWithAsync(System.String)">
+            <summary>
+            Gets all keys which start with the given prefix. The prefix is included in the returned keys.
+            </summary>
+            <param name="prefix">The prefix used for matching.</param>
+            <returns>A task that represents the asynchronous get operation. The value of the TResult parameter is an IEnumerable&lt;string&gt;containing all keys matching this prefix.</returns>
+            <exception cref="T:System.FormatException">If the format of the prefix is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.IStorage.Flush">
+            <summary>
+            Flushes pending write operations if applicable to this storage type.
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Storage.StorageHelper">
+            <summary>
+            Helper class for <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> related operations.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.StorageHelper.KeyMinLength">
+            <summary>
+            The minimum number of characters of a data key.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.StorageHelper.KeyMaxLength">
+            <summary>
+            The maximum number of characters of a data key.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.StorageHelper.KeyMaxUriSegments">
+            <summary>
+            The maximum number of segments of a key.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.GetSupportedType(System.Type)">
+            <summary>
+            Gets a <see cref="T:Configit.ResourceRepository.Storage.SupportedStorageType"/> value for a given <see cref="T:System.Type"/>.
+            </summary>
+            <param name="type">The type to get the <see cref="T:Configit.ResourceRepository.Storage.SupportedStorageType"/> for.</param>
+            <returns>The SupportedStorageType value.</returns>
+            <exception cref="T:System.ArgumentException">If the type is not supported.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.GetSupportedResourceType(System.Type)">
+            <summary>
+            Gets a <see cref="T:Configit.ResourceRepository.Storage.SupportedStorageType"/> value for a given resource type.
+            </summary>
+            <param name="type">The type to get the <see cref="T:Configit.ResourceRepository.Storage.SupportedStorageType"/> for.</param>
+            <returns>The SupportedStorageType value.</returns>
+            <exception cref="T:System.ArgumentException">If the type is not supported.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.GetKeyNotFoundException(System.String,System.Exception)">
+            <summary>
+            Gets a <see cref="T:System.Collections.Generic.KeyNotFoundException"/> exception for a key that does not exist.
+            </summary>
+            <param name="key">The key to report in the exception.</param>
+            <param name="innerException">The optional inner exception causing this exception.</param>
+            <returns>The <see cref="T:System.Collections.Generic.KeyNotFoundException"/> exception.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.GetInvalidCastException(Configit.ResourceRepository.Storage.SupportedStorageType,System.Exception)">
+            <summary>
+            Gets an <see cref="T:System.InvalidCastException"/> exception for a storage type whose value cannot be cast.
+            </summary>
+            <param name="storageType">The storage type to report in the exception.</param>
+            <param name="innerException">The optional inner exception causing this exception.</param>
+            <returns>The <see cref="T:System.InvalidCastException"/> exception.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.ValidatePackageExistsAsync(System.Uri,Configit.ResourceRepository.Storage.IStorage)">
+            <summary>
+            Validates that the package with the given path exists.
+            </summary>
+            <param name="packagePath">The package path.</param>
+            <param name="storage">The storage for which to check the path.</param>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package with the given path does not exist.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.ValidatePackageVersionExistsAsync(System.Uri,Configit.ResourceRepository.Storage.IStorage)">
+            <summary>
+            Validates that the package with the given version path exists.
+            </summary>
+            <param name="versionPath">The package version.</param>
+            <param name="storage">The storage for which to check the version path.</param>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package is not found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageVersionNotFoundException">If the package version is not found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.GetLatestVersionIdAsync(System.Uri,Configit.ResourceRepository.Storage.IStorage)">
+            <summary>
+            Gets the latest version Id for the given package path from the given storage.
+            </summary>
+            <param name="packagePath">The package path to lookup.</param>
+            <param name="storage">The storage from which to retrieve the version.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the latest version Guid for the given package path.</returns>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package is not found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.RevertPackageMetadataAsync(Configit.ResourceRepository.Storage.IStorage,System.Uri,System.Guid,System.Boolean)">
+            <summary>
+            Reverts package metadata to remove the given version.
+            </summary>
+            <param name="storage">The storage for which to remove the metadata.</param>
+            <param name="packagePath">The package path.</param>
+            <param name="versionId">The package version id.</param>
+            <param name="throwOnNotFound">Determines if the method should throw when there is no package metadata available.</param>
+            <returns>A task that represents the asynchronous revert operation.</returns>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package is not found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageVersionNotFoundException">If the package version is not found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.GetMappedKey(System.String)">
+            <summary>
+            Gets the mapped key for given key, ensuring a correct path structure.
+            </summary>
+            <param name="key">The key for which to perform the mapping.</param>
+            <returns>The key as a path structure.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.ConvertTextValue``1(System.String)">
+            <summary>
+            Converts the given text value to a value of type T.
+            </summary>
+            <typeparam name="T">The type to return.</typeparam>
+            <param name="textValue">The text value to convert from.</param>
+            <returns>A value of type T.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.GetCloudStorageKey(System.String,System.String,System.Char)">
+            <summary>
+            Gets a <see cref="T:Configit.ResourceRepository.Storage.CloudStorageKey"/> instance from a storage key, namespace and separator.
+            </summary>
+            <param name="key">The storage key containing a data key and an optional partition key.</param>
+            <param name="namespaceName">The namespace to combine with the partition key.</param>
+            <param name="namespaceSeparator">The namespace separator character to use when combining the namespace and partition key.</param>
+            <returns>A <see cref="M:Configit.ResourceRepository.Storage.StorageHelper.GetCloudStorageKey(System.String,System.String,System.Char)"/> instance.</returns>
+            <exception cref="T:System.ArgumentNullException">If the key or namespaceName is null.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.StorageHelper.ValidateCloudStorageKey(Configit.ResourceRepository.Storage.CloudStorageKey,System.String,System.Boolean)">
+            <summary>
+            Validates a <see cref="T:Configit.ResourceRepository.Storage.CloudStorageKey"/> instance.
+            </summary>
+            <param name="cloudStorageKey">The <see cref="T:Configit.ResourceRepository.Storage.CloudStorageKey"/> instance to validate.</param>
+            <param name="argumentName">The name of the <see cref="T:Configit.ResourceRepository.Storage.CloudStorageKey"/> parameter to use in exceptions.</param>
+            <param name="isPrefix">Indicates whether the data key of the <see cref="T:Configit.ResourceRepository.Storage.CloudStorageKey"/> is a search prefix.</param>
+            <exception cref="T:System.ArgumentException">If the <see cref="T:Configit.ResourceRepository.Storage.CloudStorageKey"/> instance contains keys of invalid length.</exception>
+            <exception cref="T:System.FormatException">If the format of the <see cref="T:Configit.ResourceRepository.Storage.CloudStorageKey"/> instance is invalid.</exception>
+        </member>
+        <member name="T:Configit.ResourceRepository.Storage.SupportedStorageType">
+            <summary>
+            Specifies values for all supported storage types.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.SupportedStorageType.Stream">
+            <summary>
+            Stream type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.SupportedStorageType.Byte">
+            <summary>
+            Byte type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.SupportedStorageType.String">
+            <summary>
+            String type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.SupportedStorageType.Int">
+            <summary>
+            Int type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.SupportedStorageType.Double">
+            <summary>
+            Double type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.SupportedStorageType.Decimal">
+            <summary>
+            Decimal type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.SupportedStorageType.Bool">
+            <summary>
+            Bool type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.SupportedStorageType.JToken">
+            <summary>
+            JToken type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Storage.SupportedStorageType.Guid">
+            <summary>
+            Guid type.
+            </summary>
+        </member>
+    </members>
+</doc>

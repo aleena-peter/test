@@ -1,0 +1,1123 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Serialization</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Serialization.Containers.PackagedModelWriteEntry">
+            <summary>
+            Writer for writing a specific <see cref="T:Configit.Core.Model.PackagedModel"/>.
+            The <see cref="T:Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder"/> can write multiple models, this
+            class represents a single of such models. 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Containers.PackagedModelWriteEntry.CreateSubcontainer(System.String[])">
+            <summary>
+            Creates a <see cref="T:Configit.Core.Serialization.Containers.PackagedModelWriteEntry"/> writing to a sub-path of the model root.
+            <example>
+            If this has a base + entryname of productmodels/mypr/ and subname is {"myCapability", "1"}
+            then the created <see cref="T:Configit.Core.Serialization.Containers.PackagedModelWriteEntry"/> will write to productmodels/mypr/myCapability/1/.
+            </example>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Containers.PackagedModelWriteEntry.EntryName">
+            <summary>
+            Entry name of the model.
+            <see cref="P:Configit.Core.Model.PackagedModelMetaData.Id"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Containers.PackagedModelWriteEntry.CreateSharedStore``1(System.String,System.String,System.Func{System.String,``0})">
+            <summary>
+            To allow multiple runtime data sets to share the same stores
+            (e.g. to avoid loading the same BDDs twice).
+            </summary>
+            <remarks>
+            In most cases a single shared BDD store should suffice.
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Serialization.Containers.PackagedModelWriteEntry.AddEntryAsync(System.String,System.Byte[])">
+            <summary>
+            Adds product model specific data.
+            </summary>
+            <param name="localName">The extension of the resource entry to write.</param>
+            <param name="resource">The resource value.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.Containers.PackagedModelWriteEntry.AddEntryAsync(System.String,System.IO.Stream)">
+            <summary>
+            Adds product model specific data.
+            </summary>
+            <param name="localName">The extension of the resource entry to write.</param>
+            <param name="resource">The resource value.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.Containers.PackagedModelWriteEntry.AddEntryAsync(System.String,System.Action{System.IO.Stream})">
+            <summary>
+            Adds product model specific data.
+            </summary>
+            <param name="localName">The extension of the resource entry to write.</param>
+            <param name="streamAction">The action providing the stream value to store.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.Containers.PackagedModelWriteEntry.AddEntryAsync(System.String,Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Adds product model specific data.
+            </summary>
+            <param name="localName">The extension of the resource entry to write.</param>
+            <param name="resource">The resource value.</param>
+            <returns>A task that represents the asynchronous add operation.</returns>
+        </member>
+        <member name="T:Configit.Core.Serialization.Exceptions.UnsupportedModelVersionSerializationException">
+            <summary>
+            Thrown when trying to de-serialize a model with a format version not de-serialization scheme exists for
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Exceptions.UnsupportedModelVersionSerializationException.#ctor(System.Int32)">
+            <summary>
+            Thrown when trying to de-serialize a model with a format version not de-serialization scheme exists for
+            </summary>
+            <param name="formatVersion">Format version for data</param>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.BddCollectionSerializationHelper">
+            <summary>
+            Serialization helper for collections of BDDs in <see cref="T:Configit.Core.Model.ICompiledData"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BddCollectionSerializationHelper.GetBddCollectionEntry(System.String,System.Collections.Generic.ICollection{Configit.Core.Noddy.Bdd},Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry,System.String,System.String)">
+            <summary>
+            Returns a BDD collection to a writer.
+            </summary>
+            <param name="name">Name of the BDD collection</param>
+            <param name="bdds">The BDDs to store</param>
+            <param name="writeEntry">The writer to store the collection.</param>
+            <param name="storePath">The path of the BDD store (typically <see cref="F:Configit.Core.Serialization.Serializers.PackagedModel.Constants.DefaultBddStorePath"/>)</param>
+            <param name="storeName">The name of the BDD store (typically <see cref="F:Configit.Core.Serialization.Serializers.PackagedModel.Constants.DefaultBddStoreName"/>)</param>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BddCollectionSerializationHelper.ReadBddCollectionEntryAsync(Newtonsoft.Json.Linq.JObject,System.String,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.Action{System.String})">
+            <summary>
+            Read a BDD collection from a writer
+            </summary>
+            <param name="obj">The object read from</param>
+            <param name="collectionName">Expected name for the collection</param>
+            <param name="readEntry">The writer in which the BDDs are stored</param>
+            <param name="collectionNameSetter"></param>
+            <exception cref="T:System.IO.InvalidDataException">If there is a problem reading the xml or if the name is not as expected.</exception>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.BddCollectionSerializationHelper.BddCollection">
+            <summary>
+            BDD collection with name
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BddCollectionSerializationHelper.BddCollection.Name">
+            <summary>
+            Collection name
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Helpers.BddCollectionSerializationHelper.BddCollection.Bdds">
+            <summary>
+            BDDs in collection
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.BddCollectionSerializationHelper.ReadBddCollectionEntryAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <summary>
+            Similar to 
+            <see cref="M:Configit.Core.Serialization.Helpers.BddCollectionSerializationHelper.ReadBddCollectionEntryAsync(Newtonsoft.Json.Linq.JObject,System.String,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.Action{System.String})"/>
+            except that the collection name is returned as part of the result.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.DaogIOExtensions">
+            <summary>
+            Extension to the <see cref="T:Configit.Core.Structure.Daog.Daog"/> for serializing daog objects.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.DaogIOExtensions.Load(System.String)">
+            <summary>
+            Load a daog structure from a file path
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.DaogIOExtensions.Load(System.IO.Stream)">
+            <summary>
+            Load a daog structure from a stream
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.DaogIOExtensions.Save(Configit.Core.Structure.Daog.Daog,System.String)">
+            <summary>
+            Save a daog structure to a file
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.DaogIOExtensions.Save(Configit.Core.Structure.Daog.Daog,System.IO.Stream)">
+            <summary>
+            Save a daog structure to a stream
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.NddSerializationHelper">
+            <summary>
+            Small helper class to assist in serializing Ndds.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.NddSerializationHelper.AddNddAsync(System.String,Configit.Core.Structure.Ndd.Ndd,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <summary>
+            Adds an <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> to the given <paramref name="writeEntry"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.NddSerializationHelper.ReadNddAsync(System.String,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <summary>
+            Reads an <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> from the <paramref name="readEntry"/>.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Helpers.SharedBddStore">
+            <summary>
+            (De)Serialization helper used to gather and distribute the bdds stored in the share bdd file.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.SharedBddStore.Create(System.String)">
+            <summary>
+            convenience factory for creating <see cref="T:Configit.Core.Serialization.Helpers.SharedBddStore"/>s with
+            a function.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.SharedBddStore.CreateFromInput(System.String,System.IO.Stream)">
+            <summary>
+            convenience factory for creating <see cref="T:Configit.Core.Serialization.Helpers.SharedBddStore"/>s with
+            a function.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Helpers.SharedBddStore.Name">
+            <summary>
+            Name of the store that acts as its identifier within a <see cref="T:Configit.Core.Model.PackagedModel"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.SharedBddStore.#ctor(System.String,System.IO.Stream)">
+            <summary>
+            Create a new shared BDD store by de-serializing it from a stream.
+            </summary>
+            <remarks>
+            If <paramref name="inputStream"/> if input stream is omitted a
+            new shared BDD store for serialization purposes is created, then
+            No Noddy instance is created, instead it first time <see cref="M:Configit.Core.Serialization.Helpers.SharedBddStore.AddBdd(Configit.Core.Noddy.Bdd)"/>
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.SharedBddStore.SetFiniteDomainVariables(System.Collections.Generic.List{Configit.Core.Model.VariableDefinitions.IVariableDefinition},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            The finite domain variable information is stored externally to the BDDs.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.SharedBddStore.AddBdd(Configit.Core.Noddy.Bdd)">
+            <summary>
+            Add a BDD to the store.
+            </summary>
+            <returns>Index of the BDD in the store which is guaranteed to be contiguously incremented.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.SharedBddStore.AddBdds(System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd})">
+            <summary>
+            <see cref="M:Configit.Core.Serialization.Helpers.SharedBddStore.AddBdd(Configit.Core.Noddy.Bdd)"/>. Returns the index of the first BDD in the input collection.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Helpers.SharedBddStore.Item(System.Int32)">
+            <summary>
+            Returns the BDD at a given index
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.SharedBddStore.GetEnumerator">
+            <summary>
+            All <see cref="T:Configit.Core.Noddy.Bdd"/>s in store
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Helpers.SharedBddStore.Save(System.IO.Stream)">
+            <summary>
+            Saves store to a stream.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.PackagedModelSerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Model.PackagedModel"/>s, for saving and loading models, or for loading <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> meta data.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.#ctor(Configit.Core.Utils.Serialization.Serializers.IEntrySerializer{Configit.Core.Model.IDomainSpecificModel},Configit.Core.Utils.Serialization.Serializers.IEntrySerializer{Configit.Core.Model.Logic.LogicModel},Configit.Core.Utils.Serialization.Serializers.ICompliedDataEntrySerializer[])">
+            <summary>
+            Creates a serializer using specified domain, source logic model and compiled data serializers.
+            </summary>
+            <param name="domainModelSerializer">Optional serializer for the domain model.</param>
+            <param name="logicModelSerializer">Optional serializer for the source model.</param>
+            <param name="compiledDataSerializers">Optional additional serializers for compiled data.</param>
+        </member>
+        <member name="T:Configit.Core.Serialization.PackagedModelSerializer.SaveOptions">
+            <summary>
+            Flag to include or exclude legacy index
+            <seealso cref="M:Configit.Core.Serialization.PackagedModelSerializer.SaveAsync(Configit.ResourceRepository.Publisher.IPackageBuilder,System.Collections.Generic.IEnumerable{Configit.Core.Model.PackagedModel},System.String,Configit.Core.Serialization.PackagedModelSerializer.SaveOptions)"/>
+            <seealso cref="M:Configit.Core.Serialization.PackagedModelSerializer.SaveAsync(Configit.ResourceRepository.Publisher.IPackageBuilder,Configit.Core.Model.PackagedModel,System.String,Configit.Core.Serialization.PackagedModelSerializer.SaveOptions)"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.PackagedModelSerializer.SaveOptions.IncludeIndex">
+            <summary>
+            Include index.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.PackagedModelSerializer.SaveOptions.ExcludeIndex">
+            <summary>
+            Exclude index.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.PackagedModelSerializer.ModelSerializer">
+            <summary>
+            Gets the serializer used to serialize/de-serialize models.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.SaveAsync(Configit.ResourceRepository.Publisher.IPackageBuilder,System.Collections.Generic.IEnumerable{Configit.Core.Model.PackagedModel},System.String,Configit.Core.Serialization.PackagedModelSerializer.SaveOptions)">
+            <summary>
+            Saves a collection of <see cref="T:Configit.Core.Model.PackagedModel"/>s using an <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/>.
+            </summary>
+            <param name="packageBuilder">The <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> instance.</param>
+            <param name="models">The collection of models to save.</param>
+            <param name="basePath">Relative location to save the model</param>
+            <param name="options">Flag to include or exclude legacy index</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the version path of the new package.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.SaveAsync(Configit.ResourceRepository.Publisher.IPackageBuilder,Configit.Core.Model.PackagedModel,System.String,Configit.Core.Serialization.PackagedModelSerializer.SaveOptions)">
+            <summary>
+            Saves a <see cref="T:Configit.Core.Model.PackagedModel"/> using an <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/>.
+            </summary>
+            <param name="packageBuilder">The <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> instance.</param>
+            <param name="model">The model to save.</param>
+            <param name="basePath">Relative location to save the model</param>
+            <param name="options">Flag to include or exclude legacy index</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the version path of the new package.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.SaveAsync(System.String,System.Collections.Generic.IEnumerable{Configit.Core.Model.PackagedModel})">
+            <summary>
+            Saves a collection of <see cref="T:Configit.Core.Model.PackagedModel"/>s to a VTZ file or a folder with a given path.
+            </summary>
+            <param name="path">The path to a VTZ file or a folder.</param>
+            <param name="models">The collection of models to save.</param>
+            <returns>A task that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.SaveAsync(System.String,Configit.Core.Model.PackagedModel)">
+            <summary>
+            Saves a <see cref="T:Configit.Core.Model.PackagedModel"/> to a VTZ file or a folder with a given path.
+            </summary>
+            <param name="path">The path to a VTZ file or a folder.</param>
+            <param name="model">The model to save.</param>
+            <returns>A task that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.SaveAsync(System.IO.Stream,System.Collections.Generic.IEnumerable{Configit.Core.Model.PackagedModel})">
+            <summary>
+            Saves a collection of <see cref="T:Configit.Core.Model.PackagedModel"/>s to a VTZ stream.
+            </summary>
+            <param name="stream">The VTZ stream.</param>
+            <param name="models">The collection of models to save.</param>
+            <returns>A task that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.SaveAsync(System.IO.Stream,Configit.Core.Model.PackagedModel)">
+            <summary>
+            Save a <see cref="T:Configit.Core.Model.PackagedModel"/> to a VTZ stream.
+            </summary>
+            <param name="stream">The VTZ stream.</param>
+            <param name="model">The model to save.</param>
+            <returns>A task that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadAllAsync(Configit.ResourceRepository.Provider.IPackage,Configit.ResourceRepository.Resource.Provider.IResourceProviders)">
+            <summary>
+            Loads all <see cref="T:Configit.Core.Model.PackagedModel"/>s from an <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance.
+            </summary>
+            <param name="package">The <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance.</param>
+            <param name="sharedProviders">Optional shared providers of core data structures</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the collection of models.</returns>
+            <exception cref="T:System.IO.InvalidDataException">The data being read uses an unsupported version of the packaged model format.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">The package does not contain an expected <see cref="T:Configit.Core.Model.PackagedModel"/> resource entry.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadAsync(Configit.ResourceRepository.Provider.IPackage,System.String,System.String,Configit.ResourceRepository.Resource.Provider.IResourceProviders)">
+            <summary>
+            Loads a single <see cref="T:Configit.Core.Model.PackagedModel"/> from an <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance.
+            </summary>
+            <param name="package">The <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance.</param>
+            <param name="id">Optional id of the model to load. If no id is specified, and package only contains a single model, the single model is returned.</param>
+            <param name="basePath">Path from which to load the package.</param>
+            <param name="sharedProviders">Optional shared providers</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the <see cref="T:Configit.Core.Model.PackagedModel"/>.</returns>
+            <exception cref="T:System.ArgumentException">If package contains multiple models, and <paramref name="id"/> is not specified.</exception>
+            <exception cref="T:System.IO.InvalidDataException">The data being read uses an unsupported version of the packaged model format.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">The package does not contain an expected <see cref="T:Configit.Core.Model.PackagedModel"/> resource entry.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadAllAsync(System.String)">
+            <summary>
+            Loads all <see cref="T:Configit.Core.Model.PackagedModel"/>s from a VTZ file or a folder with a given path.
+            </summary>
+            <param name="path">The path to a VTZ file or a folder.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the collection of models.</returns>
+            <exception cref="T:System.IO.InvalidDataException">The data being read uses an unsupported version of the packaged model format.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">The file/folder does not contain an expected <see cref="T:Configit.Core.Model.PackagedModel"/> resource entry.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadAsync(System.String,System.String)">
+            <summary>
+            Loads a single <see cref="T:Configit.Core.Model.PackagedModel"/> from a VTZ file or a folder with a given path.
+            </summary>
+            <param name="path">The path to a VTZ file or a folder.</param>
+            <param name="id">Optional id of the model to load. If no id is specified, and package only contains a single model, the single model is returned.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the <see cref="T:Configit.Core.Model.PackagedModel"/>.</returns>
+            <exception cref="T:System.ArgumentException">If package contains multiple models, and <paramref name="id"/> is not specified.</exception>
+            <exception cref="T:System.IO.InvalidDataException">The data being read uses an unsupported version of the packaged model format.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">The file/folder does not contain an expected <see cref="T:Configit.Core.Model.PackagedModel"/> resource entry.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadAllAsync(System.IO.Stream)">
+            <summary>
+            Loads all <see cref="T:Configit.Core.Model.PackagedModel"/>s from a VTZ stream.
+            </summary>
+            <param name="stream">The path to a VTZ stream.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the collection of models.</returns>
+            <exception cref="T:System.IO.InvalidDataException">The data being read uses an unsupported version of the packaged model format.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">The stream does not contain an expected <see cref="T:Configit.Core.Model.PackagedModel"/> resource entry.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadAsync(System.IO.Stream,System.String)">
+            <summary>
+            Loads a single <see cref="T:Configit.Core.Model.PackagedModel"/> from a VTZ stream.
+            </summary>
+            <param name="stream">The path to a VTZ stream.</param>
+            <param name="id">Optional id of the model to load. If no id is specified, and package only contains a single model, the single model is returned.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the <see cref="T:Configit.Core.Model.PackagedModel"/>.</returns>
+            <exception cref="T:System.ArgumentException">If package contains multiple models, and <paramref name="id"/> is not specified.</exception>
+            <exception cref="T:System.IO.InvalidDataException">The data being read uses an unsupported version of the packaged model format.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">The stream does not contain an expected <see cref="T:Configit.Core.Model.PackagedModel"/> resource entry.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadMetaDataAsync(Configit.ResourceRepository.Provider.IPackage,System.String)">
+            <summary>
+            Loads <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> meta data for a single <see cref="T:Configit.Core.Model.PackagedModel"/> from an <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance.
+            </summary>
+            <param name="package">The <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance.</param>
+            <param name="id">Id of the model to load.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> instance.</returns>
+            <exception cref="T:System.ArgumentException">If package contains multiple model, and <paramref name="id"/> is not specified.</exception>
+            <exception cref="T:System.IO.InvalidDataException">The data being read uses an unsupported version of the packaged model format.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">The package does not contain an expected <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> resource entry.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadCompiledDataIndexAsync(Configit.ResourceRepository.Provider.IPackage,System.String)">
+            <summary>
+            Loads for the model with the specified id from an <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadMultiValuedGroupsAsync(Configit.ResourceRepository.Provider.IPackage,System.String)">
+            <summary>
+            Loads MultiValuedGroups for the model with the specified id from an <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadMetaDataAsync(System.String,System.String)">
+            <summary>
+            Loads <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> meta data for a single <see cref="T:Configit.Core.Model.PackagedModel"/> from a VTZ file or a folder with a given path.
+            </summary>
+            <param name="path">The path to a VTZ file or a folder.</param>
+            <param name="id">Optional id of the model to load. If no id is specified, and it only contains a single model, the single model is returned.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> instance.</returns>
+            <exception cref="T:System.ArgumentException">If package contains multiple models, and <paramref name="id"/> is not specified.</exception>
+            <exception cref="T:System.IO.InvalidDataException">The data being read uses an unsupported version of the packaged model format.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">The file/folder does not contain an expected <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> resource entry.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadMetaDataAsync(System.IO.Stream,System.String)">
+            <summary>
+            Loads <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> meta data for a single <see cref="T:Configit.Core.Model.PackagedModel"/> from a VTZ stream.
+            </summary>
+            <param name="stream">The path to a VTZ stream.</param>
+            <param name="id">Optional id of the model to load. If no id is specified, and the stream only contains a single model, the single model is returned.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> instance.</returns>
+            <exception cref="T:System.ArgumentException">If package contains multiple models, and <paramref name="id"/> is not specified.</exception>
+            <exception cref="T:System.IO.InvalidDataException">The data being read uses an unsupported version of the packaged model format.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">The stream does not contain an expected <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> resource entry.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.GetModelPath(Configit.Core.Model.PackagedModel,System.String)">
+            <summary>
+            Gets the path of the folder within the underlying package where the model is stored.
+            </summary>
+            <remarks>
+            The result of this method can be used to add additional resources that are tightly coupled to the model,
+            e.g. scripts or views.
+            </remarks>
+            <returns>The name of the folder</returns>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.LoadInternalAsync(Configit.ResourceRepository.Provider.IPackage,System.String,System.String,Configit.ResourceRepository.Resource.Provider.IResourceProviders)">
+            <summary>
+            Helper loader used for both loading package model and for loading meta data.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.WriteModelAsync(Configit.Core.Model.PackagedModel,Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder,System.String)">
+            <summary>
+            Write model from package using writer and save package using writer.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.SaveModelsAsync(System.Collections.Generic.IEnumerable{Configit.Core.Model.PackagedModel},Configit.Core.Utils.Serialization.ResourceRepository.CorePackageBuilder,System.String)">
+            <summary>
+            Write models from package using writer and save package using writer.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.PackagedModelSerializer.AddLegacyIndexFileAsync(Configit.ResourceRepository.Publisher.IPackageBuilder,System.String)">
+            <summary>
+            To enable loading via ProductModel.CreateFromVtz add an index file indicating that we are using the new generic format.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompiledData.AssignmentJsonSerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Model.VariableDefinitions.Assignment"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.AssignmentJsonSerializer.ToJson(Configit.Core.Model.VariableDefinitions.Assignment)">
+            <summary>
+            Create JSON representation of <paramref name="assignment"/>.
+            All values are serialized as their string equivalent.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.AssignmentJsonSerializer.FromJson(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Deserialize given <paramref name="json"/>, and create object from
+            serialized data
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompiledData.BddSatisfyUnsatCoreSerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Capabilities.Explain.BddSatisfyUnsatCoreData"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.BddSatisfyUnsatCoreSerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.BddSatisfyUnsatCoreSerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.BddSatisfyUnsatCoreSerializer.CapabilityTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.BddSatisfyUnsatCoreSerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.BddSatisfyUnsatCoreSerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompiledData.CompiledDataSerializer">
+            <summary>
+            Serialization manager for serializing <see cref="T:Configit.Core.Model.ICompiledData"/> into a
+            <see cref="T:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.CompiledDataSerializer.CompiledSerializers">
+            <summary>
+            <see cref="T:Configit.Core.Utils.Serialization.Serializers.ICompliedDataEntrySerializer"/>'s defined on this serializer
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompiledData.DaogSolveEntrySerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.DaogSolveData"/>, <see cref="T:Configit.Core.Utils.Serialization.Serializers.IEntrySerializer`1"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.DaogSolveEntrySerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.DaogSolveEntrySerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.DaogSolveEntrySerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.DaogSolveEntrySerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.DaogSolveEntrySerializer.CapabilityTypes">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompiledData.BddNddJitSolveSerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.NddJitSolveData"/>, <see cref="T:Configit.Core.Utils.Serialization.Serializers.IEntrySerializer`1"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.BddNddJitSolveSerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.BddNddJitSolveSerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <summary>
+            
+            </summary>
+            <param name="baseCapability"></param>
+            <param name="writeEntry"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.BddNddJitSolveSerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.BddNddJitSolveSerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.BddNddJitSolveSerializer.CapabilityTypes">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompiledData.NddSolveEntrySerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.NddSolveData"/>, <see cref="T:Configit.Core.Utils.Serialization.Serializers.IEntrySerializer`1"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.NddSolveEntrySerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.NddSolveEntrySerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.NddSolveEntrySerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.NddSolveEntrySerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.NddSolveEntrySerializer.CapabilityTypes">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompiledData.QueryProcessorSerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.QueryProcessorData"/>, <see cref="T:Configit.Core.Utils.Serialization.Serializers.IEntrySerializer`1"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.QueryProcessorSerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.QueryProcessorSerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.QueryProcessorSerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.QueryProcessorSerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.QueryProcessorSerializer.CapabilityTypes">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompiledData.ScopedDefaultDataEntrySerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Capabilities.Defaults.StaticDefaultData"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.ScopedDefaultDataEntrySerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.ScopedDefaultDataEntrySerializer.SupportedTypeIdentifier">
+            <summary>
+            The type name used to identify a serialized object entry, eg. could be json property name etc.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.ScopedDefaultDataEntrySerializer.CapabilityTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.ScopedDefaultDataEntrySerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <summary>
+            Creates an object of type <see cref="T:Configit.Core.Model.ICompiledData"/> by reading an parse the dynamic object along 
+            with external data from the reader.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.ScopedDefaultDataEntrySerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompiledData.StaticDefaultDataEntrySerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Capabilities.Defaults.StaticDefaultData"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.StaticDefaultDataEntrySerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.StaticDefaultDataEntrySerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.CompiledData.StaticDefaultDataEntrySerializer.CapabilityTypes">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.StaticDefaultDataEntrySerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompiledData.StaticDefaultDataEntrySerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.CompileOptionsSerializer">
+            <summary>
+            Serialize a collection of <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompileOptionsSerializer.Configit#Core#Utils#Serialization#Serializers#IJsonSerializer{System#Collections#Generic#IEnumerable{Configit#Core#Compile#CompileOptions#ICompileOptions}}#ToJson(System.Collections.Generic.IEnumerable{Configit.Core.Compile.CompileOptions.ICompileOptions})">
+            <summary>
+            Serialize collection of <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> to JSON
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompileOptionsSerializer.ToJson(System.Collections.Generic.IEnumerable{Configit.Core.Compile.CompileOptions.ICompileOptions})">
+            <summary>
+            Serialize collection of <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> to JSON
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompileOptionsSerializer.Configit#Core#Utils#Serialization#Serializers#IJsonSerializer{System#Collections#Generic#IEnumerable{Configit#Core#Compile#CompileOptions#ICompileOptions}}#FromJson(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            De-serialize a collection of <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> from JSON
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompileOptionsSerializer.FromJson(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            De-serialize a collection of <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> from JSON
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompileOptionsSerializer.Read(System.IO.Stream)">
+            <summary>
+            Read collection of <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> from stream
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompileOptionsSerializer.Read(System.String)">
+            <summary>
+            Read collection of <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> from JSON file
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompileOptionsSerializer.Write(System.Collections.Generic.IEnumerable{Configit.Core.Compile.CompileOptions.ICompileOptions},System.IO.Stream)">
+            <summary>
+            Write collection of <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> to stream
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.CompileOptionsSerializer.Write(System.Collections.Generic.IEnumerable{Configit.Core.Compile.CompileOptions.ICompileOptions},System.String)">
+            <summary>
+            Write collection of <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> to file
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer">
+            <summary>
+            Binary serializer for source models of type <see cref="N:Configit.Core.Serialization.Serializers.LogicModel"/>. This serializer
+            is intended to create compact representations, which can be used as debug information in 
+            a <see cref="N:Configit.Core.Serialization.Serializers.PackagedModel"/> <see cref="N:Configit.Core.Serialization.Serializers.LogicModel"/>s can also be serialized independently in JSON format.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.ModelEntryName">
+            <summary>
+            Entry name used by serializer
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.SupportedTypeIdentifier">
+            <summary>
+            The type name used to identify a serialized object entry, e.g. could be json property name etc.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <summary>
+            Creates an object by reading and parsing the dynamic object along 
+            with external data from the reader.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <summary>
+            Write <paramref name="model"/> to <paramref name="writeEntry"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.Read(System.IO.Stream)">
+            <summary>
+            <para>
+            Read binary <see cref="N:Configit.Core.Model"/> from a stream. Model have been serialized using 
+            <see cref="M:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.Write(Configit.Core.Model.Logic.LogicModel,System.IO.Stream)"/>.
+            </para>
+            <example>Format of save file is:
+            [Id] [Description] [VariableCount] [RuleCount] [VariableDef]* [Rule]* [DoubleConstants] [DateTimeConstants] [StringConstants]
+            </example>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.ReadAsync(System.IO.Stream)">
+            <summary>
+            Asynchronous deserialization of LogicModel from a stream.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.ReadAsync(System.String)">
+            <summary>
+            Read binary model from specified file path, using <see cref="M:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.ReadAsync(System.IO.Stream)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.Write(Configit.Core.Model.Logic.LogicModel,System.IO.Stream)">
+            <summary>
+            Write model to a stream. Content is written in binary format.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.LogicModel.LogicModelBinarySerializer.Write(Configit.Core.Model.Logic.LogicModel,System.String)">
+            <summary>
+            Write model to specified file path. Content is written as binary content.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.PackagedModel.Constants">
+            <summary>
+            Constants used when serializing/deserializing Compiled Packages with
+            <see cref="T:Configit.ResourceRepository.Publisher.IPackageBuilder"/> and <see cref="T:Configit.ResourceRepository.Provider.IPackage"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.PackagedModel.Constants.ModelEntryBase">
+            <summary>
+            The "folder" storing model specific data
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.PackagedModel.Constants.DefaultBddStoreName">
+            <summary>
+            The name of the default bdd store, generally the only one necessary.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.PackagedModel.Constants.DefaultBddStorePath">
+            <summary>
+            The name of the default path to bdd store
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.PackagedModel.Constants.Id">
+            <summary>
+            <see cref="P:Configit.Core.Model.IEntityWithId.Id"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.PackagedModel.LogicModelIgnoreSerializer">
+            <summary>
+            Serializer provided to explicitly ignoring <see cref="N:Configit.Core.Serialization.Serializers.LogicModel"/> when serializing 
+            a <see cref="N:Configit.Core.Serialization.Serializers.PackagedModel"/> using <see cref="T:Configit.Core.Serialization.PackagedModelSerializer"/>. This serializer 
+            cannot be used for de-serialization.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.PackagedModel.LogicModelIgnoreSerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.PackagedModel.LogicModelIgnoreSerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.LogicModelIgnoreSerializer.ReadAsync(Newtonsoft.Json.Linq.JObject,Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.LogicModelIgnoreSerializer.WriteAsync(System.Object,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.PackagedModel.MultiValuedGroupSerializer">
+            <summary>
+            JSON serializer for collection of <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.MultiValuedGroupSerializer.Write(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.MultiValuedGroup})">
+            <summary>
+            Write definition of <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/>s to JSON. Groups 
+            are written as an array
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.MultiValuedGroupSerializer.Read(Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Read collection of multi-valued groups from JSON
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.MultiValuedGroupSerializer.MultiValuedGroupToJson(Configit.Core.Model.VariableDefinitions.MultiValuedGroup)">
+            <summary>
+            Convert single <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/> to JSON 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.MultiValuedGroupSerializer.ReadMultiValuedGroupFromJson(Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Read single <see cref="T:Configit.Core.Model.VariableDefinitions.MultiValuedGroup"/> from JSON 
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer">
+            <summary>
+            A simple wrapper serializer for a <see cref="N:Configit.Core.Serialization.Serializers.PackagedModel"/> that calls on to a serializer
+            for each of its customizable properties.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.VersionAndMetaDataFile">
+            <summary>
+            Name of version file for product model - containing format version for data, info on creation and meta data about the product model
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.OldVersionAndMetaDataFile">
+            <summary>
+            Previously the name of version/metadata file for product model - containing format version for data, info on creation and meta data about the product model.
+            We need to get the information from this when loading old models
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.#ctor(Configit.Core.Utils.Serialization.Serializers.IEntrySerializer{Configit.Core.Model.IDomainSpecificModel}[])">
+            <summary>
+            Creates a compiled model serializer optionally adding additional child serializers.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.ReadMetaDataAsync(Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.String)">
+            <summary>
+            Read <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> from a model reader with a <see cref="F:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.VersionAndMetaDataFile"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.ReadCompiledDataIndexAsync(Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.String)">
+            <summary>
+            Read <see cref="F:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.CompiledDataIndexFile"/> from a model reader
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.ReadVariableDefinitionsAsync(Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.String)">
+            <summary>
+            Read <see cref="F:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.VariableDefinitionsFile"/> from a model reader
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.ReadSolveBehaviorAsync(Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.String)">
+            <summary>
+            Read <see cref="F:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.SolveBehaviorFile"/> from a model reader
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.ReadMultiValuedGroupsAsync(Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.String)">
+            <summary>
+            Read <see cref="F:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.MultiValuedGroupsFile"/> from a model reader
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.ReadOldMetaDataAsync(Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.String)">
+            <summary>
+            Read <see cref="T:Configit.Core.Model.PackagedModelMetaData"/> from a model reader with an <see cref="F:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.OldVersionAndMetaDataFile"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.ReadAsync(Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.String)">
+            <summary>
+            Reads a compiled model from a model reader
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.ReadVarDefAsync(Configit.Core.Utils.Serialization.Containers.PackagedModelReadEntry,System.String)">
+            <summary>
+            Reads variables definitions; get it from a shared resource provider if available
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.Write(Configit.Core.Model.PackagedModel,Configit.Core.Utils.Serialization.Containers.PackagedModelWriteEntry)">
+            <summary>
+            Write a compiled model to a writer.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.SetLogicModelSerializer(Configit.Core.Utils.Serialization.Serializers.IEntrySerializer{Configit.Core.Model.Logic.LogicModel})">
+            <summary>
+            Sets the logic model serializer to use
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.AddCompiledDataSerializer(Configit.Core.Utils.Serialization.Serializers.ICompliedDataEntrySerializer)">
+            <summary>
+            Adds a serializer for compiled data
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.PackagedModel.SinglePackagedModelSerializer.AddDomainModelSerializer(Configit.Core.Utils.Serialization.Serializers.IEntrySerializer{Configit.Core.Model.IDomainSpecificModel})">
+            <summary>
+            Adds a serializer for a domain specific model.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.SolveBehaviorSerializer">
+            <summary>
+            Serializes <see cref="T:Configit.Core.Model.SolveBehavior"/>.
+            Currently only serializes phase information.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.BooleanVariableSerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Model.VariableDefinitions.BooleanVariable"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.BooleanVariableSerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.BooleanVariableSerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.BooleanVariableSerializer.Write(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.BooleanVariableSerializer.Read(System.String,System.Boolean,Newtonsoft.Json.Linq.JObject)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.DateTimeVariableSerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Model.VariableDefinitions.DateTimeVariable"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.DateTimeVariableSerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.DateTimeVariableSerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.DateTimeVariableSerializer.Create(System.String,System.Boolean,System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.Value{System.DateTime}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.DateTimeVariableSerializer.GetValue(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.DateTimeVariableSerializer.GetValueString(System.DateTime)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalSerializer`2">
+            <summary>
+            Base serializer for handling non-enumerated datetime variables.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalSerializer`2.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalSerializer`2.SupportedTypeIdentifier">
+            <summary>
+            The type name used to identify a serialized object entry, e.g. could be json property name etc.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalSerializer`2.Create(System.String,System.Boolean,System.Collections.Generic.IEnumerable{Configit.Core.Model.ValueDefinitions.Value{`1}})">
+            <summary>
+            Create specific <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/> with values defining the final domain
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalSerializer`2.#ctor">
+            <summary>
+            Create and IntervalSerializer 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalSerializer`2.Write(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalSerializer`2.GetValue(System.String)">
+            <summary>
+            Get value from string
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalSerializer`2.GetValueString(`1)">
+            <summary>
+            Convert value to string
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalSerializer`2.Read(System.String,System.Boolean,Newtonsoft.Json.Linq.JObject)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalStringSerializer`1">
+            <typeparam name="TVal">Type of points in interval</typeparam>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalStringSerializer`1.#ctor(System.Func{System.String,`0},System.Func{`0,System.String},System.Collections.Generic.IComparer{`0})">
+            <param name="getValue">Optional override of how values are converted from string (if null the default type converter is used)</param>
+            <param name="getValueString">Optional override of how values are converted to string (if null the default type converter is used)</param>
+            <param name="comparer">Comparer for endpoints in interval, which is used to determine if an interval is a single element.</param>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalStringSerializer`1.ConvertFromString(System.String)">
+            <summary>
+            Parses a <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> from a string
+            </summary>
+            <exception cref="T:System.FormatException">If the string does not represent a valid interval.</exception>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IntervalStringSerializer`1.ConvertToString(Configit.Core.Model.ValueDefinitions.Value{`0})">
+            <summary>
+            Converts <see cref="T:Configit.Core.Model.ValueDefinitions.Value`1"/> to a string representation of the form "Lower;Upper"
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.IVariableDefinitionSerializer`1">
+            <summary>
+            Interface for variable definitions serializers. This type of serializer will write the final domain
+            to the result. This is different from serializing a Logic Model, as the Logic Model contains the declared
+            domain, not the final domain.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IVariableDefinitionSerializer`1.Write(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <summary>
+            All variable definition entries start with a type character a whitespace then a name, followed by a variable type
+            specific string, this part of the serialization is handled by <see cref="T:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer"/>, while this method
+            must write the variable type specific part of the string.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.IVariableDefinitionSerializer`1.Read(System.String,System.Boolean,Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            All variable definition entries start with a type character a whitespace then a name, followed by a variable type
+            specific string, this part of the serialization is handled by <see cref="T:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer"/>. This method
+            must read the variable type specific part of the variable as passed in <paramref name="rawVariable"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.NumberVariableSerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Model.VariableDefinitions.NumberVariable"/> 
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.StringEncoder">
+            <summary>
+            Helper methods for encoding and quoting strings used when serializing strings or 
+            IEnumerable of strings.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.StringEncoder.EscapeLineBreaks(System.String)">
+            <summary>
+            URI encode string - result does not contain any newlines or quote characters.
+            The reverse is <see cref="M:Configit.Core.Serialization.Serializers.VariableDefinitions.StringEncoder.UnescapeLineBreaks(System.String)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.StringEncoder.UnescapeLineBreaks(System.String)">
+            <summary>
+            Unquote and URI decode string. The reverse of <see cref="M:Configit.Core.Serialization.Serializers.VariableDefinitions.StringEncoder.EscapeLineBreaks(System.String)"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.StringVariableSerializer">
+            <summary>
+            Serializer for <see cref="T:Configit.Core.Model.VariableDefinitions.StringVariable"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.StringVariableSerializer.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.StringVariableSerializer.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.StringVariableSerializer.Write(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.StringVariableSerializer.Read(System.String,System.Boolean,Newtonsoft.Json.Linq.JObject)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer">
+            <summary>
+            Reads and writes collections of variable definitions. Follows the pattern defined by <see cref="T:Configit.Core.Utils.Serialization.Serializers.SerializerLookup`1"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer.GetVariableDefinitionsSerializer">
+            <summary>
+            Static factory for creating a <see cref="T:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer"/> that is instantiated
+            with serializers for all variable types
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer.#ctor(System.Collections.Generic.IEnumerable{Configit.Core.Serialization.Serializers.VariableDefinitions.IVariableDefinitionSerializer{Configit.Core.Model.VariableDefinitions.IVariableDefinition}})">
+            <summary>
+            Creates the serializer with support for concrete variable definitions that are supported by the provides serializers.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer.Write(System.Collections.Generic.IEnumerable{Configit.Core.Model.VariableDefinitions.IVariableDefinition})">
+            <summary>
+            Save collection of <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/>s to stream
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer.Write(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <summary>
+            Save one <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/>s to stream
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer.Read(Newtonsoft.Json.Linq.JArray)">
+            <summary>
+            Load all <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/>s from stream
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableDefinitionsSerializer.VariableFromRaw(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Get <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/> from a string
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableSerializerBase`1">
+            <summary>
+            Base class for <see cref="T:Configit.Core.Model.VariableDefinitions.IVariableDefinition"/> serialization, providing constants
+            for property names.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableSerializerBase`1.FinalDomainPropertyName">
+            <summary>
+            Property name for final domain
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableSerializerBase`1.EnumeratedPropertyName">
+            <summary>
+            Property name for <see cref="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.IsEnumerated"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableSerializerBase`1.MultivaluedPropertyName">
+            <summary>
+            Property name for <see cref="P:Configit.Core.Model.VariableDefinitions.IVariableDefinition.IsMultiValued"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableSerializerBase`1.SupportedType">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableSerializerBase`1.SupportedTypeIdentifier">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableSerializerBase`1.Write(Configit.Core.Model.VariableDefinitions.IVariableDefinition)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Serialization.Serializers.VariableDefinitions.VariableSerializerBase`1.Read(System.String,System.Boolean,Newtonsoft.Json.Linq.JObject)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,813 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Structure.Daog</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Structure.Daog.Compiler.BddComponent">
+            <summary>
+            Represents a set of BDDs that are split, merged and simplified. Also represents a set of
+            variables, which might be a super set of support sets for the BDDs. This information is
+            used when construction a <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.BddComponent.CreateBddComponent(Configit.Core.Structure.Daog.Compiler.DaogCompiler,System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd},System.Collections.Generic.IEnumerable{System.Int32},System.Boolean,Configit.Core.Noddy.Algorithms.ProcessingStep[])">
+            <summary>
+            Create a new component from a set of BDDs and a set of variables.
+            The input BDDs will be processed as part of the construction of the component.
+            All variables in support set of BDDs must be mentioned in variables, but it is possible
+            to have variables which are not mentioned in any BDD.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.BddComponent.#ctor(Configit.Core.Structure.Daog.Compiler.DaogCompiler)">
+            <summary>
+            Create component representing an empty / false BDD component
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.BddComponent.#ctor(Configit.Core.Structure.Daog.Compiler.DaogCompiler,Configit.Core.Noddy.Bdd[],System.Int32[])">
+            <summary>
+            Internal constructor
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.BddComponent.Bdds">
+            <summary>
+            Sorted array of processed BDDs which are split, merged and simplified
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.BddComponent.Variables">
+            <summary>
+            Sorted set of variables represented by component. Any variable in the support
+            set of <see cref="P:Configit.Core.Structure.Daog.Compiler.BddComponent.Bdds"/> will be in this set, but more may be added.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.BddComponent.IsFalse">
+            <summary>
+            The component represents the empty solution space when the processed
+            BDDs results in <see cref="P:Configit.Core.Noddy.Noddy.BddFalse"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.BddComponent.GetHashCode">
+            <summary>
+            Cached hash code provided for efficient look-up in dictionary
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.BddComponent.Equals(System.Object)">
+            <summary>
+            First check equality based on hash code, then do actual comparison
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.BddComponent.FindConnectedComponents(Configit.Core.Noddy.Noddy)">
+            <summary>
+            Split current <see cref="T:Configit.Core.Structure.Daog.Compiler.BddComponent"/> into multiple <see cref="T:Configit.Core.Structure.Daog.Compiler.BddComponent"/>s, where
+            each component contains strongly connected BDDs (BDDs with overlapping
+            support set). If this component contains variables that are not used in any of the <see cref="P:Configit.Core.Structure.Daog.Compiler.BddComponent.Bdds"/>
+            then a component with no <see cref="P:Configit.Core.Structure.Daog.Compiler.BddComponent.Bdds"/> and only a single variable will be created for each
+            unused variable. If result is a single component, this component is returned.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Compiler.CompileStatistics">
+            <summary>
+            Statistics collected during compilation
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.CompileStatistics.BddComponentCacheHit">
+            <summary>
+            Number of times an existing node was found for a <see cref="T:Configit.Core.Structure.Daog.Compiler.BddComponent"/>
+            during compile
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.CompileStatistics.BddComponentCacheMiss">
+            <summary>
+            Number of times a new node had to be created for a <see cref="T:Configit.Core.Structure.Daog.Compiler.BddComponent"/>
+            during compilation
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.CompileStatistics.BddComponentWithProcessing">
+            <summary>
+            Number of created <see cref="T:Configit.Core.Structure.Daog.Compiler.BddComponent"/> objects where input BDDs have
+            been processed
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.CompileStatistics.BddComponentWoProcessing">
+            <summary>
+            Number of created <see cref="T:Configit.Core.Structure.Daog.Compiler.BddComponent"/> objects where input BDDs have
+            not been processed
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.CompileStatistics.BddComponentProcessedToFalse">
+            <summary>
+            Number created <see cref="T:Configit.Core.Structure.Daog.Compiler.BddComponent"/> objects that processed to FALSE
+            after constant propagation
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.CompileStatistics.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Compiler.DaogCompiler">
+            <summary>
+            Compiler logic for generating a dynamic And-Or graph from a set of input BDDs.
+            <remarks>
+            As a general rule, compile models through 
+            <see cref="N:Configit.Core.Structure.Daog.Compiler"/> and not through this class directly.
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.DaogCompiler.#ctor(Configit.Core.Noddy.Noddy,System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd},System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            The input <see cref="T:Configit.Core.Noddy.Bdd"/>s typically represent the rules in the source model.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.DaogCompiler.Noddy">
+            <summary>
+            The <see cref="T:Configit.Core.Noddy.Noddy"/> instance used for compiling BDDs
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.DaogCompiler.BddComponentFalse">
+            <summary>
+            Representation of a <see cref="T:Configit.Core.Structure.Daog.Compiler.BddComponent"/> representing the case when
+            processed BDDs yields false
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.DaogCompiler.Compile(System.Boolean,System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{Configit.Core.Noddy.Algorithms.ProcessingStep})">
+            <summary>
+            Compile input BDDs into a dynamic And-Or graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Compiler.DaogCompiler.Statistics">
+            <summary>
+            Statistics obtained during compilation. Is null if no compilation
+            has been performed
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.DaogCompiler.CreateNode(Configit.Core.Structure.Daog.Compiler.BddComponent)">
+            <summary>
+            Main method for creating a node from a <see cref="T:Configit.Core.Structure.Daog.Compiler.BddComponent"/>. Will try to
+            re-use any existing nodes in graph.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.DaogCompiler.CreateNodeFromSingleVarComponent(Configit.Core.Structure.Daog.Compiler.BddComponent)">
+            <summary>
+            Create node that represent the disjunction of allowed values for single variable in
+            component
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.DaogCompiler.CreateAndNode(System.Collections.Generic.IEnumerable{Configit.Core.Structure.Daog.Compiler.BddComponent})">
+            <summary>
+            Create an AND node that represents the conjunction of each of the
+            nodes that will be created by each component in the input
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.DaogCompiler.CreateOrNode(Configit.Core.Structure.Daog.Compiler.BddComponent)">
+            <summary>
+            Create an OR node that picks a variable, and creates the disjunction
+            of the values for the picked variables
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Compiler.DaogCompiler.PickDecisionVar(Configit.Core.Structure.Daog.Compiler.BddComponent)">
+            <summary>
+            Find the most suitable variable to branch on
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Compiler.NamespaceDoc">
+            <summary>
+            Compilation of <see cref="T:Configit.Core.Structure.Daog.Daog"/> structures used for configuration
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Daog">
+            <summary>
+            Static array-based representation of an decomposable And-Or graph. This representation
+            is generated from <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/> after the graph has been constructed
+            by the compiler.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.#ctor(Configit.Core.Structure.Daog.Dynamic.DynamicDaog)">
+            <summary>
+            Create static representation from a dynamic representation of a DAOG. 
+            The dynamic <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/> is created during compile time, 
+            and the static <see cref="T:Configit.Core.Structure.Daog.Daog"/> is used during run-time.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.#ctor(System.Int32[],System.Int32[],System.Int32[])">
+            <summary>
+            Create a Daog with nodes, edges and terminals as specified. Used
+            When deserializing Daogs objects 
+            Configit.Core.Serialization.Helpers.DaogIOExtensions
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.UsedVariables">
+            <summary>
+            Indication of which of the model variables that are used in the graph. 
+            Unused variables are free.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.BlockedValues">
+            <summary>
+            Global value index of model variables marking all values that are blocked with true
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.Root">
+            <summary>
+            Index in <see cref="P:Configit.Core.Structure.Daog.Daog.Nodes"/> that defines the root of the graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.NodeCount">
+            <summary>
+            Number of nodes in graph.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.Nodes">
+            <summary>
+            Every node is described as an integer, where bits 29-30 are used to define the
+            <see cref="M:Configit.Core.Structure.Daog.Daog.NodeType(System.Int32)"/> and bits 0-28 are used to define the offset in 
+            <see cref="P:Configit.Core.Structure.Daog.Daog.Edges"/> where the first edge for the node starts. The edge offset
+            is read using <see cref="M:Configit.Core.Structure.Daog.Daog.EdgeOffset(System.Int32)"/>. 
+            </summary>
+            <remarks>There is node count + 1 entries in <see cref="P:Configit.Core.Structure.Daog.Daog.Nodes"/>, where the 
+            last element is the number of edges in total. This allows easy iteration throgh
+            edges for all nodes, including the last node in the graph.</remarks>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.Edges">
+            <summary>
+            An edge is defined by the index in <see cref="P:Configit.Core.Structure.Daog.Daog.Nodes"/> that the 
+            edge points to
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.TerminalValues">
+            <summary>
+            Terminal nodes are put first in <see cref="P:Configit.Core.Structure.Daog.Daog.Nodes"/>. For the i'th terminal
+            node, the variable is read using the <see cref="M:Configit.Core.Structure.Daog.Daog.TerminalVariable(System.Int32)"/> method
+            and the value is retrieved from <see cref="P:Configit.Core.Structure.Daog.Daog.TerminalValues"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.VariableDomainSizes">
+            <summary>
+            Domain sizes of the variables supported by the graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.SolutionCount">
+            <summary>
+            Solution count for graph without any assignments 
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.TerminalNodeCount">
+            <summary>
+            Number of terminal nodes in graph. This will always be smaller than 
+            <see cref="P:Configit.Core.Structure.Daog.Daog.NodeCount"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Daog.VariableCount">
+            <summary>
+            Number of model variables represented in graph
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.TerminalVariable(System.Int32)">
+            <summary>
+            Get variable represented by terminal node. Stored in bits 0-28
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.EdgeOffset(System.Int32)">
+            <summary>
+            Get offset of first edge for specified node
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.NodeType(System.Int32)">
+            <summary>
+            Type of node with specified index. Stored in bits 29 and 30
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.PrintAsDot(System.Byte[])">
+            <summary>
+            Output entire graph in Graphviz format as string 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.PrintAsDot(System.IO.TextWriter,System.Byte[])">
+            <summary>
+            Output entire graph in Graphviz format to specified writer
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.PrintAsDot(System.String,System.Byte[])">
+            <summary>
+            Output entire graph in Graphviz format, and write result to specified
+            file
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.BuildTerminalNodes(System.Int32[])">
+            <summary>
+            Build Terminal nodes from <paramref name="variableDomainSizes"/>, updated
+            <see cref="P:Configit.Core.Structure.Daog.Daog.Nodes"/> and <see cref="P:Configit.Core.Structure.Daog.Daog.TerminalValues"/>. Used during initializtion.
+            Requires <see cref="P:Configit.Core.Structure.Daog.Daog.Nodes"/> and <see cref="P:Configit.Core.Structure.Daog.Daog.TerminalValues"/> to be created.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.CreateUsedVariables(System.Int32[])">
+            <summary>
+            Create bitarray of variables that are used in the graph. Used during deserialzing.
+            Requires <see cref="P:Configit.Core.Structure.Daog.Daog.BlockedValues"/> to be initialized.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.CreateBlockedValues(System.Int32[],System.Int32,System.Int32)">
+            <summary>
+            Creates a SegmentedBitArray of blocked values by travesing the graph. Used during 
+            deserializing. Requires <see cref="P:Configit.Core.Structure.Daog.Daog.Nodes"/>, <see cref="P:Configit.Core.Structure.Daog.Daog.Edges"/> and
+            <see cref="P:Configit.Core.Structure.Daog.Daog.TerminalValues"/> to be initialized.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.UpdateBlockedValues(Configit.Core.Utils.SegmentedBitArray,Configit.Core.Utils.FastBitArray,System.Int32)">
+            <summary>
+            Recursively traverse graph, finding blocked values.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.CalculateSolutionCount(System.Int32,System.Collections.Generic.Dictionary{System.Int32,System.Double})">
+            <summary>
+            Traverse graph, calculate solution count as if no assignments were made.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Daog.BuildNodes(Configit.Core.Structure.Daog.Dynamic.DaogNode,System.Int32@,System.Int32@,System.Collections.Generic.Dictionary{System.Int32,System.Int32})">
+            <summary>
+            Recursively run through graph, building up nodes
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.DaogNodeType">
+            <summary>
+            Specification of node type in <see cref="T:Configit.Core.Structure.Daog.Daog"/> graph. Node type
+            is specified using bits 29 and 30 (bit 31 is not used to avoid confusion
+            with sign bit).
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Daog.DaogNodeType.Terminal">
+            <summary>
+            Terminal nodes represents a variable and value pair
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Daog.DaogNodeType.And">
+            <summary>
+            Decomposable AND node
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Daog.DaogNodeType.Or">
+            <summary>
+            Disjunctive OR node
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Daog.DaogNodeType.Unused">
+            <summary>
+            Node is not considered part of graph
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.DaogAndOrNode">
+            <summary>
+            Common setting for And and Or nodes. Children are expected to be sorted
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogAndOrNode.#ctor(Configit.Core.Structure.Daog.Dynamic.DynamicDaog,Configit.Core.Structure.Daog.Dynamic.DaogNodeChildren)">
+            <summary>
+            Create new node
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogAndOrNode.Children">
+            <summary>
+            Children of this node
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.DaogNode">
+            <summary>
+            Node in <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/> graph. 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.#ctor(Configit.Core.Structure.Daog.Dynamic.DynamicDaog)">
+            <summary>
+            Create new node that belongs to specified graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.Children">
+            <summary>
+            Child nodes of graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.Parents">
+            <summary>
+            The nodes that has this node as children.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.MakeBiDirectional">
+            <summary>
+            Create and populate <see cref="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.Parents"/> for this node and 
+            all children of the node
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.ValidateParentPointers">
+            <summary>
+            Provided for debug only! Validate that parent pointers are 
+            consistent with the child pointers.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.ChangeNode(System.Collections.Generic.IEnumerable{Configit.Core.Structure.Daog.Dynamic.DaogNode},Configit.Core.Structure.Daog.Dynamic.DaogNode,System.Collections.Generic.IEnumerable{Configit.Core.Structure.Daog.Dynamic.DaogNode},Configit.Core.Structure.Daog.Dynamic.DaogNode)">
+            <summary>
+            Change the children of this node. Method can both remove and add children. The 
+            graph will be kept consistent, thus, the parents of this node including all children 
+            and parent nodes will be updated throughout the graph and the node cache will be updated. 
+            </summary>
+            <returns>If there exist a node that has the same children as this node after the change
+            then the other existing node is returned. Otherwise, 'this' node is returned with updated children.
+            Note: no new node is created by this method, though an existing node's children might be changed</returns>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.Graph">
+            <summary>
+            Dynamic graph that nodes belongs to
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.NodeIndex">
+            <summary>
+            The internal index of the node act as a unique identifier of the node within the 
+            <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.CompareTo(Configit.Core.Structure.Daog.Dynamic.DaogNode)">
+            <summary>
+            Nodes are compared by looking at the <see cref="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.NodeIndex"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.Equals(System.Object)">
+            <summary>
+            Two nodes are considered equal if they have the same <see cref="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.NodeIndex"/>
+            and belongs to the same graph.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.GetHashCode">
+            <summary>
+            The hash code depends on <see cref="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.NodeIndex"/> and the <see cref="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.Graph"/>
+            the node belongs to
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.OperationCounter">
+            <summary>
+            Counter used by operations that traverses the graph. Used to check if 
+            a node has already been visitied by the operation.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.PrintAsDot(System.IO.TextWriter)">
+            <summary>
+            Output node in Graphviz format to supplied writer. Calls recursively
+            on children nodes
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.FormatAsDotNode">
+            <summary>
+            Get string representation of node in Graphviz .dot format
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.DaogNodeAnd">
+            <summary>
+            And node in graph. Children are expected to be sorted.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNodeAnd.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.DaogNodeChildren">
+            <summary>
+            Node children are represented as an array of <see cref="T:Configit.Core.Structure.Daog.Dynamic.DaogNode"/>s.
+            This class is provided to be able to do a static calculation of the hash value
+            on construction time, to speed up caches using node children.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogNodeChildren.Nodes">
+            <summary>
+            The child nodes
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNodeChildren.#ctor(System.Collections.Generic.IEnumerable{Configit.Core.Structure.Daog.Dynamic.DaogNode})">
+            <summary>
+            Constructor will sort input children, and create a hash value of
+            the children
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogNodeChildren.Count">
+            <summary>
+            Number of children
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNodeChildren.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNodeChildren.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNodeChildren.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.DaogNodeFalse">
+            <summary>
+            FALSE terminal
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNodeFalse.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.DaogNodeOr">
+            <summary>
+            Or node in graph. Children are expected to be sorted.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNodeOr.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.DaogNodeTerminal">
+            <summary>
+            Terminal node that represents an assignment to a variable
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogNodeTerminal.Variable">
+            <summary>
+            Index of variable represented by assignment terminal
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DaogNodeTerminal.Value">
+            <summary>
+            Index of value in domain of <see cref="P:Configit.Core.Structure.Daog.Dynamic.DaogNodeTerminal.Variable"/> represented by assignment terminal
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNodeTerminal.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.DaogNodeTrue">
+            <summary>
+            TRUE terminal 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DaogNodeTrue.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog">
+            <summary>
+            Dynamic And-Or graph used to represent DAOG structure while the graph is being compiled.
+            The graph is designed so it various optimization algorithms can be applied to
+            it for restructuring the graph before it is turned into an <see cref="T:Configit.Core.Structure.Daog.Daog"/>
+            </summary>
+            <summary>
+            Import part of a dynamic DAOG
+            </summary>
+            <summary>
+            Import part of a dynamic DAOG
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.#ctor(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Construct an empty dynamic And-Or graph which support the supplied variables
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.VariableCount">
+            <summary>
+            Number of variables in graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.TerminalNodes">
+            <summary>
+            All terminal nodes representing variable, value assignments
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.VariableDomainSizes">
+            <summary>
+            Domain sizes of the variables supported by the graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.VariableDomainOffsets">
+            <summary>
+            Offset of first value for each variable
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.TerminalFalse">
+            <summary>
+            False terminal for graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.TerminalTrue">
+            <summary>
+            True terminal for graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.Root">
+            <summary>
+            Root node of the graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.CreatedNodeCount">
+            <summary>
+            Counter used for holding track of number of nodes created for this graph. Note that
+            some nodes may later be pruned from the graph. This counter is used by the <see cref="T:Configit.Core.Structure.Daog.Dynamic.DaogNode"/>
+            constructor.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.Statistics">
+            <summary>
+            Information about various statistics gathered while traversing graph. Statistics
+            is automatically build when accessed, and old cached statistics is automatically
+            deleted when graph is modified.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.ClearStatistics">
+            <summary>
+            Should be called when someone changes the graph, and the statistics is
+            no longer up to date
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.GetTerminalNode(System.Int32,System.Int32)">
+            <summary>
+            Get node that represents assignment of value to variable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.GetAndNode(System.Collections.Generic.IEnumerable{Configit.Core.Structure.Daog.Dynamic.DaogNode})">
+            <summary>
+            Get AND node that contains specified children. Will re-use existing
+            nodes if another AND node with identical children already exist
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.GetOrNode(System.Collections.Generic.IEnumerable{Configit.Core.Structure.Daog.Dynamic.DaogNode})">
+            <summary>
+            Get OR node that contains specified children. Will re-use existing
+            nodes if another OR node with identical children already exist
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.MakeBiDirectional">
+            <summary>
+            Create <see cref="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.Parents"/> pointers on all nodes in graph, preparing
+            it for post optimization steps.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.ValidateParentPointers">
+            <summary>
+            Used for debug purpose only!
+            Will throw an exception if any of the nodes in the graph
+            does not pass <see cref="M:Configit.Core.Structure.Daog.Dynamic.DaogNode.ValidateParentPointers"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.Equals(System.Object)">
+            <summary>
+            Two graphs are identical only if they represent the same instance.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.GetHashCode">
+            <summary>
+            Overridden due to performance reasons. The hash of each node in graph depends on
+            hash of the graph, and since nodes are used in collections, we wish to have
+            an efficient hash implementation of a graph.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.PrintAsDot(System.IO.TextWriter)">
+            <summary>
+            Output entire graph in Graphviz format to specified writer
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.PrintAsDot(System.String)">
+            <summary>
+            Output entire graph in Graphviz format, and write result to specified
+            file
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.PostOptimizations">
+            <summary>
+            Invoke post compilation optimization methods
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.MergeDaog(Configit.Core.Structure.Daog.Dynamic.DynamicDaog)">
+            <summary>
+            Adds the solutions in the input daog to the local daog
+            </summary>
+            <param name="otherDaog"> The input daog whose solutions will be added</param>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.GetEnumerator">
+            <summary>
+            Enumerator over all nodes in graph, always returning child nodes
+            before parent nodes.
+            </summary>
+            <remarks>Do not alter the <see cref="P:Configit.Core.Structure.Daog.Dynamic.DaogNode.OperationCounter"/>
+            on any node while iterating through the nodes in the graph/// </remarks>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.Export(System.String)">
+            <summary>
+            Export this <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/> to specified file
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.Export(System.IO.TextWriter)">
+            <summary>
+            Export this <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/> to a text writer
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.Import(System.String)">
+            <summary>
+            Import a <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/> from specified file
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.Import(System.IO.TextReader)">
+            <summary>
+            Import a <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/> from a text reader
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.ReadInt(System.IO.TextReader,System.Int32@)">
+            <summary>
+            Read single integer from a single line
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.ReadIntLines(System.IO.TextReader,System.Int32,System.Int32@)">
+            <summary>
+            Read multiple integer values on multiple integer lines
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.DynamicDaog.ReadNode(System.IO.TextReader,Configit.Core.Structure.Daog.Dynamic.DynamicDaog,System.Collections.Generic.Dictionary{System.Int32,Configit.Core.Structure.Daog.Dynamic.DaogNode},System.Int32@)">
+            <summary>
+            Read node, and insert node into graph. Returns newly created node
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.GraphStatistics">
+            <summary>
+            Statistics gathered about <see cref="T:Configit.Core.Structure.Daog.Dynamic.DynamicDaog"/> while traversing graph.
+            Used to get information about number of different nodes, how nodes interrelate 
+            etc.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.GraphStatistics.AndNodeCount">
+            <summary>
+            Total number of AND nodes in graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.GraphStatistics.OrNodeCount">
+            <summary>
+            Total number of OR nodes in graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.GraphStatistics.TerminalNodeCount">
+            <summary>
+            Total number of terminal nodes in graph. This number might be 
+            smaller than the sum of the domain sizes of the variables, as it only
+            counts the values which are not blocked.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.GraphStatistics.TotalNodeCount">
+            <summary>
+            Total number of nodes in the graph.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.GraphStatistics.TotalEdgeCount">
+            <summary>
+            Total number of edges in graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.GraphStatistics.SolutionCount">
+            <summary>
+            Number of solutions represented by graph
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Daog.Dynamic.GraphStatistics.MaxSonCount">
+            <summary>
+            Max number of sons any node has
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.GraphStatistics.#ctor(Configit.Core.Structure.Daog.Dynamic.DynamicDaog)">
+            <summary>
+            Create new statistics object based on specified graph
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.Dynamic.GraphStatistics.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.Dynamic.NamespaceDoc">
+            <summary>
+            Definition of DAOG structure that allows dynamic addtion of nodes. This structure
+            is used during compilation. During configuration, the dynamic structure is transformed
+            into a static <see cref="T:Configit.Core.Structure.Daog.Daog"/> structure.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.NamespaceDoc">
+            <summary>
+            Definition of a static De-composable And Or Graph, a datastructure used to represent solution
+            spaces when configuring.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.PostOptimization.MergeSingleUseAndNodes">
+            <summary>
+            This merges AND nodes having only one parent and the parent is also an AND node.
+            In such scenario, both the AND nodes could be merged, resulting in a node functionally equivalent to the parent AND node.
+            Such a merger results in decreasing one node and one edge.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Daog.PostOptimization.MergeSingleUseAndNodes.GetNextNode(Configit.Core.Structure.Daog.Dynamic.DaogNode,System.Collections.Generic.HashSet{System.Int32})">
+            <summary>
+            As the ChangeNode function call in the Process method, can change the ancestors of a node in the 
+            DAOG, standard depth first search methods cannot be used. 
+            Hence, the need for a slightly more complex method to recursively process all the nodes in a dynamically
+            changing graph.
+            The "currNode" is the position of a marker used to specify the root-node initially or a recently processed node.
+            </summary>
+            <param name="currNode"> The node with current position</param>
+            <param name="processedNodes"> Set of nodes which are already processed </param>
+            <returns>The method returns the next node for processing</returns>
+        </member>
+        <member name="T:Configit.Core.Structure.Daog.PostOptimization.OptimizeAndNodeFanouts">
+            <summary>
+            This method heuristically attempts to reduce the number of outgoing edges of AND nodes.
+            If in a set of AND nodes A, each AND node contains a same set of child-nodes S, then a new AND node
+            with S child-nodes can be created and each occurrence of S child-nodes in the A AND-nodes can be replaced
+            by the new AND node.
+            </summary>
+        </member>
+    </members>
+</doc>

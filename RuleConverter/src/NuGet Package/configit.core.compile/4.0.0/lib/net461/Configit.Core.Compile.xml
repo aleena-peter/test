@@ -1,0 +1,557 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Compile</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Compile.Compilation.BddProcessingStatistics">
+            <summary>
+            Helper that writes out information about preprocessed BDDs.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.BddProcessingStatistics.#ctor(System.Action{System.String})">
+            <summary>
+            Create progress handler, that will write out information about the pre
+            processing of BDDs using the provided <paramref name="addProgress"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.BddProcessingStatistics.StartPhase(System.String)">
+            <summary>
+            Start timing of a named pre processing phase (will not log)
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.BddProcessingStatistics.EndPhase(System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd})">
+            <summary>
+            End timing of the last started pre processing phase started using
+            <see cref="M:Configit.Core.Compile.Compilation.BddProcessingStatistics.StartPhase(System.String)"/>. Will print timing information to output handler
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.Compilation.Compiler">
+            <summary>
+            <para>The <see cref="T:Configit.Core.Compile.Compilation.Compiler"/> class is the central point for compiling the build-in 
+            implementations of <see cref="T:Configit.Core.Model.ICompiledData"/> for a given <see cref="P:Configit.Core.Compile.Compilation.Compiler.Model"/>.</para>
+            <para>Once a compiler is created, the underlying <see cref="P:Configit.Core.Compile.Compilation.Compiler.Model"/> cannot 
+            be changed. If the model is changed, an exception will be thrown during next
+            compilation.</para>
+            <remarks>There is no need to manually call <see cref="N:Configit.Core.Compile"/> when using this compiler</remarks>
+            </summary>
+            <summary>
+            Compiler of NDD JIT <see cref="T:Configit.Core.Model.ICompiledData"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Compile.Compilation.Compiler._nodeSize">
+            <summary>
+            The initial node size used when allocating the <see cref="N:Configit.Core.Noddy"/> instance.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Compile.Compilation.Compiler._modelHash">
+            <summary>
+            Hash of model as it looks like immediately after compiler instance has been
+            created (after variables are re-ordered, if need be).
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.Compilation.Compiler.Model">
+            <summary>
+            Model that the compiler operates on.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.#ctor(Configit.Core.Model.Logic.LogicModel,System.Int32,System.Int32,Configit.Core.Compile.CompileOptions.IModelOptimizerOptions)">
+            <summary>
+            The <paramref name="model"/> that is passed to the compiler must be type checked. If the
+            model contains any type errors, an exception will be thrown.
+            </summary>
+            <param name="model">Final model used for all following calls to <see cref="M:Configit.Core.Compile.Compilation.Compiler.CompileData(Configit.Core.Compile.CompileOptions.ICompileOptions)"/>. 
+            The model cannot be changed after compiler instance has been generated</param>
+            <param name="nodeSize">Specifies the initial number of BDD nodes allocated when starting
+            the compilation of rules into BDDs. Specify a higher number of avoid re-allocations.</param>
+            <param name="cacheRatio">Ratio between number of BDD nodes and nodes in cache tables. When
+            the BDD node table is expanded, the size of the cache is set to the maximum of minCacheSize and
+            BDD node size * cacheRatio</param>
+            <param name="modelOptimizerOptions">Options defining how to generate a suitable
+            variable order. If options are given, then variable are re-ordered as first 
+            time a compilation takes place</param>
+            <exception cref="T:System.ArgumentException">If model contains any type errors</exception>
+        </member>
+        <member name="P:Configit.Core.Compile.Compilation.Compiler.Noddy">
+            <summary>
+            <see cref="P:Configit.Core.Compile.Compilation.Compiler.Noddy"/> instance holding all BDDs for compiler
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.CompileData(Configit.Core.Compile.CompileOptions.ICompileOptions)">
+            <summary>
+            Compile a <see cref="T:Configit.Core.Model.ICompiledData"/> based on the type. The specified
+            type must be an instance of <see cref="T:Configit.Core.Model.ICompiledData"/>.
+            <remarks>
+            Use this method when compiling a dynamically defined set of compiled data types. If the compiled data type
+            is static, the specific compile method can be used directly, see for example <see cref="M:Configit.Core.Compile.Compilation.Compiler.CompileDaogSolve(Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions)"/>
+            </remarks>
+            </summary>
+            <exception cref="T:System.InvalidOperationException">If <see cref="P:Configit.Core.Compile.Compilation.Compiler.Model"/> has changed
+            since the compiler instance was generated.</exception>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.CompileModel(Configit.Core.Model.IDomainSpecificModel,Configit.Core.Model.SolveBehavior,Configit.Core.Compile.CompileOptions.ICompileOptions[])">
+            <summary>
+            Creates a compiled model populated with compiled data according to the specified options.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.CompileModel(Configit.Core.Compile.CompileOptions.ICompileOptions[])">
+            <summary>
+            Creates a compiled model populated with compiled data according to the specified options.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.SolveBehaviorFromJitOptions(Configit.Core.Compile.CompileOptions.ICompileOptions[])">
+            <summary>
+            Provides a default solve behavior when all solvers are jit-based, ensuring
+            that a phase exists providing all scope variables. While this works
+            for multiple solvers, it does not provide ideal behavior in this case.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.OnProgress(System.Type,System.String)">
+            <summary>
+            Call this method to provide progress information while compiling 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.EnsureOrderedAndCompiled">
+            <summary>
+            Method ensuring that input model has been compiled into BDDs
+            and that variable ordering heuristics (if any) are applied. All local
+            compile methods (turning a <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> into an <see cref="T:Configit.Core.Model.ICompiledData"/>,
+            like <see cref="M:Configit.Core.Compile.Compilation.Compiler.CompileDaogSolve(Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions)"/>, <see cref="M:Configit.Core.Compile.Compilation.Compiler.CompileNddJitSolve(Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions)"/> etc. ) call this
+            method as the first step.
+            <remarks>This method is public as it might be necessary to call it to ensure that variable ordering
+            is performed before creating the individual <see cref="T:Configit.Core.Compile.CompileOptions.ICompileOptions"/> in case 
+            these contains variable indices (which will change after variable ordering).</remarks>
+            <remarks>Once this method has been called, a new <see cref="T:Configit.Core.Compile.Compilation.Compiler"/> instance must be
+            created if the underlying <see cref="P:Configit.Core.Compile.Compilation.Compiler.Model"/> changes.</remarks>
+            <remarks>Variable ordering and actual BDD compilation is only done upon first call to this
+            method. Any subsequent call to this method will have no effect (and very little cost).</remarks>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.FlattenInverted(System.Collections.Generic.IEnumerable{System.Collections.Generic.IDictionary{Configit.Core.Noddy.Bdd,System.Collections.Generic.HashSet{Configit.Core.Noddy.Bdd}}})">
+            <summary>
+            When we pre-process a <see cref="T:Configit.Core.Noddy.Bdd"/>, each step produces a map from each output <see cref="T:Configit.Core.Noddy.Bdd"/> 
+            to the source <see cref="T:Configit.Core.Noddy.Bdd"/>(s). This function combines these maps into a single map that maps
+            the final pre-processed <see cref="T:Configit.Core.Noddy.Bdd"/>s directly to the original source <see cref="T:Configit.Core.Noddy.Bdd"/>s.
+            <remarks>
+            The maps must be ordered in the order they were produced, and will be processed in reverse order.
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.GetUnprocessedRuleBdds">
+            <summary>
+            Get BDDs for rules. Upon first access the input model is type checked and the rules
+            are compiled into BDDs. All trivially true BDDs are removed
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.GetUnprocessedBddToRule">
+            <summary>
+            Get mapping from unprocessed BDD to rule in input model. Each rule can be represented 
+            by multiple BDDs. Note that key might be <see cref="P:Configit.Core.Noddy.Noddy.BddTrue"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.GetSplitBdds">
+            <summary>
+            The <see cref="M:Configit.Core.Compile.Compilation.Compiler.GetUnprocessedRuleBdds"/> which have been split using
+            <see cref="M:Configit.Core.Noddy.Algorithms.Algorithms.Split(System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd},System.Boolean)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.GetSplitBddsTracking">
+            <summary>
+            The <see cref="M:Configit.Core.Compile.Compilation.Compiler.GetUnprocessedRuleBdds"/> which have been split using
+            <see cref="M:Configit.Core.Noddy.Algorithms.Algorithms.Split(System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd},System.Boolean)"/>
+            including the tracking from each split BDD to the original BDDs in
+            <see cref="M:Configit.Core.Compile.Compilation.Compiler.GetUnprocessedRuleBdds"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.GetSplitMergedBdds">
+            <summary>
+            The BDDs from <see cref="M:Configit.Core.Compile.Compilation.Compiler.GetSplitBdds"/> which has been merged into a smaller set of BDDs based
+            on their common support set.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.GetSplitMergedBddsTracking">
+            <summary>
+            The BDDs from <see cref="M:Configit.Core.Compile.Compilation.Compiler.GetSplitBdds"/> which has been merged into a smaller set of BDDs based
+            on their common support set, including the tracking from the merged BDDs to the 
+            original split BDDs.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.GetSplitMergedSimplifiedBdds">
+            <summary>
+            The BDDs from <see cref="M:Configit.Core.Compile.Compilation.Compiler.GetSplitMergedBdds"/> which has been simplified against each other
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.GetSplitMergedSimplifiedBddsTracking">
+            <summary>
+            The BDDs from <see cref="M:Configit.Core.Compile.Compilation.Compiler.GetSplitMergedBdds"/> which has been simplified against each other
+            including their tracking from simplified BDD to the original merged BDDs
+            </summary>
+        </member>
+        <member name="E:Configit.Core.Compile.Compilation.Compiler.Progress">
+            <summary>
+            Called with progress messages during compilation.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.Compilation.Compiler.CompileProgressHandler">
+            <summary>
+            Handler for <see cref="E:Configit.Core.Compile.Compilation.Compiler.Progress"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.CompileDaogSolve(Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions)">
+            <summary>
+            Generate <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.IValidDomainSolveData"/> that uses a single 
+            <see cref="T:Configit.Core.Structure.Daog.Daog"/> to validate domains. First, a dynamic And-Or graph is generated,
+            then it is transformed into a static And-Or graph that can be used for configuration. 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.CompileNddJitSolve(Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions)">
+            <summary>
+            Compile a <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.NddJitSolveData"/> that JIT compiles an <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> 
+            as soon as scope is fixed. Falls back to an NDD approach if no scope variables are given.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.CompileNddSolve(Configit.Core.Compile.CompileOptions.NddSolveCompileOptions)">
+            <summary>
+            Generate <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.IValidDomainSolveData"/> that uses a single 
+            <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> to validate domains
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.CompileQueryProcessor(Configit.Core.Compile.CompileOptions.QueryProcessorCompileOptions)">
+            <summary>
+            Compile a <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.QueryProcessorData"/> based on the given options.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.Compiler.CompileBddSatisfyUnsatCore(Configit.Core.Compile.CompileOptions.BddSatisfyUnsatCoreCompileOptions)">
+            <summary>
+            Compiles data for finding an unsatisfiable core using BDDs and 
+            the <see cref="M:Configit.Core.Noddy.Noddy.Satisfy(System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd},System.Int32)"/> algorithm.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.Compilation.IModelOptimizer">
+            <summary>
+            Interface describing a module that can optimize variable ordering of 
+            a <see cref="N:Configit.Core.Model"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.IModelOptimizer.Optimize(Configit.Core.Model.Logic.LogicModel,System.Collections.Generic.IEnumerable{System.Int32},System.Int32,System.Int32)">
+            <summary>
+            Find variable order for specified model. If <paramref name="fixedPrefix"/>
+            is specified, the variables must be put first in variable ordering.
+            </summary>
+            <param name="model">Model to optimize</param>
+            <param name="fixedPrefix">Fixed sequence that the resulting variable 
+            order must start with. If not defined, result may start
+            with any sequence of variables</param>
+            <param name="nodeSize">Initial number of nodes in the Noddy instance. The node table
+            will automatically be expanded when required, but the expansion is an expensive process.
+            Default size of BDD table is <see cref="F:Configit.Core.Noddy.Noddy.StandardNodeSize"/> nodes, which is approx. 
+            20mb used for the node table.
+            </param>
+            <param name="cacheRatio">Ratio between number of BDD nodes and nodes in cache tables. When
+            the BDD node table is expanded, the size of the cache is set to the maximum of minCacheSize and
+            BDD node size * cacheRatio</param>
+        </member>
+        <member name="T:Configit.Core.Compile.Compilation.NamespaceDoc">
+            <summary>
+            Compilation of <see cref="T:Configit.Core.Model.Logic.LogicModel"/>s
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.Compilation.UnsatisfiableModelException">
+            <summary>
+            Thrown when the model is found to be unsatisfiable during compilation
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.Compilation.UnsatisfiableModelException.ModelId">
+            <summary>
+            Versioned ID of the <see cref="N:Configit.Core.Model"/> that was found to be unsatisfiable.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.Compilation.UnsatisfiableModelException.CompiledDataType">
+            <summary>
+            The type of runtime data that was being compiled when it was
+            detected that the model was unsatisfiable.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.UnsatisfiableModelException.GetUnsatCore(System.Int32)">
+            <summary>
+            Produces an unsatisfiable core of rules that causes the model to be unsatisfiable. Potentially
+            resource intensive on first access.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.Compilation.UnsatisfiableModelException.GetUnsatExplanation(System.Int32)">
+            <summary>
+            Produces a step-by-step explanation of the unsatisfiable core from <see cref="M:Configit.Core.Compile.Compilation.UnsatisfiableModelException.GetUnsatCore(System.Int32)"/>.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.Compilation.UnsatisfiableModelException.DummyUnsatCoreFinder">
+            <summary>
+            Helper class to supply the necessary info to <see cref="T:Configit.Core.Capabilities.Explain.ExplanationGenerator"/>
+            to explain <see><cref>UnsatisfiableModelException.GetUnsatCore</cref></see>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.Compilation.UnsatisfiableModelException.Message">
+            <summary>
+            Standard message for informing about model unsatisfiable for a given runtime data
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.CompileOptions.BddSatisfyUnsatCoreCompileOptions">
+            <summary>
+            Options for compiling <see cref="T:Configit.Core.Capabilities.Explain.BddSatisfyUnsatCoreData"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.BddSatisfyUnsatCoreCompileOptions.Id">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.BddSatisfyUnsatCoreCompileOptions.ProcessingChain">
+            <summary>
+            Definition of how much to process the BDDs before when compiling
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.CompileOptions.BddSatisfyUnsatCoreCompileOptions.#ctor(Configit.Core.Compile.CompileOptions.ProcessingChain,System.String)">
+            <summary>
+            Create new compile options for generating <see cref="T:Configit.Core.Capabilities.Explain.BddSatisfyUnsatCoreData"/>
+            </summary>
+            <param name="processingChain">Define how much to process BDDs. Default is to split, merge and simplify</param>
+            <param name="id"><see cref="P:Configit.Core.Compile.CompileOptions.BddSatisfyUnsatCoreCompileOptions.Id"/></param>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.BddSatisfyUnsatCoreCompileOptions.DataType">
+            <summary>
+            The <see cref="T:Configit.Core.Model.ICompiledData"/> type that the options apply to.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions">
+            <summary>
+            Compile options for <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.DaogSolveData"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.#ctor">
+            <summary>
+            Empty constructor used for possible XML serialization
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.#ctor(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{Configit.Core.Noddy.Algorithms.ProcessingStep},System.String)">
+            <summary>
+            Creates an option object with default options.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.PostOptimization">
+            <summary>
+            If true, post optimization will be performed to reduce the size of the graph.
+            <remarks>Enabled by default.</remarks>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.CustomProcessingSteps">
+            <summary>
+            If not null or empty, this specifies a list of processing steps to be used to
+            simplify the input BDDs in a DAOG build component.
+            If this is null or empty, then a default list of processing is used.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.Id">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.PriorityBranchingVars">
+            <summary>
+            If some variables have higher priority during variable selection for branching, this
+            list "PriorityBranchingVars" will contain the indices of such variables. The order
+            of occurrence of a variable index specifies relative priority, with the highest priority 
+            variable occurring first on the list.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.UseMultipleThreads">
+            <summary>
+            Boolean value used to specify multithread DAOG compilation
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.MultipleThreadsVar">
+            <summary>
+            Variable to split work between threads, when multi threaded DAOG compilation is used.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.MultipleThreadsNum">
+            <summary>
+            Number of threads, when multi threaded DAOG compilation is used.
+            If not specified it will default to <see cref="P:System.Environment.ProcessorCount"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.DaogSolveCompileOptions.DataType">
+            <summary>
+            The <see cref="T:Configit.Core.Model.ICompiledData"/> type that the options apply to.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.CompileOptions.ICompileOptions">
+            <summary>
+            Provides compile time options for a certain type of compiled data such as <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.NddJitSolveData"/>.
+            <remarks>
+            Implementations should be serializable and marked with <see cref="T:System.SerializableAttribute"/>.
+            </remarks>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.ICompileOptions.DataType">
+            <summary>
+            The <see cref="T:Configit.Core.Model.ICompiledData"/> type that the options apply to.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.ICompileOptions.Id">
+            <summary>
+            <see cref="P:Configit.Core.Model.IEntityWithId.Id"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.CompileOptions.IJitSolverCompileOptions">
+            <summary>
+            Compile option for JIT solvers.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.IJitSolverCompileOptions.JitScopeVariables">
+            <summary>
+            Variables to include in scope. All variables indices are given in public variable 
+            space.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.CompileOptions.IModelOptimizerOptions">
+            <summary>
+            Interface defining options for creating a <see cref="T:Configit.Core.Compile.Compilation.IModelOptimizer"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.CompileOptions.IModelOptimizerOptions.GetModelOptimizer">
+            <summary>
+            Create model optimizer capable of finding a suitable variable ordering
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.IModelOptimizerOptions.FixedPrefix">
+            <summary>
+            Fixed prefix of variable ordering. Is null if 
+            no fixed prefix should be used
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions">
+            <summary>
+            Compile options for <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.NddJitSolveData"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions.#ctor">
+            <summary>
+            Create an options object with no scope variables defined and no 
+            other settings enabled.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions.#ctor(System.Collections.Generic.IEnumerable{System.Int32},System.String)">
+            <summary>
+            Create NDD JIT solve options using the specified public scope variables
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions.JitScopeVariables">
+            <summary>
+            Variables to include in the generated scope NDD. These are given as public variable indices.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions.Id">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions.ComputeBlockedValues">
+            <summary>
+            If set blocked values will be determined during the compilation process and stored
+            in the compiled data.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions.SkipPreprocessing">
+            <summary>
+            If enabled, the rules are not preprocessed.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.NddJitSolveCompileOptions.DataType">
+            <summary>
+            The <see cref="T:Configit.Core.Model.ICompiledData"/> type that the options apply to.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.CompileOptions.NddSolveCompileOptions">
+            <summary>
+            Compile options for <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.NddSolveData"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.NddSolveCompileOptions.DataType">
+            <summary>
+            The <see cref="T:Configit.Core.Model.ICompiledData"/> type that the options apply to.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.CompileOptions.NddSolveCompileOptions.#ctor(System.String)">
+            <summary>
+            Creates options with an optional id.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.NddSolveCompileOptions.Id">
+            <summary>
+            <see cref="P:Configit.Core.Model.IEntityWithId.Id"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.CompileOptions.ProcessingChain">
+            <summary>
+            Definitions of how many processing steps should be applied to a collection
+            of <see cref="T:Configit.Core.Noddy.Bdd"/>s
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Compile.CompileOptions.ProcessingChain.NoProcessing">
+            <summary>
+            Do not process BDDs
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Compile.CompileOptions.ProcessingChain.Split">
+            <summary>
+            Split BDDs into smaller BDDs by calling <see cref="M:Configit.Core.Noddy.Algorithms.Algorithms.Split(System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd},System.Boolean)"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Compile.CompileOptions.ProcessingChain.SplitMerge">
+            <summary>
+            Split BDDs into smaller BDDs and merge BDDs containing common support subset, 
+            by calling <see cref="M:Configit.Core.Noddy.Algorithms.Algorithms.ConjoinSupportSubset(System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd})"/>
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Compile.CompileOptions.ProcessingChain.SplitMergeSimplify">
+            <summary>
+            Split BDDs, Merge BDDs by common support subset, and finally simplify by 
+            calling <see cref="M:Configit.Core.Noddy.Algorithms.Algorithms.Simplify(System.Collections.Generic.IEnumerable{Configit.Core.Noddy.Bdd})"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.CompileOptions.QueryProcessorCompileOptions">
+            <summary>
+            Options for compiling <see cref="T:Configit.Core.Capabilities.ValidDomainSolvers.CompiledData.QueryProcessorData"/>.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.QueryProcessorCompileOptions.Id">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Compile.CompileOptions.QueryProcessorCompileOptions.DataType">
+            <summary>
+            The <see cref="T:Configit.Core.Model.ICompiledData"/> type that the options apply to.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.CompileOptions.QueryProcessorCompileOptions.#ctor(System.String)">
+            <summary>
+            Creates options with an optional id.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Compile.DaogCompilerFactory">
+            <summary>
+            Factory for instantiating a <see cref="T:Configit.Core.Structure.Daog.Compiler.DaogCompiler"/> from a <see cref="T:Configit.Core.Model.Logic.LogicModel"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Compile.DaogCompilerFactory.FromModel(Configit.Core.Model.Logic.LogicModel,System.Int32)">
+            <summary>
+            Create a <see cref="T:Configit.Core.Structure.Daog.Compiler.DaogCompiler"/> based on <see cref="T:Configit.Core.Noddy.Bdd"/>s and variables
+            in the given model. If <paramref name="model"/> is not compiled before
+            handed over to this method, the model will be compiled
+            </summary>
+            <param name="model">Logic model that is to be compiled</param>
+            <param name="nodeSize">Initial number of nodes in the Noddy instance. The node table
+            will automatically be expanded when required, but the expansion is an expensive process.
+            Default size of BDD table is <see cref="F:Configit.Core.Noddy.Noddy.StandardNodeSize"/> nodes, which is approx. 20mb used for the node table.
+            </param>
+        </member>
+        <member name="T:Configit.Core.Compile.NamespaceDoc">
+            <summary>
+            Operations for turning a <see cref="T:Configit.Core.Model.Logic.LogicModel"/> into data structures
+            that can be consumed by different <see cref="T:Configit.Core.Model.ICompiledCapability"/> objects.
+            </summary>
+        </member>
+    </members>
+</doc>

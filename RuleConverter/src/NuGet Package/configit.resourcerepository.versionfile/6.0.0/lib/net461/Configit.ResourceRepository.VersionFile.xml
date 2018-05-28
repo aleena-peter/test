@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.ResourceRepository.VersionFile</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.ResourceRepository.VersionFile.App">
+            <summary>
+            The app component of a version file. With information on the application generating the content.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.App.#ctor(System.String,System.String)">
+            <summary>
+            Constructs an <see cref="T:Configit.ResourceRepository.VersionFile.App"/> instance.
+            </summary>
+            <param name="name">The name of the application creating the data.</param>
+            <param name="version">The version for the application creating the data.</param>
+        </member>
+        <member name="P:Configit.ResourceRepository.VersionFile.App.Name">
+            <summary>
+            Gets the name of the application creating the data.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.VersionFile.App.Version">
+            <summary>
+            Gets the version for the application creating the data.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.App.Equals(Configit.ResourceRepository.VersionFile.App)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.VersionFile.Source">
+            <summary>
+            The source component of a version file.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.Source.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a <see cref="T:Configit.ResourceRepository.VersionFile.Source"/> instance.
+            </summary>
+            <param name="name">The name of the source the data is created from.</param>
+            <param name="version">The version of the source data, if versioning exists for the source.</param>
+        </member>
+        <member name="P:Configit.ResourceRepository.VersionFile.Source.Name">
+            <summary>
+            Gets the name of the source the data is created from.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.VersionFile.Source.Version">
+            <summary>
+            Gets the version of the source data.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.Source.Equals(Configit.ResourceRepository.VersionFile.Source)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.VersionFile.VersionFile">
+             <summary>
+             Version file for Resource Repository content. To be stored with content to provide version
+             information. Creation information is also surplied - creation time and info on the application
+             creating the content plus the source for the data if such is relevant. If other meta data are
+             desired the VersionFile class can be extended.
+            
+             The responsibility of providing relevant data for version, app and source are in the repository creating content and
+             version file, this component is only the format to use together with simple version check functionality and some
+             exception classes to use when encountering problems working with version files.
+             </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.VersionFile.#ctor(Configit.ResourceRepository.VersionFile.App,Configit.ResourceRepository.VersionFile.Source,System.Int32,System.Nullable{System.DateTime})">
+            <summary>
+            Constructs a <see cref="T:Configit.ResourceRepository.VersionFile.VersionFile"/> instance.
+            </summary>
+            <param name="app">Information on application generating the content.</param>
+            <param name="source">Information on source for the content.</param>
+            <param name="formatVersion">The version (an integer).</param>
+            <param name="createdDate">The <see cref="T:System.DateTime"/> the file is created.</param>
+        </member>
+        <member name="P:Configit.ResourceRepository.VersionFile.VersionFile.CreatedDate">
+            <summary>
+            Gets the <see cref="T:System.DateTime"/> of creation.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.VersionFile.VersionFile.App">
+            <summary>
+            Gets the application creating/converting the data.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.VersionFile.VersionFile.Source">
+            <summary>
+            Gets the source of the data.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.VersionFile.VersionFile.FormatVersion">
+            <summary>
+            Gets the data format version.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.VersionFile.ToJson">
+            <summary>
+            Serializes the version file to a <see cref="T:Newtonsoft.Json.Linq.JToken"/>.
+            </summary>
+            <returns>The serialized <see cref="T:Newtonsoft.Json.Linq.JToken"/> instance.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.VersionFile.FromJson(Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            De-serializes the version file from a <see cref="T:Newtonsoft.Json.Linq.JToken"/>.
+            </summary>
+            <param name="json">The <see cref="T:Newtonsoft.Json.Linq.JToken"/> to de-serialize from.</param>
+            <returns>The de-serialized <see cref="T:Configit.ResourceRepository.VersionFile.VersionFile"/> instance.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.VersionFile.ValidateFormatVersionEqual(System.Int32)">
+            <summary>
+            Validates against the given version, only matching versions pass.
+            </summary>
+            <param name="versionToMatch">The version to validate against.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.VersionFile.ValidateFormatVersionGreaterThan(System.Int32)">
+            <summary>
+            Validates against the given version, all versions greater than the required passes.
+            </summary>
+            <param name="requiredVersion">The required version to validate against.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.VersionFile.VersionFileException">
+            <summary>
+            A base exception thrown for Version file services.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.VersionFileException.#ctor(System.String)">
+            <summary>
+            Constructs a base exception for a Version file service for the given message.
+            </summary>
+            <param name="message">The exception message.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.VersionFileException.#ctor(System.String,System.Exception)">
+            <summary>
+            Constructs a base exception for the Version file service.
+            </summary>
+            <param name="message">The exception message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.VersionFile.VersionMismatchException">
+            <summary>
+            An exception thrown when the format version of the version file does not match the requirements of the calling service.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.VersionFile.VersionMismatchException.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Constructs a <see cref="T:Configit.ResourceRepository.VersionFile.VersionMismatchException"/> for the version file component.
+            </summary>
+            <param name="formatVersion">The format version.</param>
+            <param name="requiredVersion">The required version.</param>
+        </member>
+    </members>
+</doc>

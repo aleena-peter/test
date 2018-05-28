@@ -1,0 +1,687 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Structure.Ndd</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder">
+            <summary>
+            Helper class for constructing an <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> in a bottom-up manner, layer by layer.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder._nodes">
+            <summary>
+            Nodes in bottom-up order
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder._edges">
+            <summary>
+            Edges for nodes in <see cref="F:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder._nodes"/>. In order per node, but otherwise bottom-up.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder._uniqueLayerTable">
+            <summary>
+            Unique table for current layer only.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder._layerDomSize">
+            <summary>
+            Domain size of current layer.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder.IsLayerRedundant">
+            <summary>
+            If true, all edges from this layer are complete (<see cref="P:Configit.Core.Structure.Ndd.NddTable.NddEdge.IsComplete"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder.ToNdd">
+            <summary>
+            Constructs the <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> for the data added to this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder.AddNode(System.Collections.Generic.IReadOnlyList{Configit.Core.Structure.Ndd.NddTable.NddEdge})">
+            <summary>
+            Add a new node to the current layer
+            </summary>
+            <param name="edges">Edges to include in node, complete nodes are auto-detected.</param>
+            <returns>Node index</returns>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder.BeginLayer">
+            <summary>
+            Start a new ndd layer
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder.EndLayer">
+            <summary>
+            Finish an ndd layer
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.Converters.TableToNddConverter">
+            <summary>
+            Constructs an <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> efficiently from a table of finite domain encoded rows.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter.TrueNodeIndex">
+            <summary>
+            Since we do not initially have any true node allocated, we use -1
+            for its node index.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._domSizes">
+            <summary>
+            The size of the domain for each column in the table.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._rows">
+            <summary>
+            The table rows, indexed first by row index, then by column index.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._parentNodeMarks">
+             <summary>
+             Contains a bit array per column, each with a length matching the number of rows.
+             Given two (or more) consecutive (sorted) rows if
+             <see cref="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._parentNodeMarks"/>[x][j] == <see cref="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._parentNodeMarks"/>[x][j+1] then the edges induced
+             by those cell values will originate from the same resulting ndd node.
+             The purpose of the marks is be able to identify nodes during a bottom-up scan.
+            
+             <example>
+             Consider a simple table with rows [{1,2,3}, {1,2,4}, {2,3,1}] over 3 columns.
+             If we were to build a trie of these rows, it would contain a path with values
+             1, 2, and from there two edges with value 3 and 4.
+            
+             In this example the _parentNodemarks will be (bitarray listed by column):
+            
+             [000, 001, 001]
+            
+             The first entry will always be 000, since all edges from the first layer in the
+             ndd will originate from the root. Looking at the next column, we see that the first
+             two rows belong to the same node (the one reached by following the 1-value from the root).
+             The row with value 2 in the first column belongs to a different node
+             (reached by following the 2-value).
+             </example>
+             </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._colCount">
+            <summary>
+            Number of columns in <see cref="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._rows"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Converters.TableToNddConverter.Convert(System.Int32[],System.Int32[][])">
+            <summary>
+            Constructs an Ndd from the table
+            <exception cref="T:System.ArgumentException">If there are no rows.</exception>
+            </summary>
+            <param name="domSizes">The domain sizes by column</param>
+            <param name="rows">The table to converted, will be modified by <see cref="M:Configit.Core.Structure.Ndd.Converters.TableToNddConverter.Convert(System.Int32[],System.Int32[][])"/>.
+            The caller should not reference the table after this call.</param>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Converters.TableToNddConverter.Build">
+             <summary>
+             Builds the ndd as follow:
+            
+             * Sorts rows in ascending order (most-significant order).
+             * Group table cells in a depth-first manner based on their future parent ndd node (using <see cref="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._parentNodeMarks"/>
+             * Scan bottom-up, layer-by-layer adding the nodes to a <see cref="T:Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder"/>
+            
+             The construction is not done in the depth-first scan to avoid having to allocate a unique table entry for every
+             node in the final ndd. The bottom-up approach requires only one entry per node in a given layer.
+             </summary>
+             <returns>The resulting <see cref="T:Configit.Core.Structure.Ndd.Ndd"/></returns>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Converters.TableToNddConverter.BuildNddLayer(System.Int32,Configit.Core.Structure.Ndd.Converters.BottomUpNddBuilder)">
+            <summary>
+            Uses <see cref="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._parentNodeMarks"/> to add a new layer to
+            <paramref name="nddBuilder"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Converters.TableToNddConverter.MarkParentNodesRec(System.Int32,System.Int32,System.Int32,System.Int32[])">
+            <summary>
+            Populates <see cref="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._parentNodeMarks"/>.
+            </summary>
+            <param name="colIdx">Column to mark for</param>
+            <param name="startIncl">Index of first row to mark (incl)</param>
+            <param name="endExcl">Index of last row to mark (excl)</param>
+            <param name="nodeCounts">Helper data for populating <see cref="F:Configit.Core.Structure.Ndd.Converters.TableToNddConverter._parentNodeMarks"/></param>
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.DynamicNdd">
+            <summary>
+            Dynamic version of an <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> used to re-order variables. 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNdd.#ctor(Configit.Core.Structure.Ndd.Ndd)">
+            <summary>
+            Create a dynamic NDD representing the same solution space as the given by
+            <paramref name="ndd"/>. <see cref="P:Configit.Core.Structure.Ndd.DynamicNdd.LevelVariables"/> will represent 
+            the variables that are actually used in the dynamic NDD - unused variables
+            in <paramref name="ndd"/> are not represented as levels in the dynamic NDD.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNdd.ReorderLayers(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Re-order layers. After reordering, each layer i will be sorted according 
+            to the value in newOrder[LevelVariables[i]].
+            </summary>
+            <returns>The instance of the <see cref="T:Configit.Core.Structure.Ndd.DynamicNdd"/> that was reordered</returns>
+            <remarks>A <see cref="T:Configit.Core.Structure.Ndd.DynamicNdd"/> only supports swapping adjacent 
+            layers (cannot swap any random layer), using <see cref="M:Configit.Core.Structure.Ndd.DynamicNdd.PullLevelDown(System.Int32)"/>. 
+            As such, the theoretical complexity
+            is n^2, where n is the number of layers in <see cref="P:Configit.Core.Structure.Ndd.DynamicNdd.LevelVariables"/>. See e.g. 
+            https://secweb.cs.odu.edu/~zeil/cs361/web/website/Lectures/insertion/pages/ar01s04s02.html
+            for proof of this statement.
+             </remarks>
+            <param name="newOrder">Collection which must contain as many values as
+            there are variables in <see cref="P:Configit.Core.Structure.Ndd.DynamicNdd.VariableDomains"/>. The values must be
+            in the range [0..N-1] where N is the the size of <see cref="P:Configit.Core.Structure.Ndd.DynamicNdd.VariableDomains"/>
+            and every index must only appear exactly once in the collection.</param>
+            <exception cref="T:System.ArgumentException">If new input ordering is invalid</exception>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNdd.PullLevelDown(System.Int32)">
+            <summary>
+            <para>Swap two layers. The specified <paramref name="level"/> is swapped with
+            the level below.</para>
+            </summary>
+            <remarks>This method will update the <see cref="P:Configit.Core.Structure.Ndd.DynamicNdd.LevelVariables"/>,
+            leaving the level variables in a state where they are no longer sorted numerically!!
+            </remarks>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNdd.op_Implicit(Configit.Core.Structure.Ndd.DynamicNdd)~Configit.Core.Structure.Ndd.Ndd">
+            <summary>
+            Implicit conversion from <see cref="T:Configit.Core.Structure.Ndd.DynamicNdd"/> to static <see cref="T:Configit.Core.Structure.Ndd.Ndd"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNdd.ToNdd">
+            <summary>
+            Convert dynamic NDD to static <see cref="T:Configit.Core.Structure.Ndd.Ndd"/>. The resulting 
+            NDD will represent the levels as variables, meaning that the original
+            variable index used when creating the dynamic NDD is no longer valid according 
+            to the result. Also, the resulting NDD does not represent unused variables.
+            </summary>
+            <example>An NDD is created for a logic model with variables {A,B,C,D}.
+            The NDD represents variables {A,B,D} - variable C is free (unused).
+            A dynamic NDD is created for this NDD and level 1 is pushed down.
+            If this dynamic NDD is converted back to a static NDD, the result will
+            represent variables {A,D,B} (B and D were swapped when level was pushed down).
+            The result will not represent variable C as it is unused.</example>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.DynamicNdd.VariableDomains">
+            <summary>
+            Domain size of all variables as specified by the original variable ordering 
+            when the dynamic BDD was created.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.DynamicNdd.LevelVariables">
+            <summary>
+            Index of variables used in different levels. Note that after calling 
+            <see cref="M:Configit.Core.Structure.Ndd.DynamicNdd.PullLevelDown(System.Int32)"/> or <see cref="M:Configit.Core.Structure.Ndd.DynamicNdd.ReorderLayers(System.Collections.Generic.IEnumerable{System.Int32})"/> the 
+            levels might no longer represent variables in sequence. The level variables
+            refer to indices in the variable order from the NDD that was used when the
+            dynamic NDD was constructed.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.DynamicNdd.Table">
+            <summary>
+            List of levels. Each level represents the nodes in that level. Each node 
+            is a list of <see cref="T:Configit.Core.Structure.Ndd.NddTable.NddEdge"/> objects, where the <see cref="P:Configit.Core.Structure.Ndd.NddTable.NddEdge.Son"/>
+            represents the *offset* of the node in the next level (e.g. offset 0 is the
+            first node in the next level).
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.DynamicNdd.NodeCount">
+            <summary>
+            Number of nodes in <see cref="P:Configit.Core.Structure.Ndd.DynamicNdd.Table"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.DynamicNdd.EdgeCount">
+            <summary>
+            Total number of edges in all nodes in table
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.DynamicNddNode">
+            <summary>
+            A node in a dynamic NDD, representing a list of edges
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNddNode.#ctor(System.Int32)">
+            <summary>
+            Create a complete node which has an edge pointing to specified son
+            </summary>
+            <param name="son"></param>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNddNode.#ctor(System.Collections.Generic.IReadOnlyList{Configit.Core.Structure.Ndd.NddTable.NddEdge},System.Int32)">
+            <summary>
+            Create new dynamic NDD node. If edges represent all values in domain and they
+            all point to the same son, replace with jump node
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.DynamicNddNode.Edges">
+            <summary>
+            Edges representing node
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.DynamicNddNode.Son">
+            <summary>
+            If node <see cref="P:Configit.Core.Structure.Ndd.DynamicNddNode.IsComplete"/> then get son for the first edge. Will
+            throw exception if node is not complete!
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.DynamicNddNode.IsComplete">
+            <summary>
+            True when node is a jump node
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNddNode.Equals(Configit.Core.Structure.Ndd.DynamicNddNode)">
+            <summary>
+            Equals when all <see cref="P:Configit.Core.Structure.Ndd.DynamicNddNode.Edges"/> are identical
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNddNode.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNddNode.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.DynamicNddNode.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.NamespaceDoc">
+            <summary>
+            Static structure representing a solution space, used during configuration. Original 
+            data structure for Configit technology 
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.Ndd">
+            <summary>
+            <para>An NDD represents a Boolean function over a set of Finite Domain variables.</para>
+            <para>Unlike BDDs, NDDs are not reference counted. BDDs can be converted
+            to NDDs and vice versa.</para>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.#ctor(Configit.Core.Structure.Ndd.NddTable.NddVariable[],Configit.Core.Structure.Ndd.NddTable.NddNode[],Configit.Core.Structure.Ndd.NddTable.NddEdge[],System.Int32)">
+            <summary>
+            Used when creating an NDD from a BDD
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.#ctor(Configit.Core.Structure.Ndd.Ndd)">
+            <summary>
+            Copy constructor, creating a completely detached copy of the input ND.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.ValidateNdd">
+            <summary>
+            Used for Debug. Throws exception if NDD is invalid
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.NextUsedVar(System.Int32)">
+            <summary>
+            Get the next used variable after <paramref name="var"/> or -1 if no such variable.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.Root">
+            <summary>
+            Root node of NDD. Root is either 2 (if there are any used variables in NDD), or
+            1 if NDD represents true.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.RootVar">
+            <summary>
+            Returns the variable of <see cref="P:Configit.Core.Structure.Ndd.Ndd.Root"/>, if there are no
+            used variable it returns <see cref="P:Configit.Core.Structure.Ndd.Ndd.VarCount"/>.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.Ndd.Terminal">
+            <summary>
+            The node index of the true terminal
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.Variables">
+            <summary>
+            Variables in NDD. For backwards compatibility there are number of variables + 1
+            elements in the array, where the last entry is solely used to hold total
+            number of nodes
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.Nodes">
+            <summary>
+            Nodes in NDD.  For backwards compatibility there are 2 (terminal nodes ) + number of nodes +
+            1 elements in the array, where the last entry is solely used to hold total
+            number of edges
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.Edges">
+            <summary>
+            Edges in the NDD
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.NodeCount">
+            <summary>
+            Number of nodes in NDD including the two terminal nodes. For backwards
+            compatibility, the NDD node table contains an extra node which gives information
+            about the total number of edges in the table - this node is not counted in the
+            NodeCount.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.EdgeCount">
+            <summary>
+            Number of edges in NDD.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.VarCount">
+            <summary>
+            Number of variables represented in NDD. The number of variables equals the number
+            of finite domain variables initialized in the BDD package when NDD was created.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.UsedVarCount">
+            <summary>
+            Number of actually used variables in NDD. A used variable is a variable for which
+            there exist a node in the NDD. If variable is not used, operations on the variable
+            has no effect on the solutions represented by the NDD.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.UsedVariables">
+            <summary>
+            Index of all used variables. An unused variable can always take any value
+            in the domain of the variable.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.IsVarUsed(System.Int32)">
+            <summary>
+            Returns true if variable is actually used in the NDD (has any nodes assigned to it)
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.VariableDomains">
+            <summary>
+            Enumerable of domain sizes for all variables (both used and unused) represented
+            in the NDD.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.VariableDomain(System.Int32)">
+            <summary>
+            Get domain size of specified variable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.Save(System.IO.TextWriter)">
+            <summary>
+            Write NDD text writer
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.Save(System.String)">
+            <summary>
+            Write NDD text path
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.Load(System.IO.TextReader)">
+            <summary>
+            <para>Factory method for loading an NDD from text reader. </para>
+            <para>The resulting NDD is not attached to any <see cref="T:Configit.Core.Noddy.Noddy"/> instance. If
+            a Noddy instance is required (e.g. for converting NDD to BDD) a new Noddy
+            instance is automatically created.</para>
+            </summary>
+            <exception cref="T:System.IO.InvalidDataException">If the input contains an invalid formatted NDD</exception>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.Load(System.String)">
+            <summary>
+            <para>Factory method for loading an NDD from path. </para>
+            <para>The resulting NDD is not attached to any <see cref="N:Configit.Core.Noddy"/> instance. If
+            a Noddy instance is required (e.g. for converting NDD to BDD) a new Noddy
+            instance is automatically created.</para>
+            </summary>
+            <exception cref="T:System.IO.InvalidDataException">If the input contains an invalid formatted NDD</exception>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.IsTrueConst">
+            <summary>
+            True if this ndd represents the constant true (i.e. all solutions over the variables)
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.IsFalseConst">
+            <summary>
+            True if this NDD represents the constant false (i.e. no solutions)
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.IsConst">
+            <summary>
+            True if <see cref="P:Configit.Core.Structure.Ndd.Ndd.IsFalseConst"/> or <see cref="P:Configit.Core.Structure.Ndd.Ndd.IsTrueConst"/> is true.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.True">
+            <summary>
+            The <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> corresponding to true.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.Ndd.False">
+            <summary>
+            The <see cref="T:Configit.Core.Structure.Ndd.Ndd"/> corresponding to false.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.Equals(Configit.Core.Structure.Ndd.Ndd)">
+            <summary>
+            Test if two NDD instances are identical
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.RemoveUnusedVariables(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Removes unused variables from the NDD. Note that this will reset <see cref="N:Configit.Core.Noddy"/> and change the variable indices.
+            </summary>
+            <param name="unusedVariables">Indices of unused variables to remove, or null to indicate all unused variables.</param>
+            <returns>Mapping from old variable indices to new variable indices (removed variables are not mapped to anything)</returns>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.ReorderValues(System.Int32,System.Int32[])">
+            <summary>
+            Changes the index of values in a given domain.
+            </summary>
+            <param name="variable">Index of the variable to reorder values for</param>
+            <param name="mapping">A bijective mapping from old value to new value such that mapping[oldValIdx] is the new value index for oldValIdx</param>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.InsertVariablesBefore(System.Collections.Generic.IEnumerable{Configit.Core.Structure.Ndd.NddVariableInsertion})">
+            <summary>
+            Inserts new unused variables into the variables. This can useful as a preprocessing step before converting
+            the NDD to a BDD. The domain sizes can be set using <see cref="M:Configit.Core.Structure.Ndd.Ndd.IncreaseDomainSize(System.Int32,System.Int32)"/>
+            <example>
+            If there are currently defined variables a,b,c and we wish to insert variable x before a and y before c,
+            then the positions defined by <paramref name="variableInsertions"/> should be 0 and 2. The resulting variables will
+            be x,a,b,y,c with y in position 3.
+            </example>
+            </summary>
+            <returns>A mapping from old variable indices to their new position.</returns>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.Ndd.IncreaseDomainSize(System.Int32,System.Int32)">
+            <summary>
+            Increase the domain of a variable in the NDD. Note that this will clear <see cref="N:Configit.Core.Noddy"/>.
+            </summary>
+            <exception cref="T:System.ArgumentException">Thrown if the new size is smaller than the old one.</exception>
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.NddDotOptions">
+            <summary>
+            Options for specifying how to render an NDD.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddDotOptions.#ctor(System.Int32)">
+            <summary>
+            Default options
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddDotOptions.GraphLabel">
+            <summary>
+            Label on graph.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddDotOptions.NodeFillColor">
+            <summary>
+            The dot color to use for all nodes.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddDotOptions.NodeColor">
+            <summary>
+            The dot color to use for all nodes.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddDotOptions.NodeStyle">
+            <summary>
+            The style to apply to all nodes.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddDotOptions.NodeLabelSuffix">
+            <summary>
+            Added to the label containing the node index.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddDotOptions.EdgeColor">
+            <summary>
+            Color to use for all edges
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddDotOptions.EdgeStyle">
+            <summary>
+            Style to use for all edges.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.NddIoManager">
+            <summary>
+            Class used for managing import and export of NDDs. This is used
+            both for debug print and for save / load
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddIoManager.Save(System.IO.TextWriter,Configit.Core.Structure.Ndd.Ndd)">
+            <summary>
+            Write NDD as string using standard format also supported by PMC.exe 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddIoManager.Load(System.IO.TextReader,System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Load NDD from stream. If domainSizes is null, they are read from last line in input
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.NddTable.NddEdge">
+            <summary>
+            Class describing an edge in a static NDD table.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Structure.Ndd.NddTable.NddEdge.EdgeComplete">
+            <summary>
+            Value used to indicate that an edge is complete, that is, represents
+            all values in domain of finite domain variable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddEdge.#ctor(Configit.Core.Structure.Ndd.NddTable.NddEdge)">
+            <summary>
+            Copy constructor
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddEdge.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Constructor for edge in a static NDD table, representing specified value
+            and leading to specified son
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddEdge.#ctor(System.Int32)">
+            <summary>
+            Create a complete edge pointing to specified son
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddTable.NddEdge.IsComplete">
+            <summary>
+            True if edge represents all values in variable domain (complete)
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddTable.NddEdge.Value">
+            <summary>
+            Value represented by edge
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddTable.NddEdge.Son">
+            <summary>
+            Index of son node pointed to by edge
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddEdge.Equals(Configit.Core.Structure.Ndd.NddTable.NddEdge)">
+            <summary>
+            Equals when value and son are the same
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddEdge.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddEdge.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddEdge.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.NddTable.NddNode">
+            <summary>
+            Class describing a node in a static NDD table.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddNode.#ctor(Configit.Core.Structure.Ndd.NddTable.NddNode)">
+            <summary>
+            Copy constructor
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddNode.#ctor(System.Int32)">
+            <summary>
+            Create Ndd node, setting the edge offset in the edge table
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddTable.NddNode.EdgeOffset">
+            <summary>
+            Edge offset for node
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddNode.Equals(Configit.Core.Structure.Ndd.NddTable.NddNode)">
+            <summary>
+            Equals when edge offset are the same
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.NddTable.NddVariable">
+            <summary>
+            Class describing a variable in a static NDD table.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddVariable.#ctor(Configit.Core.Structure.Ndd.NddTable.NddVariable)">
+            <summary>
+            Copy constructor
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddVariable.#ctor(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Constructor for variable in a static NDD table. If there are no nodes in the
+            NDD representing a specific variable usedMark is false
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddTable.NddVariable.NodeOffset">
+            <summary>
+            Node offset for variable, that is, the first node in the node table used
+            to encode variable.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddTable.NddVariable.UsedMark">
+            <summary>
+            If UsedMark is false, there are no nodes in NDD representing variable. This means
+            that all values are always available.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Structure.Ndd.NddTable.NddVariable.DomainSize">
+            <summary>
+            Domain size of the variable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddTable.NddVariable.Equals(Configit.Core.Structure.Ndd.NddTable.NddVariable)">
+            <summary>
+            Equals when <see cref="P:Configit.Core.Structure.Ndd.NddTable.NddVariable.NodeOffset"/>, <see cref="P:Configit.Core.Structure.Ndd.NddTable.NddVariable.UsedMark"/>, <see cref="P:Configit.Core.Structure.Ndd.NddTable.NddVariable.DomainSize"/>
+            are the same
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Structure.Ndd.NddVariableInsertion">
+            <summary>
+            Used in <see cref="M:Configit.Core.Structure.Ndd.Ndd.InsertVariablesBefore(System.Collections.Generic.IEnumerable{Configit.Core.Structure.Ndd.NddVariableInsertion})"/> to indicate the position and domain size of new variables.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Structure.Ndd.NddVariableInsertion.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Variable to inserted at the given position and with the given domain size.
+            </summary>
+        </member>
+    </members>
+</doc>

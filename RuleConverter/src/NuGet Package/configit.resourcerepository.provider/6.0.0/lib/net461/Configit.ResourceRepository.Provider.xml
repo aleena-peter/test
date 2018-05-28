@@ -1,0 +1,384 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.ResourceRepository.Provider</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.ResourceRepository.Provider.IPackage">
+            <summary>
+            Provides operations for reading resources from a package.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Provider.IPackage.PackagePath">
+            <summary>
+            Gets the path of the package excluding the version.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.IPackage.GetVersionPathAsync">
+            <summary>
+            Gets the version path of the package; if the package is un-versioned, the package path is returned.
+            </summary>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the version path.</returns>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package path cannot be found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.IPackage.GetVersionAsync">
+            <summary>
+            Gets the package version; if the package is un-versioned, Guid.Empty is returned.
+            </summary>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the package version.</returns>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package path cannot be found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.IPackage.GetResourceManifestAsync">
+            <summary>
+            Gets a collection of the resources stored in the package.
+            </summary>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is an IEnumerable&lt;Uri&gt; containing the resources.</returns>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package path cannot be found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageVersionNotFoundException">If the package version cannot be found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.IPackage.ContainsResourceAsync(System.Uri)">
+            <summary>
+            Determines whether a resource at the given resourcePath exists.
+            </summary>
+            <param name="resourcePath">The relative package Uri of the resource.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is true if the resource exists; otherwise false.</returns>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.IPackage.GetResourceAsync``1(System.Uri)">
+            <summary>
+            Retrieves the resource with the resourcePath.
+            </summary>
+            <typeparam name="T">The type of resource to retrieve; this must match the type added for this resourcePath.</typeparam>
+            <param name="resourcePath">The relative package Uri of the resource.</param>
+            <returns>A task that represents the asynchronous get operation. The resource is returned in the value of the TResult parameter.</returns>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+            <exception cref="T:System.ArgumentException">If the type T is not supported.</exception>
+            <exception cref="T:System.InvalidCastException">If the stored type is not compatible with T.</exception>
+            <exception cref="T:System.InvalidOperationException">If the resource hash key was not found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package path cannot be found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageVersionNotFoundException">If the package version cannot be found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">If the resource is not found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.IPackage.TryGetResource``1(System.Uri,``0@)">
+            <summary>
+            Tries to retrieve the resource with the given resourcePath.
+            </summary>
+            <typeparam name="T">The type of resource to retrieve; this must match the type added for this resourcePath.</typeparam>
+            <param name="resourcePath">The relative package Uri of the resource.</param>
+            <param name="result">When this method returns true, it contains the resource result. Otherwise it contains the default result for type T.</param>
+            <returns>true if the resource exists; otherwise false.</returns>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+            <exception cref="T:System.ArgumentException">If the type T is not supported.</exception>
+            <exception cref="T:System.InvalidCastException">If the stored type is not compatible with T.</exception>
+            <exception cref="T:System.InvalidOperationException">If the resource hash key was not found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package path cannot be found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageVersionNotFoundException">If the package version cannot be found.</exception>
+        </member>
+        <member name="T:Configit.ResourceRepository.Provider.IPackageProvider">
+            <summary>
+            Provides operations for retrieving packages.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.IPackageProvider.GetPackage(System.Uri)">
+            <summary>
+            Gets a <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance for the given package path; if the package path includes a version Id then that version is retrieved; otherwise the latest version is retrieved.
+            </summary>
+            <param name="packagePath">The path to the package.</param>
+            <returns>An <see cref="T:Configit.ResourceRepository.Provider.IPackage"/> instance.</returns>
+            <exception cref="T:System.ArgumentNullException">If the package path is null but required.</exception>
+            <exception cref="T:System.ArgumentException">If the package path is invalid.</exception>
+        </member>
+        <member name="T:Configit.ResourceRepository.Provider.Package">
+            <summary>
+            Provides operations for reading resources from a package.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.#ctor(Configit.ResourceRepository.Storage.IStorage)">
+            <summary>
+            Constructs an un-versioned package instance.
+            </summary>
+            <param name="storage">The storage where the resources of the package will be stored or retrieved.</param>
+            <exception cref="T:System.ArgumentNullException">If the storage is null.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.#ctor(Configit.ResourceRepository.Storage.IStorage,System.Uri)">
+            <summary>
+            Constructs a versioned package instance.
+            </summary>
+            <param name="storage">The storage where the resources of the package will be stored or retrieved.</param>
+            <param name="packagePath">The path of the package.</param>
+            <exception cref="T:System.ArgumentNullException">If the storage is null.</exception>
+            <exception cref="T:System.ArgumentNullException">If the package path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the packagePath is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.#ctor(Configit.ResourceRepository.Storage.IStorage,System.Uri,System.Int32)">
+            <summary>
+            Constructs a versioned package instance.
+            </summary>
+            <param name="storage">The storage where the resources of the package will be stored or retrieved.</param>
+            <param name="packagePath">The path of the package. The resource hash level is set to the given partitionLevel parameter value.</param>
+            <param name="partitionLevel">The number of Uri components from which to generate a partition key from the package path.</param>
+            <exception cref="T:System.ArgumentNullException">If the storage is null.</exception>
+            <exception cref="T:System.ArgumentNullException">If the package path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the packagePath is invalid.</exception>
+            <exception cref="T:System.ArgumentException">If the partitionLevel parameter is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.#ctor(Configit.ResourceRepository.Storage.IStorage,System.Uri,System.Int32,System.Int32)">
+            <summary>
+            Constructs a versioned package instance.
+            </summary>
+            <param name="storage">The storage where the resources of the package will be stored or retrieved.</param>
+            <param name="packagePath">The path of the package.</param>
+            <param name="partitionLevel">The number of Uri components from which to generate a partition key from the package path.</param>
+            <param name="resourceHashLevel">The number of components to use as the resource hash location from the package path.</param>
+            <exception cref="T:System.ArgumentNullException">If the storage is null.</exception>
+            <exception cref="T:System.ArgumentNullException">If the package path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the packagePath is invalid.</exception>
+            <exception cref="T:System.ArgumentException">If the partitionLevel or resourceHashLevel parameters are invalid.</exception>
+        </member>
+        <member name="P:Configit.ResourceRepository.Provider.Package.PackagePath">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.GetVersionPathAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.GetVersionAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.GetResourceManifestAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.ContainsResourceAsync(System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.GetResourceAsync``1(System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.Package.TryGetResource``1(System.Uri,``0@)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.Provider.PackageProvider">
+            <summary>
+            Provides operations for retrieving packages.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.PackageProvider.#ctor(Configit.ResourceRepository.Storage.IStorage,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/> given an <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> from which packages can be retrieved.
+            </summary>
+            <param name="storage">The <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> instance from which packages can be retrieved.</param>
+            <param name="partitionLevel">The number of Uri components from which to generate a partition key from the package path.</param>
+            <param name="resourceHashLevel">The number of components to use as the resource hash location from the package path.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.PackageProvider.GetPackage(System.Uri)">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.ResourceRepository.Provider.PackageProviderServiceWrapper">
+            <summary>
+            Provides operations for retrieving packages from a Repository Service.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.PackageProviderServiceWrapper.#ctor(System.Uri)">
+            <summary>
+            Creates an instance of an <see cref="T:Configit.ResourceRepository.Provider.PackageProviderServiceWrapper"/>, given a connection Uri for the Repository Service.
+            </summary>
+            <param name="connectionUri">The connection Uri for the Repository Service.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Provider.PackageServiceWrapper">
+            <summary>
+            Provides operations for reading resources from a package using the Repository Service.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.PackageServiceWrapper.#ctor(System.Uri,System.Uri)">
+            <summary>
+            Constructs a version of <see cref="T:Configit.ResourceRepository.Provider.PackageServiceWrapper"/> instance for a given connection Uri and versioned package.
+            </summary>
+            <param name="connectionUri">The connection Uri of the Repository Service.</param>
+            <param name="packagePath">The package path for which to retrieve resources.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Provider.ProviderFactory">
+            <summary>
+            A factory for creating instances of an <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.ProviderFactory.Create(Configit.ResourceRepository.Storage.IStorage,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Creates an instance of an <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>, given an <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> from which packages can be retrieved.
+            </summary>
+            <param name="storage">The <see cref="T:Configit.ResourceRepository.Storage.IStorage"/> instance from which packages can be retrieved.</param>
+            <param name="partitionLevel">The number of Uri components from which to generate a partition key from the package path.</param>
+            <param name="resourceHashLevel">The number of components to use as the resource hash location from the package path.</param>
+            <returns>The <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/> instance.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.ProviderFactory.Create(System.Uri)">
+            <summary>
+            Creates an instance of an <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/>, given a connection Uri for the Repository Service.
+            </summary>
+            <param name="connectionUri">The connection Uri for the Repository Service.</param>
+            <returns>The <see cref="T:Configit.ResourceRepository.Provider.IPackageProvider"/> instance.</returns>
+        </member>
+        <member name="T:Configit.ResourceRepository.Provider.RepositoryService.Helper">
+            <summary>
+            Helper class for the Repository Service.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Provider.RepositoryService.Helper.PackageUriPart">
+            <summary>
+            Uri part for constructing repository service request uri.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.SendRequestAsync(System.Uri,System.String,System.Uri,System.Net.Http.HttpContent,System.String,System.Nullable{System.TimeSpan})">
+            <summary>
+            Sends the given Http request to the Repository Service.
+            </summary>
+            <param name="connectionUri">The connection Uri for the Repository Service.</param>
+            <param name="method">The request method string.</param>
+            <param name="relativePath">The request relative path.</param>
+            <param name="content">The optional request content.</param>
+            <param name="hashString">The optional request hash string.</param>
+            <param name="timeout">The optional request timeout.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the <see cref="T:System.Net.Http.HttpResponseMessage"/> response.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetLatestVersionIdAsync(System.Uri,System.Uri)">
+            <summary>
+            Gets the latest version Guid for the given package path by sending the request to given connection Uri.
+            </summary>
+            <param name="packagePath">The package path to lookup.</param>
+            <param name="connectionUri">The connection uri to send request to.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the latest version Guid for the given package path.</returns>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package is not found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.TryGetValue(System.Net.Http.HttpResponseMessage,System.String,System.String@)">
+            <summary>
+            Try to get the property value from the response.
+            </summary>
+            <param name="response">The Http response message to get the value from.</param>
+            <param name="propertyName">The property to get.</param>
+            <param name="value">When this method returns true, it contains the value read from the response message; otherwise an empty string.</param>
+            <returns>true if the property is found and read successfully from the response message; false otherwise.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetValue(System.Net.Http.HttpResponseMessage,System.String)">
+            <summary>
+            Gets the value for the given property name from the given response.
+            </summary>
+            <param name="response">The Http response message to get the value from.</param>
+            <param name="propertyName">The property name to retrieve.</param>
+            <returns>The value read from the response.</returns>
+            <exception cref="T:Newtonsoft.Json.JsonReaderException">If the property name is not found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetValueAsync(System.Net.Http.HttpResponseMessage,System.String)">
+            <summary>
+            Gets the property value from the response.
+            </summary>
+            <param name="response">The Http response message to get the value from.</param>
+            <param name="propertyName">The property name to retrieve.</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the property value.</returns>
+            <exception cref="T:Newtonsoft.Json.JsonReaderException">If the property name is not found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetResponseStatusCode(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Gets the <see cref="T:Configit.ResourceRepository.Common.StatusCode"/> in the given <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+            <param name="response">The response containing the status code.</param>
+            <returns>The status code.</returns>
+            <exception cref="T:System.InvalidOperationException">If the status code is not found in the response.</exception>
+            <exception cref="T:System.InvalidOperationException">If the status code in the response is unexpected.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.ValidateResponse(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Validates the given <see cref="T:System.Net.Http.HttpResponseMessage"/> response, if necessary throwing an appropriate exception based on the <see cref="T:System.Net.HttpStatusCode"/> and <see cref="T:Configit.ResourceRepository.Common.StatusCode"/>.
+            </summary>
+            <param name="response">The <see cref="T:System.Net.Http.HttpResponseMessage"/> response to validate.</param>
+            <exception cref="T:System.ArgumentException">If the argument is invalid.</exception>
+            <exception cref="T:System.InvalidOperationException">If the response has unsuccessful status code.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Other unknown repository exception.</exception>
+            <exception cref="T:System.TimeoutException">If the specified timeout was exceeded.</exception>
+            <exception cref="T:System.InvalidOperationException">If the status code is not found in the response.</exception>
+            <exception cref="T:System.InvalidOperationException">If the status code in the response is unexpected.</exception>
+            <exception cref="T:System.Exception">If the Repository Service returned an HttpStatusCode.InternalServerError for an unhandled exception.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageNotFoundException">If the package cannot be found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageVersionNotFoundException">If the package version cannot be found.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException">If the package cannot be modified.</exception>
+            <exception cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException">If the resource cannot be found.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetTimeoutMs(System.TimeSpan)">
+            <summary>
+            Gets a timeout value in milliseconds from the given timeout; a value of TimeSpan.MaxValue, which denotes an infinite timeout, is converted to -1.
+            </summary>
+            <param name="timeout">The timeout expressed as a <see cref="T:System.TimeSpan"/> value.</param>.
+            <returns>The timeout in milliseconds.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetPackagePathUri(System.Uri)">
+            <summary>
+            Gets the package path Uri.
+            </summary>
+            <param name="packagePath">The package path.</param>
+            <returns>The package Uri.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetCompletePackageUri(System.Uri)">
+            <summary>
+            Gets the completed package Uri for the given version path.
+            </summary>
+            <param name="versionPath">The version path.</param>
+            <returns>The complete package Uri.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetAbortPackageUri(System.Uri)">
+            <summary>
+            Gets the abort package Uri for the given version path.
+            </summary>
+            <param name="versionPath">The version path.</param>
+            <returns>The abort package Uri.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetLatestPackageUri(System.Uri)">
+            <summary>
+            Gets the latest package Uri for the given package path.
+            </summary>
+            <param name="packagePath">The package path.</param>
+            <returns>The latest package Uri.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetVersionPackageUri(System.Uri)">
+            <summary>
+            Gets the version package Uri for the given version path.
+            </summary>
+            <param name="versionPath">The version path.</param>
+            <returns>The version package Uri.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetManifestByVersionPathUri(System.Uri)">
+            <summary>
+            Gets the manifest Uri for the given version path.
+            </summary>
+            <param name="versionPath">The version path.</param>
+            <returns>The manifest Uri.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetResourceUri(System.Uri)">
+            <summary>
+            Gets the resource Uri for the given full resource path.
+            </summary>
+            <param name="fullResourcePath">The full resource path.</param>
+            <returns>The resource Uri.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetTryAddResourceUri(System.Uri)">
+            <summary>
+            Gets the resource Uri for the given full resource path for try add resource operation.
+            </summary>
+            <param name="fullResourcePath">The full resource path.</param>
+            <returns>The resource Uri for try add resource.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Provider.RepositoryService.Helper.GetAddResourceUri(System.Uri)">
+            <summary>
+            Gets the resource Uri for the given full resource path for add resource operation.
+            </summary>
+            <param name="fullResourcePath">The full resource path.</param>
+            <returns>The resource Uri for adding resource.</returns>
+        </member>
+    </members>
+</doc>

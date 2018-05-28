@@ -1,0 +1,847 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.ResourceRepository.Common</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.ResourceRepository.Common.DuplicateResourceException">
+            <summary>
+            Exception class for denoting that a resource is duplicated.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.DuplicateResourceException.ResourcePath">
+            <summary>
+            Gets the resource path that is duplicated.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.DuplicateResourceException.#ctor(System.Uri)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.DuplicateResourceException"/> for a given resource path.
+            </summary>
+            <param name="resourcePath">The resource path for this exception.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.DuplicateResourceException.#ctor(System.Uri,System.Exception)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.DuplicateResourceException"/> for a given resource path and inner exception.
+            </summary>
+            <param name="resourcePath">The resource path for this exception.</param>
+            <param name="innerException">The inner exception that caused this <see cref="T:Configit.ResourceRepository.Common.DuplicateResourceException"/>.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.DuplicateResourceException.#ctor(System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.DuplicateResourceException"/> for a given message.
+            </summary>
+            <param name="message">The message for this exception.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.LruCache`2">
+            <summary>
+            Least Recently Used Cache - a cache containing room for a maximum number of elements. 
+            If the cache is full and extra elements are added, the least recently used element is removed to make room for the new element.
+            This class is not thread safe.
+            </summary>
+            <typeparam name="TKey">Type of key.</typeparam>
+            <typeparam name="TValue">Type of object which is cached.</typeparam>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.LruCache`2._mapToListElem">
+            <summary>
+            Collection of cached key value pairs.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.LruCache`2._values">
+            <summary>
+            Collection of ordered cached key value pairs. 
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.LruCache`2._maxSize">
+            <summary>
+            Maximum cache size.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Constructs an <see cref="T:Configit.ResourceRepository.Common.LruCache`2"/> instance which can host a specified number of cached objects.
+            </summary>
+            <param name="maxSize">Maximum number of objects in cache.</param>
+            <param name="keyComparer">Key comparer. When null is given, <code>EqualityComparer{TKey}.Default</code> is used.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0},System.Int32)">
+            <summary>
+            Constructs an <see cref="T:Configit.ResourceRepository.Common.LruCache`2"/> instance which can host a specified number of cached objects.
+            </summary>
+            <param name="maxSize">Maximum number of objects in cache.</param>
+            <param name="keyComparer">Key comparer. When null is given, <code>EqualityComparer{TKey}.Default</code> is used.</param>
+            <param name="initialCapacity">Initial capacity allocated for the cache.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the cache. Enumerating a cache element
+            does not make it most recently used, to do that access the entry using its key.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Insert object in cache. Object is being considered most recently used after insertion.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.Clear">
+            <summary>
+            Clear all elements in cache.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Throws System.NotImplementedException.
+            </summary>
+            <param name="item">Item to lookup.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+            <summary>
+            Copies the elements in the LRU cache to the array starting at a given array index.
+            </summary>
+            <param name="array">Array to copy to.</param>
+            <param name="arrayIndex">Array index to start from.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary>
+            Throws System.NotImplementedException.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.LruCache`2.Count">
+            <summary>
+            Number of elements in cache.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.LruCache`2.IsReadOnly">
+            <summary>
+            Throws System.NotImplementedException.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.ContainsKey(`0)">
+            <summary>
+            Check if there exist a cached object with specified key.
+            </summary>
+            <param name="key">Key to used to look up cached object.</param>
+            <returns>True if cached object exist, false otherwise.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.Add(`0,`1)">
+            <summary>
+            Insert object in cache. Object is being considered most recently used after insertion.
+            </summary>
+            <param name="key">Key used to identify cached object.</param>
+            <param name="value">Cached object to add.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.Remove(`0)">
+            <summary>
+            Remove object with specified key.
+            </summary>
+            <param name="key">Key of cached object.</param>
+            <returns>True if element was removed, false if no cached element with specified key exist in cache.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruCache`2.TryGetValue(`0,`1@)">
+            <summary>
+            Try to get cached object. If object exist, it is regarded as most recently used.
+            </summary>
+            <param name="key">Key of cached object to retrieve.</param>
+            <param name="value">Returned cached object.</param>
+            <returns>True if cache contains an object with specified key, false otherwise.</returns>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.LruCache`2.Item(`0)">
+            <summary>
+            Gets or sets the cached value associated with the specified key. If a cached object
+            is retrieved, the object is considered most recently used.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.LruCache`2.Keys">
+            <summary>
+            Gets a collection containing the keys in the cache
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.LruCache`2.Values">
+            <summary>
+            Gets a collection containing all cached objects
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.LruOwnerCache`2">
+            <summary>
+            Least Recently Used Cache - a cache containing room for a maximum number of elements whose values must be <see cref="T:System.IDisposable"/>. 
+            If the cache is full and extra elements are added, the least recently used element is removed and disposed to make room for the new element.
+            This class is not thread safe.
+            </summary>
+            <typeparam name="TKey">Type of key.</typeparam>
+            <typeparam name="TValue">Type of <see cref="T:System.IDisposable"/> object which is cached.</typeparam>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruOwnerCache`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Constructs an <see cref="T:Configit.ResourceRepository.Common.LruOwnerCache`2"/> instance which can host a specified number of cached objects.
+            </summary>
+            <param name="maxSize">Maximum number of objects in cache.</param>
+            <param name="keyComparer">Key comparer. When null is given, <code>EqualityComparer{TKey}.Default</code> is used.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruOwnerCache`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0},System.Int32)">
+            <summary>
+            Constructs an <see cref="T:Configit.ResourceRepository.Common.LruOwnerCache`2"/> instance which can host a specified number of cached objects.
+            </summary>
+            <param name="maxSize">Maximum number of objects in cache.</param>
+            <param name="keyComparer">Key comparer. When null is given, <code>EqualityComparer{TKey}.Default</code> is used.</param>
+            <param name="initialCapacity">Initial capacity allocated for the cache.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruOwnerCache`2.Add(`0,`1)">
+            <summary>
+            Insert object in cache. Object is being considered most recently used after insertion.
+            If the capacity is reached, the least recently used object is removed and disposed.
+            </summary>
+            <param name="key">Key used to identify cached object.</param>
+            <param name="value">Cached object to add.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruOwnerCache`2.Remove(`0)">
+            <summary>
+            Remove object with specified key and dispose it.
+            </summary>
+            <param name="key">Key of cached object.</param>
+            <returns>True if element was removed, false if no cached element with specified key exist in cache.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruOwnerCache`2.Clear">
+            <summary>
+            Clear and dispose all elements in cache.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruOwnerCache`2.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.LruOwnerCache`2.Dispose(System.Boolean)">
+            <summary>
+            Disposes the instance as part of the IDisposable pattern.
+            </summary>
+            <param name="disposing">Indicates if the method is called from the IDisposable.Dispose() method.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.Metadata">
+            <summary>
+            Provides utility operations for package metadata.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.DefaultPartitionLevel">
+            <summary>
+            The default number of Uri components from which to generate a partition key from a package path.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.DefaultResourceHashLevel">
+            <summary>
+            The default number of components to use as the resource hash location from a package path.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.VersionSeparator">
+            <summary>
+            The separator character of a package path and a version Id.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.PathSeparator">
+            <summary>
+            The separator character for path components.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.BackSlashSeparator">
+            <summary>
+            The separator character for path components.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.PartitionKeySeparator">
+            <summary>
+            The separator character of a partition key and a data key within a cloud storage key.
+            This choice is based on this character being invalid as a either a Uri or a Windows filename; in a Linux filename although valid it is unlikely due to it's use as a pipe.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.NamespaceHeader">
+            <summary>
+            Http request header for namespace.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.ResourceHashStringHeader">
+            <summary>
+            Http request header for resource hash string.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.StatusCode">
+            <summary>
+            These are used for extracting values from a server response, and must match property names in classes derived from ResponseBase in the Repository Service
+            DO NOT CHANGE THEM - unless also changing the Repository Service
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.Message">
+            <summary>
+            Http response Message property.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.ExceptionInformation">
+            <summary>
+            Http response ExceptionInformation property.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.PackagePath">
+            <summary>
+            Http response PackagePath property.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.VersionPath">
+            <summary>
+            Http response VersionPath property.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.ResourcePath">
+            <summary>
+            Http response ResourcePath property.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.VersionId">
+            <summary>
+            Http response VersionId property.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.Manifest">
+            <summary>
+            Http response Manifest property.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.Storage">
+            <summary>
+            Http response StorageType property.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.FullResourcePathPattern">
+            <summary>
+            FullResourcePathPattern example: JLR/EU/GW~716d46d3-2cb5-4798-a298-52fc264a241a/productModels/X0/solve.bdd
+            Group 1 is the package path:     JLR/EU/GW
+            Group 2 is the package version:  716d46d3-2cb5-4798-a298-52fc264a241a
+            Group 3 is the resource path:    productModels/X0/solve.bdd
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.Metadata.UnversionedPackagePath">
+            <summary>
+            Default unversioned package path.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Metadata.GetMetadataPath(Configit.ResourceRepository.Common.MetadataType)">
+            <summary>
+            Gets a path to the required meta data.
+            </summary>
+            <param name="type">The meta data type for which to retrieve the path.</param>
+            <returns>The path for the meta data.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Metadata.GetHashKey(System.Uri,System.String)">
+            <summary>
+            Gets a hash key for the given hash string.
+            </summary>
+            <param name="hashPath">The path location within which to specify the given hash.</param>
+            <param name="hash">The hash string.</param>
+            <returns>A hash key for the given hash.</returns>
+            <exception cref="T:System.ArgumentNullException">If the hash is null.</exception>
+            <exception cref="T:System.ArgumentException">If the hash is an empty string.</exception>
+            <exception cref="T:System.FormatException">If the hash is not a valid Base64 string.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Metadata.GetHash(System.IO.Stream)">
+            <summary>
+            Gets a hash for the given data.
+            </summary>
+            <param name="stream">The stream for which to compute the hash.</param>
+            <returns>A hash value for the given data.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Metadata.GetHash(System.Byte[])">
+            <summary>
+            Gets a hash for the given data.
+            </summary>
+            <param name="bytes">The byte[] for which to compute the hash.</param>
+            <returns>A hash value for the given data.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Metadata.GetHashString(System.Byte[])">
+            <summary>
+            Gets the string representation of the given hash.
+            </summary>
+            <param name="hashBytes">The hash value for which to return the string representation.</param>
+            <returns>The string representation of the given hash.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Metadata.GetHashBytes(System.String)">
+            <summary>
+            Gets the binary representation of the given hash string.
+            </summary>
+            <param name="hashString">The hash string for which to return the binary representation.</param>
+            <returns>The binary representation of the given hash string.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Metadata.ValidateFullResourcePath(System.String,System.String)">
+            <summary>
+            Validates a full resource path.
+            </summary>
+            <param name="fullResourcePathKey">The full resource path to validate.</param>
+            <param name="argumentName">The name of the argument to use in a thrown ArgumentException.</param>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Metadata.GetDefaultNamespace(Configit.ResourceRepository.Common.StorageType)">
+            <summary>
+            Gets the default namespace for the given <see cref="T:Configit.ResourceRepository.Common.StorageType"/>.
+            </summary>
+            <param name="type">The <see cref="T:Configit.ResourceRepository.Common.StorageType"/>.</param>
+            <returns>The default namespace.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Metadata.ValidatePackagePathLevels(System.Int32,System.Int32)">
+            <summary>
+            Validates the values of the resource hash and partition levels.
+            </summary>
+            <param name="partitionLevel">The partition level to validate.</param>
+            <param name="resourceHashLevel">The resource hash level to validate.</param>
+            <exception cref="T:System.ArgumentException">If the partitionLevel or the resourceHashLevel is invalid.</exception>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.MetadataType">
+            <summary>
+            Specifies values for types of meta data used for administration.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.MetadataType.LatestPackage">
+            <summary>
+            The latest package version Id.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.MetadataType.PackageHistory">
+            <summary>
+            The existing package version Ids.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.MetadataType.PackageManifest">
+            <summary>
+            The resource manifest for a package version.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.MetadataType.ResourceHash">
+            <summary>
+            The resource hash suffix.
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException">
+            <summary>
+            Exception class for denoting that a package is in a state that makes an operation invalid.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.PackageCannotBeModifiedException.VersionPath">
+            <summary>
+            Gets the version path of the package being modified.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.PackageCannotBeModifiedException.#ctor(System.Uri)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException"/> for a given package version path.
+            </summary>
+            <param name="versionPath">The version path of the package for this exception.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.PackageCannotBeModifiedException.#ctor(System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.PackageCannotBeModifiedException"/> for a given message.
+            </summary>
+            <param name="message">The message for this exception.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.PackageNotFoundException">
+            <summary>
+            Exception class for denoting that a package cannot be found.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.PackageNotFoundException.PackagePath">
+            <summary>
+            Gets the package path of the package that cannot be found.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.PackageNotFoundException.#ctor(System.Uri)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.PackageNotFoundException"/> for a given package path.
+            </summary>
+            <param name="packagePath">The package path for this exception.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.PackageNotFoundException.#ctor(System.Uri,System.Exception)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.PackageNotFoundException"/> for a given package path and inner exception.
+            </summary>
+            <param name="packagePath">The package path for this exception.</param>
+            <param name="innerException">The inner exception that caused this <see cref="T:Configit.ResourceRepository.Common.PackageNotFoundException"/>.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.PackageNotFoundException.#ctor(System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.PackageNotFoundException"/> for a given message.
+            </summary>
+            <param name="message">The message for this exception.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.PackageVersionNotFoundException">
+            <summary>
+            Exception class for denoting that a package version cannot be found.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.PackageVersionNotFoundException.PackagePath">
+            <summary>
+            Gets the package path of the package version that cannot be found.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.PackageVersionNotFoundException.VersionId">
+            <summary>
+            Gets the version id of the package version that cannot be found.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.PackageVersionNotFoundException.#ctor(System.Uri,System.Guid)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.PackageVersionNotFoundException"/> for a given package path and version Id.
+            </summary>
+            <param name="packagePath">The package path for this exception.</param>
+            <param name="versionId">The version Id for this exception.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.PackageVersionNotFoundException.#ctor(System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.PackageVersionNotFoundException"/> for a given message.
+            </summary>
+            <param name="message">The message for this exception.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.ResourceNotFoundException">
+            <summary>
+            Exception class for denoting that a resource cannot be found in a package.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.ResourceNotFoundException.ResourcePath">
+            <summary>
+            Gets the resource path that cannot be found.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.ResourceNotFoundException.#ctor(System.Uri)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException"/> for a given resource path.
+            </summary>
+            <param name="resourcePath">The resource path for this exception.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.ResourceNotFoundException.#ctor(System.Uri,System.Exception)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException"/> for a given resource path and inner exception.
+            </summary>
+            <param name="resourcePath">The resource path for this exception.</param>
+            <param name="innerException">The inner exception that caused this <see cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException"/>.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.ResourceNotFoundException.#ctor(System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.ResourceNotFoundException"/> for a given message.
+            </summary>
+            <param name="message">The message for this exception.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.StatusCode">
+            <summary>
+            Specifies values for various Repository Service response status codes.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.Ok">
+            <summary>
+            No error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.InvalidNamespace">
+            <summary>
+            Invalid namespace error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.InvalidPackagePath">
+            <summary>
+            Invalid package path error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.InvalidResourcePath">
+            <summary>
+            Invalid resource path error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.InvalidResourceHash">
+            <summary>
+            Invalid resource hash error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.UnexpectedNamespace">
+            <summary>
+            Unexpected namespace error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.PackageNotFound">
+            <summary>
+            Package not found error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.PackageVersionNotFound">
+            <summary>
+            Package version not found error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.PackageVersionCannotBeModified">
+            <summary>
+            Package version cannot be modified error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.ResourceNotFound">
+            <summary>
+            Resource not found error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.ResourceHashNotFound">
+            <summary>
+            Resource hash not found error.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StatusCode.UnhandledException">
+            <summary>
+            Unhandled exception error.
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.StorageType">
+            <summary>
+            Specifies values for supported storage types.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StorageType.None">
+            <summary>
+            No storage type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StorageType.Memory">
+            <summary>
+            Memory storage type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StorageType.Amazon">
+            <summary>
+            Amazon S3 storage type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StorageType.Azure">
+            <summary>
+            Azure blob storage type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StorageType.Directory">
+            <summary>
+            Directory storage type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StorageType.Zip">
+            <summary>
+            Zip storage type.
+            </summary>
+        </member>
+        <member name="F:Configit.ResourceRepository.Common.StorageType.Service">
+            <summary>
+            Service storage type.
+            </summary>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.StreamExtensions">
+            <summary>
+            Extension methods for Streams.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.StreamExtensions.GetBytesAsync(System.IO.Stream)">
+            <summary>
+            Gets the contents of the given <see cref="T:System.IO.Stream"/> instance as a byte[]. This method supports non-seekable streams.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> for which to get the byte[].</param>
+            <returns>A task that represents the asynchronous operation. The value of the TResult parameter is the contents as a byte[].</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.StreamExtensions.GetBytes(System.IO.Stream)">
+            <summary>
+            Gets the contents of the given <see cref="T:System.IO.Stream"/> instance as a byte[]. This method supports non-seekable streams.
+            </summary>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> for which to get the byte[].</param>
+            <returns>The contents as a byte[].</returns>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.UnexpectedNamespaceException">
+            <summary>
+            Exception class for denoting that a provided namespace is unexpected.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.UnexpectedNamespaceException.Namespace">
+            <summary>
+            Gets the namespace.
+            </summary>
+        </member>
+        <member name="P:Configit.ResourceRepository.Common.UnexpectedNamespaceException.StorageType">
+            <summary>
+            Gets the storage type.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UnexpectedNamespaceException.#ctor(System.String,Configit.ResourceRepository.Common.StorageType)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.UnexpectedNamespaceException"/> for a given namespace.
+            </summary>
+            <param name="namespace">The namespace for this exception.</param>
+            <param name="storageType">The storage type to which the namespace is being applied.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UnexpectedNamespaceException.#ctor(System.String,Configit.ResourceRepository.Common.StorageType,System.Exception)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.UnexpectedNamespaceException"/> for a given namespace and inner exception.
+            </summary>
+            <param name="namespace">The namespace for this exception.</param>
+            <param name="storageType">The storage type to which the namespace is being applied.</param>
+            <param name="innerException">The inner exception that caused this <see cref="T:Configit.ResourceRepository.Common.UnexpectedNamespaceException"/>.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UnexpectedNamespaceException.#ctor(System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Common.UnexpectedNamespaceException"/> for a given message.
+            </summary>
+            <param name="message">The message for this exception.</param>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.UriExtensions">
+            <summary>
+            Extension methods for Uris.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.JoinPath(System.Uri,System.Guid)">
+            <summary>
+            Gets a new Uri given a path component and an identifier.
+            </summary>
+            <param name="path1">A path component.</param>
+            <param name="id">A unique identifier.</param>
+            <returns>A new Uri.</returns>
+            <exception cref="T:System.ArgumentNullException">If the path is null.</exception>
+            <exception cref="T:System.ArgumentException">If the path is an absolute Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.JoinPath(System.Uri,System.Uri)">
+            <summary>
+            Gets a new Uri given path components.
+            </summary>
+            <param name="path1">A primary path component.</param>
+            <param name="path2">A secondary path component.</param>
+            <returns>A new relative Uri.</returns>
+            <exception cref="T:System.ArgumentNullException">If any of the paths are null.</exception>
+            <exception cref="T:System.ArgumentException">If any of the paths are an absolute Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetAbsolutePath(System.Uri,System.Uri)">
+            <summary>
+            Gets a new Uri given path components.
+            </summary>
+            <param name="path1">A primary path component.</param>
+            <param name="path2">A secondary path component.</param>
+            <returns>A new absolute Uri.</returns>
+            <exception cref="T:System.ArgumentNullException">If any of the paths are null.</exception>
+            <exception cref="T:System.FormatException">If path1 is not an absolute Uri or path2 is not a relative Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetTrimmedPath(System.Uri)">
+            <summary>
+            Gets a string from the given Uri and trims leading and trailing slashes.
+            </summary>
+            <param name="path">The Uri to trim.</param>
+            <returns>The trimmed Uri string.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.ValidatePath(System.Uri,System.String)">
+            <summary>
+            Validates the given path.
+            </summary>
+            <param name="path">The Uri to validate.</param>
+            <param name="argumentName">The name of a Uri argument to place into the thrown exception.</param>
+            <exception cref="T:System.FormatException">If the path is not relative or contains more than one <see cref="F:Configit.ResourceRepository.Common.Metadata.VersionSeparator"/>.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.IsVersioned(System.Uri)">
+            <summary>
+            Determines if the Uri contains a version Guid.
+            </summary>
+            <param name="path">The Uri for which to check the version Guid.</param>
+            <returns>True if the Uri contains a version Guid; otherwise false.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetVersionId(System.Uri)">
+            <summary>
+            Gets the version Guid from the version Uri.
+            </summary>
+            <param name="path">The Uri from which to retrieve a version Guid.</param>
+            <returns>The version Guid if present, otherwise Guid.Empty.</returns>
+            <exception cref="T:System.ArgumentException">If the path is an invalid version path.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetPackagePath(System.Uri)">
+            <summary>
+            Gets the package path from a package path, version path or full resource path Uri excluding any version Id or resource path.
+            </summary>
+            <param name="path">The Uri for which to retrieve the package path.</param>
+            <returns>The new package path Uri.</returns>
+            <exception cref="T:System.ArgumentException">If the path is empty or an absolute Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.ParseVersionPath(System.Uri)">
+            <summary>
+            Parses a version path.
+            </summary>
+            <param name="versionPath">The version path to parse.</param>
+            <returns>A trimmed version path string.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetFullResourcePathKey(System.Uri,System.Uri)">
+            <summary>
+            Gets the unique key for a resource within a package Uri path.
+            </summary>
+            <param name="versionPath">The version path.</param>
+            <param name="resourcePath">The resource path.</param>
+            <returns>The full resource path key.</returns>
+            <exception cref="T:System.ArgumentNullException">If any of the paths are null.</exception>
+            <exception cref="T:System.ArgumentException">If any of the paths are an absolute Uri.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetMetadataKey(System.Uri,Configit.ResourceRepository.Common.MetadataType)">
+            <summary>
+            Gets the key to the required metadata type for the package path.
+            </summary>
+            <param name="packagePath">The path to the package.</param>
+            <param name="type">The meta data type for which to retrieve the key.</param>
+            <returns>The metadata key.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetHistoryMetadataKey(System.Uri,System.Guid)">
+            <summary>
+            Gets the history metadata key for the package path and id.
+            </summary>
+            <param name="packagePath">The path to the package.</param>
+            <param name="id">A unique identifier.</param>
+            <returns>The metadata key.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetVersionIdFromHistoryMetadataPath(System.Uri)">
+            <summary>
+            Gets the version id from the history path Uri.
+            </summary>
+            <param name="historyPath">The history path.</param>
+            <returns>The version id.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetVersionPath(System.Uri)">
+            <summary>
+            Gets the package version path Uri from a full resource path.
+            </summary>
+            <param name="fullResourcePath">The full resource path consists of package path, package version and resource path.</param>
+            <returns>The package version path Uri.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.GetResourcePath(System.Uri)">
+            <summary>
+            Gets the relative resource path from a full resource path.
+            </summary>
+            <param name="fullResourcePath">The full resource path consists of package path, package version and resource path.</param>
+            <returns>The resource path Uri.</returns>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.UriExtensions.SplitPackagePath(System.Uri,System.Int32)">
+            <summary>
+            Splits the partition key and package path from the given package path. Versioned package paths and full resource paths are supported.
+            </summary>
+            <param name="packagePath">The package path to split.</param>
+            <param name="componentLevel">The number of components to extract.</param>
+            <returns>A <see cref="T:System.ValueTuple"/> containing the partition key and the package path excluding the partition key.</returns>
+            <exception cref="T:System.ArgumentNullException">If packagePath is null.</exception>
+            <exception cref="T:System.ArgumentException">If packagePath is empty.</exception>
+            <exception cref="T:System.FormatException">If the format of the packagePath is invalid.</exception>
+        </member>
+        <member name="T:Configit.ResourceRepository.Common.Validator">
+            <summary>
+            Provides basic argument validation.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Validator.ValidateArgument(System.String,System.String)">
+            <summary>
+            Validates an argument value.
+            </summary>
+            <param name="argumentValue">The argument value to validate.</param>
+            <param name="argumentName">The name of the argument to use in a thrown ArgumentNullException or ArgumentException.</param>
+            <exception cref="T:System.ArgumentNullException">If the argument value is null.</exception>
+            <exception cref="T:System.ArgumentException">If the argument value is invalid.</exception>
+        </member>
+        <member name="M:Configit.ResourceRepository.Common.Validator.ValidateNotNull(System.Object,System.String)">
+            <summary>
+            Validates that an object is not null.
+            </summary>
+            <param name="obj">The object to validate.</param>
+            <param name="argumentName">The name of the argument to use in a thrown ArgumentNullException or ArgumentException.</param>
+            <exception cref="T:System.ArgumentNullException">If the argument value is null.</exception>
+        </member>
+    </members>
+</doc>

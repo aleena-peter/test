@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.ResourceRepository.Storage.Directory</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.ResourceRepository.Storage.Directory.DirectoryStorage">
+            <summary>
+            Provides operations for accessing directory storage; keys are stored as file names and values as file contents.
+            All methods are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.#ctor(System.String)">
+            <summary>
+            Constructs an instance of a <see cref="T:Configit.ResourceRepository.Storage.Directory.DirectoryStorage"/>.
+            </summary>
+            <param name="rootPath">The root path of the directory, absolute or relative. If a relative path is used, it is relative to the current working directory of the process.</param>
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.ContainsKeyAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.GetAsync``1(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.TryGet``1(System.String,``0@)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,System.Decimal)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,System.Double)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,System.Byte[])">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,System.IO.Stream)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,Newtonsoft.Json.Linq.JToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,System.Guid)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.StoreAsync(System.String,System.Action{System.IO.Stream})">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.RemoveAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.RemoveAllAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.GetKeysStartWithAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.Flush">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.ResourceRepository.Storage.Directory.DirectoryStorage.Dispose(System.Boolean)">
+            <summary>
+            Disposes the instance as part of the IDisposable pattern.
+            </summary>
+            <param name="disposing">Indicates if the method is called from the IDisposable.Dispose() method.</param>
+        </member>
+    </members>
+</doc>

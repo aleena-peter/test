@@ -1,0 +1,1277 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Configit.Core.Utils</name>
+    </assembly>
+    <members>
+        <member name="T:Configit.Core.Utils.BaseIoManager">
+            <summary>
+            Helper methods for reading and writing data structures to streams.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.BaseIoManager.ReadLine(System.IO.TextReader,System.Int32@)">
+            <summary>
+            Read single line of data from reader
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.BaseIoManager.ReadInt(System.IO.TextReader,System.Int32)">
+            <summary>
+            Eat up spaces and read and parse integer. Does not eat up newline
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.BaseIoManager.ReadMimeInt(System.IO.TextReader,System.Int32)">
+            <summary>
+            Eat up spaces and read mime encoded integer. Does not eat up newline
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.Collections.BiDictionary`2">
+            <summary>
+            Implementation of a bidirectional dictionary. Dictionary contains two collections,
+            referred to as First and Second. Every entry in each collection maps bi-directionally
+            to an element in the other collection
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0},System.Collections.Generic.IEqualityComparer{`1})">
+            <summary>
+            Create a bi-directional dictionary, using the specified comparers
+            for elements in first and second collection.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.Map(`0,`1)">
+            <summary>
+            Adds a new mapping or remaps old ones.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.RemoveFirst(`0)">
+            <summary>
+            Removes a mapping based on the first key.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.RemoveBySecond(`1)">
+            <summary>
+            Removes a mapping based on the second key.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.Add(`0,`1)">
+            <summary>
+            Adds a 1:1 mapping where neither key is already present in the dictionary.
+            </summary>
+            <exception cref="T:System.ArgumentException">Thrown if second or first is already mapped</exception>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.TryGetByFirst(`0,`1@)">
+            <summary>
+            Lookup an element in the second collection, using <paramref name="first"/>
+            as key in first collection
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.TryGetBySecond(`1,`0@)">
+            <summary>
+            Lookup an element in the first collection, using <paramref name="second"/>
+            as key in the second collection
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.BiDictionary`2.Item(`0)">
+            <summary>
+            <see cref="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.GetByFirst(`0)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.GetByFirst(`0)">
+            <summary>
+            Get element in second collection using <paramref name="tFirst"/>
+            as key in first collection.
+            </summary>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If key is not found in first collection</exception>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.BiDictionary`2.Item(`1)">
+            <summary>
+            <see cref="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.GetBySecond(`1)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.GetBySecond(`1)">
+            <summary>
+            Get element in first collection using <paramref name="tSecond"/>
+            as key in second collection.
+            </summary>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If key is not found in second collection</exception>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.ContainsFirst(`0)">
+            <summary>
+            Check if first collection contains key equal to <paramref name="first"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionary`2.ContainsSecond(`1)">
+            <summary>
+            Check if second collection contains key equal to <paramref name="second"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.BiDictionary`2.FirstValues">
+            <summary>
+            Get all values in first collection
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.BiDictionary`2.SecondValues">
+            <summary>
+            Get all values in second collection
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.BiDictionary`2.Count">
+            <summary>
+            Number of elements in each collection
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.Collections.BiDictionaryEnumerableExtension">
+            <summary>
+            Extension methods for creating <see cref="T:Configit.Core.Utils.Base.Collections.BiDictionary`2"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.BiDictionaryEnumerableExtension.ToBiDictionary``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2})">
+            <summary>
+            Extension method for turning a <paramref name="list"/> of elements
+            into a <see cref="T:Configit.Core.Utils.Base.Collections.BiDictionary`2"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.Collections.DuplicateInsertBehavior">
+            <summary>
+            Enumeration to describe how to handle the situation when
+            an element is inserted with a key which already exists
+            in the collection.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Utils.Base.Collections.DuplicateInsertBehavior.NotAllowed">
+            <summary>
+            Inserting an element when another element already exists in the
+            collection with the same key, is prohibited. An exception is thrown.
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Utils.Base.Collections.DuplicateInsertBehavior.IgnoreLast">
+            <summary>
+            If inserting an element when another element already exists in the
+            collection with the same key, the last element is ignored (not inserted)
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Utils.Base.Collections.DuplicateInsertBehavior.ReplaceFirst">
+            <summary>
+            If inserting an element when another element already exists in the
+            collection with the same key, the first element is removed and the last
+            element added.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.Collections.IndexedCollection`2">
+            <summary>
+            Collection that allow to index element by both name and index.
+            Enumeration of keys and/or values respects index order.
+            </summary>
+            <typeparam name="TKey">key type</typeparam>
+            <typeparam name="TValue">value type</typeparam>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+             Create Indexed collection with custom comparer
+            </summary>
+            <param name="keyComparer"></param>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Configit.Core.Utils.Base.Collections.IndexedCollection`2"/> class.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.#ctor(Configit.Core.Utils.Base.Collections.IndexedCollection{`0,`1}[])">
+            <summary>
+            Create a merged collection of the elements in collections array. The array
+            may contain nulls, which are simply skipped.
+            </summary>
+            <param name="collections"></param>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.IndexedCollection`2.GetKeyFromValue">
+            <summary>
+            Function which finds a key based on a value is used in <see cref="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Add(`1)"/>
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.IndexedCollection`2.InsertBehavior">
+            <summary>
+             Indicate the behavior when inserting multiple values with
+             identical key. Default behavior is to thrown an ArgumentException.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Add(`1)">
+            <summary>
+            Add a value, using <see cref="P:Configit.Core.Utils.Base.Collections.IndexedCollection`2.GetKeyFromValue"/> to find key
+            </summary>
+            <param name="value">The value to add</param>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.AddRange(System.Collections.Generic.IEnumerable{`1})">
+            <summary>
+            Add all entities in <paramref name="values"/> to current collection. Key for
+            each entry is found using <see cref="P:Configit.Core.Utils.Base.Collections.IndexedCollection`2.GetKeyFromValue"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Add(`0,`1)">
+            <summary>
+            Add value with given key.
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <remarks>Throws ArgumentException if name already exists is in collection</remarks>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Add(`0,`1,Configit.Core.Utils.Base.Collections.DuplicateInsertBehavior)">
+            <summary>
+            Add element with given name
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="behavior">Specify how to handle situation where name
+            already has been inserted into collection</param>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Count">
+            <summary>
+             number of elements
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Clear">
+            <summary>
+             clears values from collection
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Remove(`0)">
+            <summary>
+            Remove the entry with the given name
+            </summary>
+            <param name="name"></param>
+            <returns>
+            true if element with name is removed, false if it does not exists in collection
+            </returns>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Item(System.Int32)">
+            <summary>
+             index collection by index
+            </summary>
+            <param name="index"></param>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Item(`0)">
+            <summary>
+             index collection by name
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.GetEnumerator">
+            <summary>
+            get enumerator that runs through collection in the order elements where added
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.System#Collections#Generic#IEnumerable{System#Collections#Generic#KeyValuePair{TKey,TValue}}#GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.ContainsKey(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollection`2.TryGetValue(`0,`1@)">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Keys">
+            <inheritdoc />
+        </member>
+        <member name="P:Configit.Core.Utils.Base.Collections.IndexedCollection`2.Values">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Utils.Base.Collections.IndexedCollectionExtensions">
+            <summary>
+            Convenient methods to transform <see cref="T:System.Collections.Generic.IEnumerable`1"/> to <see cref="T:Configit.Core.Utils.Base.Collections.IndexedCollection`2"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollectionExtensions.ToIndexedCollection``2(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{``0,``1}})">
+            <summary>
+            Index a collection of key/value pair.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollectionExtensions.ToIndexedCollection``2(System.Collections.Generic.IEnumerable{``1},System.Func{``1,``0})">
+            <summary>
+            Index a collection of elements using a key selector function from element.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.Collections.IndexedCollectionExtensions.ToIndexedCollection``3(System.Collections.Generic.IEnumerable{``2},System.Func{``2,``0},System.Func{``2,``1})">
+            <summary>
+            Index a collection of elements using a key selector function from element and value selector function from element.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.OneToManyDictionary`2">
+            <summary>
+            Dictionary that maps keys into lists. Querying
+            a key that does not exist will return an empty list
+            (and store it for the key).
+            </summary>
+            <remarks>
+            Insertion causes values to be added to the end
+            of the list for the key.
+            </remarks>
+            <typeparam name="T1">Key type</typeparam>
+            <typeparam name="T2">Value type</typeparam>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.OneToManyDictionary`2.#ctor">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.OneToManyDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+             Creates a dictionary that uses the specified comparer for keys.
+            </summary>
+            <param name="comparer">Comparer to use</param>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.OneToManyDictionary`2.AsGroupings">
+            <summary>
+            Get the dictionary content as an enumeration of groupings
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.OneToManyDictionary`2.Add(`0,`1)">
+            <summary>
+             Appends value to the list for the given key.
+            </summary>
+            <param name="key">The key to lookup</param>
+            <param name="value">The value to append</param>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.OneToManyDictionary`2.Remove(`0,`1)">
+            <summary>
+            Removes value from the list of key
+            </summary>
+            <param name="key">The key to lookup</param>
+            <param name="value">The list of values</param>
+            <returns></returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.OneToManyDictionary`2.GetValues(`0)">
+            <summary>
+            Returns values associated to specified <paramref name="key"/>. If no values are associated with
+            given <paramref name="key"/> the empty list is inserted into the map for the specified key, and the
+            empty list is returned.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.OneToManyDictionary`2.Item(`0)">
+            <summary>
+            Same as <see cref="M:Configit.Core.Utils.Base.OneToManyDictionary`2.GetValues(`0)"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.OneToManyDictionaryEnumerableExtension">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.OneToManyDictionaryEnumerableExtension.ToOneToManyDictionary``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2})">
+            <summary>
+            Create a one to many dictionary by transforming the elements in the enumerable.
+            </summary>
+            <param name="elements"></param>
+            <param name="keyFunc"></param>
+            <param name="valFunc"></param>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.EnumerableEqualityComparer`1">
+            <summary>
+            Comparer for enumerables.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.EnumerableEqualityComparer`1.#ctor">
+            <summary>
+            Construct comparer using default element comparer
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.EnumerableEqualityComparer`1.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Construct comparer using specified element comparer
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.EnumerableEqualityComparer`1.Equals(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Return true if <paramref name="x"/> is sequentially equal to <paramref name="y"/>.
+            False otherwise
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.EnumerableEqualityComparer`1.GetHashCode(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Get hash code for all elements, using the internal comparer
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.IEnumerableExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Collections.Generic.IEnumerable`1"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.IEnumerableExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+             Apply <param name="action"/> to each of the elements in <param name="values"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.IEnumerableExtensions.MaxBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Find the largest element and returns it
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.IEnumerableExtensions.MaxBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IComparer{``1})">
+            <summary>
+            Find the largest element using a supplied comparer and returns it.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.IEnumerableExtensions.Split``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Splits an <see cref="T:System.Collections.Generic.IEnumerable`1"/> into chunks of size at most chunkSize
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> to partition</param>
+            <param name="chunkSize">Maximum size of each chunk</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> of partitions</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.IEnumerableExtensions.Join``1(System.Collections.Generic.IEnumerable{``0},System.String)">
+            <summary>
+            Convenience method for calling <see cref="M:System.String.Join(System.String,System.String[])"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.IEnumerableExtensions.StableDistinct``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Implementation of <see cref="T:System.Collections.Generic.IEnumerable`1"/> Distinct method, which guarantees
+            the output to be distinct and in the same sequence as the input (standard implementation
+            can give unsorted output)
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.IEnumerableExtensions.ToIndexedCollection``2(System.Collections.Generic.IEnumerable{``1},System.Func{``1,``0})">
+            <summary>
+            Converts an <see cref="T:System.Collections.Generic.IEnumerable`1"/> to an <see cref="T:Configit.Core.Utils.Base.Collections.IndexedCollection`2"/> providing
+            indexing by enumeration order and by key using <paramref name="val2KeyFunc"/>.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.ObjectExtensions">
+            <summary>
+            Helper methods making it easy to test if an object is part 
+            of a collection of values.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ObjectExtensions.In``1(``0,``0[])">
+            <summary>
+            Makes it easier read code that tests whether a variable has a value from a list.
+            Ie. x.In(1,2,3) vs x == 1 || x == 2 || x == 3
+            Can also be used to test whether one of a list of variables has a given values:
+            1.In(x,y) vs x == 1 || y == 1
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ObjectExtensions.In``1(``0,System.Collections.Generic.IComparer{``0},``0[])">
+            <summary>
+            Similar to <see cref="M:Configit.Core.Utils.Base.ObjectExtensions.In``1(``0,``0[])"/>, but with a custom IComparer
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ObjectExtensions.In``1(``0,System.Collections.Generic.IEqualityComparer{``0},``0[])">
+            <summary>
+            Similar to <see cref="M:Configit.Core.Utils.Base.ObjectExtensions.In``1(``0,``0[])"/>, but with a custom IEqualityComparer
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.ResourcePool.IPoolItem`1">
+            <summary>
+            Interface for an item retrieved from a pool and will be returned
+            to the pool when disposed.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.ResourcePool.IPoolItem`1.Instance">
+            <summary>
+            Gets the pooled item instance.
+            </summary>
+            <value>The model instance.</value>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.ResourcePool.PoolItem`1">
+            <summary>
+            Manage a pool item acquired from a ResourcePool. 
+            This class represents the association between the pool and a pooled item.
+            The instance of the pooled item is returned to the pool when this class is disposed.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.ResourcePool.PoolItem`1.Instance">
+            <summary>
+            Gets the pooled item instance.
+            </summary>
+            <value>The model instance.</value>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.PoolItem`1.op_Implicit(Configit.Core.Utils.Base.ResourcePool.PoolItem{`0})~`0">
+            <summary>
+            Implicit conversion to the pooled instance item
+            </summary>
+            <param name="source"></param>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.PoolItem`1.Dispose">
+            <summary>
+            Dispose the item and return to pool for later usage
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.PoolItem`1.Dispose(System.Boolean)">
+            <summary>
+            Dispose item and return to pool
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.PoolItem`1.Finalize">
+            <summary>
+            Finalizer that will dispose the item
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1">
+            <summary>
+              Represents a pool of <typeparamref name="TPoolItem" /> objects.
+              It is thread safe and manages disposable objects as long as they implement correctly the Dispose pattern
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.#ctor">
+            <summary>
+              Initializes the instance with a <see cref="T:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.BasicStorage" /> pool implementation
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.#ctor(Configit.Core.Utils.Base.ResourcePool.ResourcePool{`0}.IResourcePoolStorage,System.Int32)">
+            <summary>
+              Allows injection of a <see cref="T:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.IResourcePoolStorage" />
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.MaxPoolSize">
+            <summary>
+              Maximum number of objects allowed in the pool
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.ApproximatedMaxPoolSizeReached">
+            <summary>
+              The current approximated number of items in the pool.
+              The approximation indicates that there can be fewer items in the pool than approximated, but never more.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.Dispose">
+            <summary>
+            Disposing the pool will call <see cref="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.Clear"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.GetAvailableItems">
+            <summary>
+              For debugging and testing only. It returns all the items available for use.
+              It is important that no real use is done with the result because it violates the encapsulation of the pool.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.Acquire">
+            <summary>
+              Acquires a <see cref="T:Configit.Core.Utils.Base.ResourcePool.PoolItem`1" /> which provides the Dispose method
+              that returns the object to the pool.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.CreateItem">
+            <summary>
+            Creates an item that will be used in the pool. This method will be called internally when creating a new
+            <typeparamref name="TPoolItem" />
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.PrepareItem(`0)">
+            <summary>
+            Prepare an item so the next caller will get a object ready and safe to use. This method will be called internally before returning the
+            <typeparamref name="TPoolItem" />
+            to the <see cref="T:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1" />.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.ReturnToPool(`0)">
+            <summary>
+            Put the object back into the pool.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.Clear">
+            <summary>
+            Disposes all managed resources by removing all <typeparamref name="TPoolItem" /> from the pool and disposing each.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.ClearInternal">
+            <summary>
+            Removes all <typeparamref name="TPoolItem" /> from the pool and disposing each.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.Dispose(System.Boolean)">
+            <summary>
+            Dispose will call <see cref="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.ClearInternal"/> and invoke <see cref="M:System.GC.SuppressFinalize(System.Object)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.Finalize">
+            <summary>
+            Finalizer that will dispose the pool
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.BasicStorage">
+            <summary>
+            Implementation that preserves all the elements in the pool without any additional administration
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.BasicStorage.ApproximateCount">
+            <summary>
+            Returns a Count that indicates that currently there is no more than the indicated number of
+            elements available. The actual count may be smaller depending on the storage implementation.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.BasicStorage.Push(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.BasicStorage.Pop">
+            <inheritdoc />
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.BasicStorage.GetEnumerator">
+            <summary>
+            Returns an enumerator over all items in storage
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.BasicStorage.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator over all items in storage
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.IResourcePoolStorage">
+            <summary>
+              Defines a special implementations of the in-memory storage used by the pool
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.IResourcePoolStorage.ApproximateCount">
+            <summary>
+            Returns a Count that indicates that currently there is no more than the indicated number of
+            elements available. The actual count may be smaller depending on the storage implementation.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.IResourcePoolStorage.Push(`0)">
+            <summary>
+            Pushes an item to the storage.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.IResourcePoolStorage.Pop">
+            <summary>
+            Pops an item from the storage.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.WeekRefenceStorage">
+            <summary>
+              Storage that allows garbage collection of PoolItem items when .Net GC decides that there is too much
+              memory pressure
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.WeekRefenceStorage.ApproximateCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.WeekRefenceStorage.Push(`0)">
+            <summary>
+            Pushes an item to the storage.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.WeekRefenceStorage.Pop">
+            <summary>
+            Pops an item from the storage.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.WeekRefenceStorage.GetEnumerator">
+            <summary>
+            Get enumerator for all non null elements in pool
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePool`1.WeekRefenceStorage.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Get enumerator for all non null elements in pool
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3">
+            <summary>
+              Maintains the collection of all the pools. Each pool is responsible for an specific <typeparamref name="TPoolItem" />.
+              In order to obtain an specific instance use <see cref="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.Acquire(`1)" />
+            </summary>
+        </member>
+        <member name="F:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3._poolStorage">
+            <summary>
+              Maintains the collection of all the pools. Each pool is responsible for a specific <typeparamref name="TPoolItem" />
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.#ctor">
+            <summary>
+              Initializes the <see cref="T:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3" /> using a
+              <see
+                cref="T:System.Collections.Generic.Dictionary`2" />
+              as storage
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.#ctor(System.Collections.Generic.IDictionary{`1,`0})">
+            <summary>
+              Initializes the <see cref="T:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3" /> using a custom storage that implements
+              <see
+                cref="T:System.Collections.Generic.IDictionary`2" />
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.Storage">
+            <summary>
+              Gets all pool keys
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.GetNullKey">
+            <summary>
+            Get key which is the default type of <typeparamref name="TKey"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.HasPool(`1)">
+            <summary>
+              Check if a pool with the specified <paramref name="id" /> exits
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.GetPoolIfExists(`1)">
+            <summary>
+              Same as <see cref="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.GetPool(`1)" /> but if the pool does not exist it simply returns null
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.GetPool(`1)">
+            <summary>
+              Get an instance of the <typeparamref name="TResourcePool" /> for the give
+              <param name="id" />
+              .
+              Always is expected to return a <typeparamref name="TPoolItem" /> instance, if one does not exist
+              in the collection then one is created. If pool cannot be created, null is returned
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.RemovePool(`1)">
+            <summary>
+            Removes the <typeparamref name="TResourcePool" /> from the collection
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.Acquire(`1)">
+            <summary>
+              Acquires a <see cref="T:Configit.Core.Utils.Base.ResourcePool.PoolItem`1" /> from the ResourcePool with
+              <param name="id" />
+              which provides the Dispose method that returns the object to the pool
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Base.ResourcePool.ResourcePoolCollection`3.CreatePool(`1)">
+            <summary>
+            Create pool with specified <paramref name="id"/>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.Coding">
+            <summary>
+            Class with misc. helper methods
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.SetMaskedValue(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Method for setting value in an attribute, where only
+            part of the attribute is used for holding value.
+            </summary>
+            <param name="orig">The original value of the attribute</param>
+            <param name="value">The value to write to <paramref name="orig"/></param>
+            <param name="mask">A bitmask, used to indicate which bits
+            are used to hold value</param>
+            <returns>
+            An integer representing <paramref name="orig"/>, but where bits in mask are
+            substituted with value
+            </returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.MimeDecodeInt(System.String)">
+            <summary>
+            Method for decoding a mime encoded integer.
+            </summary>
+            <param name="str">The string representing the mime encoded integer</param>
+            <returns>An integer representing <paramref name="str"/></returns>
+            <exception cref="T:System.Exception">if <paramref name="str"/> is longer than 6 characters</exception>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.MimeEncodeInt(System.Int32)">
+            <summary>
+            Encode int into string
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.MimeDecodeInt(System.Char[])">
+            <summary>
+            Method for decoding a mime encoded integer.
+            </summary>
+            <param name="str">The string representing the mime encoded integer</param>
+            <returns>An integer representing <paramref name="str"/></returns>
+            <exception cref="T:System.Exception">if <paramref name="str"/> is longer than 6 characters</exception>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.MimeDecodeChar(System.Char)">
+            <summary>
+            Method for mime decoding a single character
+            </summary>
+            <param name="ch">The character to be decoded</param>
+            <returns>The value represented by <paramref name="ch"/></returns>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.GetMd5Sum(System.String)">
+            <summary>
+            Get Md5 hash for given string
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.GetMd5Sum(System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>
+            Get Md5 hash for byte collection
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.TryConvertToInt32(System.Decimal,System.Int32@)">
+            <summary>
+            Converts a decimal value to its 32-bit signed integer equivalent.
+            A return value indicates whether the conversion succeeded.
+            </summary>
+            <param name="value">The decimal value to convert</param>
+            <param name="result">Contains the 32-bit signed integer value equivalent to the the given decimal value,
+            if the conversion succeeded, or zero if the conversion failed.</param>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.CanConvertToInt32(System.Decimal)">
+            <summary>
+            Check if a decimal value can be directly converted to a 32-bit integer equivalent
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.Truncate(System.Decimal,System.Int32)">
+            <summary>
+            Truncates a decimal number to the number of decimal places specified by scale
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.Ceil(System.Decimal,System.Int32)">
+            <summary>
+            Returns the smallest decimal with the given scale (number of decimal places)
+            greater than or equal to the specified decimal value.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.SmallestValueStrictlyGreaterThan(System.Decimal,System.Int32)">
+            <summary>
+            Smallest value strictly greater than specified decimal value that fits within scale.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.Floor(System.Decimal,System.Int32)">
+            <summary>
+            Returns the largest decimal with the given scale (number of decimal places)
+            less than or equal to the specified decimal value.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.Floor(System.DateTime,System.TimeSpan)">
+            <summary>
+            Returns the largest DateTime with the specified timespan, which default is one second.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.Ceil(System.DateTime,System.TimeSpan)">
+            <summary>
+            Returns the smallest DateTime with the specified timespan, which default is one second.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.GreatestValueStrictlyLessThan(System.Decimal,System.Int32)">
+            <summary>
+            Greatest value strictly less than specified decimal value that fits within scale.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.Coding.DistributeEvenly(System.Int32,System.Int32)">
+            <summary>
+            Distributes <paramref name="sizeToDistribute"/> among <paramref name="numDistributions"/>
+            buckets such that differences in bucket size is minimized.
+            </summary>
+            <returns>An array of distributed sizes summing to <paramref name="sizeToDistribute"/></returns>
+        </member>
+        <member name="T:Configit.Core.Utils.DateTimeParser">
+            <summary>
+            This class provides methodes dealing with parsing string to a DateTime object
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.DateTimeParser.Parse(System.String)">
+            <summary>
+            Parses the given <paramref name="input"/> string to a DateTime object representing UTC.
+            The format of the InvariantCulture is used to parse the string which should at least 
+            support string in ISO8601 format with and without TimeZone information. 
+            </summary>
+            <param name="input">The string to parse to UTC DateTime object</param>
+            <returns>Parsed DateTime or null if the parsing failed.</returns>
+        </member>
+        <member name="T:Configit.Core.Utils.FastBitArray">
+            <summary>
+            Alternative to <see cref="T:System.Collections.BitArray"/> that allows copying to another bitarray directly,
+            skips the concurrency checking and dynamic resizing but provides additional operations for regions of the array.
+            <remarks>
+            Bits are packed in an uint array.
+            Bit index 0 is stored in the the first uint. Inside each uint bit 0 is stored as the least significant bit.
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.#ctor(System.Int32,System.Boolean)">
+            <summary>
+            Creates a bit array containing the indicated number of bits
+            all set to zero.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.#ctor(Configit.Core.Utils.FastBitArray)">
+            <summary>
+            Perform a (deep) clone.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.CopyTo(Configit.Core.Utils.FastBitArray)">
+            <summary>
+            Copies the content of this array to another array of the same size.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.SetAll(System.Boolean)">
+            <summary>
+            Set all bits to 1 if <paramref name="val"/> is true and zero otherwise.
+            </summary>
+            <param name="val"></param>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.SetRange(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Sets all bits in a range to a certain value.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.All(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Returns true if all bits in the range (incl) are set as indicated
+            by <paramref name="value"/>.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.IndexOfSinglebit(System.UInt32)">
+            <summary>
+            Get the index of single bit in an uint, or -1 if zero bits are set, and -2 if multiple bits are set.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.Singleton(System.Int32,System.Int32)">
+            <summary>
+            If only a single bit in the range [start;end] is set to one, its index is returned
+            otherwise -1 is returned indicating zero bits set, and -2 to indicate multiple bits.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.SetAllZero">
+            <summary>
+            Sets all bits to zero.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.SetAllOne">
+            <summary>
+            Set all bits to one.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.Get(System.Int32)">
+            <summary>
+            Returns true of the ith bit is 1 and false otherwise.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.SetOne(System.Int32)">
+            <summary>
+            Set the indicated bit to 1.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.SetZero(System.Int32)">
+            <summary>_
+            Set the indicated bit to 0.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.FastBitArray.Item(System.Int32)">
+            <summary>
+            <see cref="M:Configit.Core.Utils.FastBitArray.Get(System.Int32)"/> and <see cref="M:Configit.Core.Utils.FastBitArray.Set(System.Int32,System.Boolean)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.Set(System.Int32,System.Boolean)">
+            <summary>
+            Set the indicated bit to 1 if <paramref name="value"/> is true and 0 otherwise.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.FastBitArray.ToString">
+            <summary>
+            Formats the bit array as binary strings, split up on bucket.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.FastBitArray.Length">
+            <summary>
+            Number of bits in array.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.GCHelper">
+            <summary>
+            Simplifies access to <see cref="T:System.GC"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.GCHelper.BlockingCollectAll">
+            <summary>
+            Attempts to perform a full GC cycle, collecting all possible garbage.
+            However, based on runtime version the results might differ.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.IEnumerableExtensions">
+            <summary>
+            Helper extensions to IEnumerable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.PrependElement``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Prepend a single element to an IEnumerable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.AsSingleton``1(``0)">
+            <summary>
+            Return a single value as an IEnumerable
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.Repeat``1(``0,System.Int32)">
+            <summary>
+            Creates an array with <paramref name="size"/> copies of <paramref name="value"/>.
+            (Much) faster than <see cref="M:System.Linq.Enumerable.Repeat``1(``0,System.Int32)"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.AsSingletonWithoutNull``1(``0)">
+            <summary>
+            Returns the singleton enumeration of the provided <paramref name="elemOrNull"/>, or an empty
+            enumeration if the <paramref name="elemOrNull"/> is null.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.Concat``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            Concatenates a single item with an <see cref="T:System.Collections.Generic.IEnumerable`1"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.Concat``1(``0,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Concatenates a single item with an <see cref="T:System.Collections.Generic.IEnumerable`1"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.QuickPerm``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Get all permutations of elements in collection
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.Reorder``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            <para>Re-order items in <paramref name="elements"/>.
+            After reordering, the current i'th item in will be put in
+            in location described by newOrder[i] index.</para>
+            <para><paramref name="newOrder"/> must contain as many values as
+            there are items, and the values must be in the range [0..N-1] where N is the the
+            size of <paramref name="elements"/> and every index must only appear once in
+            <paramref name="newOrder"/>.</para>
+            </summary>
+            <example>If reordering collection {A,B,C,D} and <paramref name="newOrder"/> is
+            {1,2,3,0} the result is {D,A,B,C}.</example>
+            <returns>A new collection where the elements are ordered according to <paramref name="newOrder"/></returns>
+            <exception cref="T:System.ArgumentException">If new input ordering is invalid</exception>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.IsSorted``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IComparer{``0})">
+            <summary>
+            True if <paramref name="elements"/> are sorted.
+            The collection is considered sorted even when to adjacent elements are identical.
+            If no <paramref name="comparer"/> is provided, the default <see cref="T:System.Collections.Generic.IComparer`1"/> for
+            <typeparamref name="T"/> is
+            used.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.IntersectSorted``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            <para>Given two sorted sorted collections, calculate the collection representing
+            the intersection of the two collections. </para>
+            <para>If any of the collections contains multiple instances of the same value, the result
+            will contain the as many instances of the value as exist in the collection with the fewest
+            instance count.</para>
+            <para>This method only works on sorted collections.</para>
+            </summary>
+            <returns>Collection representing elements present in both <paramref name="collection"/> and
+            <paramref name="otherCollection"/>. Elements in result are guaranteed to be sorted.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.ExceptSorted``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            <para>Given two sorted sorted collections, calculate the collection representing
+            all values in <paramref name="collection"/> which are not mentioned in <paramref name="otherCollection"/>.</para>
+            <para>If <paramref name="otherCollection"/> contains multiple instances of a value, and 
+            <paramref name="otherCollection"/> contains at least one instance of that value, then the
+            result contains no instances of that value. 
+            If <paramref name="otherCollection"/> contains multiple instances of a value, and 
+            <paramref name="otherCollection"/> does not contain any instances of that value, then the
+            result contains all instances of that value from <paramref name="collection"/>.</para>
+            <para>This method only works on sorted collections.</para>
+            </summary>
+            <returns>Collection representing elements in <paramref name="collection"/> which are
+            not mentioned in <paramref name="otherCollection"/>. 
+            Elements in result are guaranteed to be sorted.</returns>
+        </member>
+        <member name="M:Configit.Core.Utils.IEnumerableExtensions.SingleOrSpecifiedDefault``1(System.Collections.Generic.IEnumerable{``0},``0)">
+            <summary>
+            If <paramref name="elements"/> contains exactly one element, then this element
+            is returned. If <paramref name="elements"/> contains zero of more than one 
+            element, then <paramref name="defaultValue"/> is returned;
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.ListExtensions">
+            <summary>
+            Extension methods for arrays.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.ListExtensions.ForEachIdx``1(System.Collections.Generic.IReadOnlyList{``0},System.Action{``0})">
+            <summary>
+            Equivalent of <see cref="T:System.Collections.Generic.IEnumerable`1"/> ForEach, but without using iterator.
+            <remarks>Not called ForEach as that would disallow extension method syntax in many cases
+            where the <see cref="T:System.Collections.Generic.IEnumerable`1"/> version is available.</remarks>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.MemoryFailPointShim">
+            <summary>
+            Provides a shim around System.Runtime.MemoryFailPoint.
+            TODO: Once netstandard 2.0 is available we can remove this
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.MemoryFailPointShim.#cctor">
+            <summary>
+            Use reflection to determine if MemoryFailPoint available.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.MemoryFailPointShim.#ctor(System.Int32)">
+            <summary>
+            See https://msdn.microsoft.com/en-us/library/system.runtime.memoryfailpoint(v=vs.110).aspx
+            </summary>
+            <param name="limit"></param>
+        </member>
+        <member name="M:Configit.Core.Utils.MemoryFailPointShim.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:Configit.Core.Utils.PlatformFeatures">
+            <summary>
+            Provides helpers for determining (at runtime) which .net runtime features are available.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.PlatformFeatures.IsMono">
+            <summary>
+            Indicates whether the Mono runtime is being used.
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.PlatformFeatures.HasAccurateGC">
+            <summary>
+            Indicates whether a blocking GC can be trusted to collect all
+            collectable objects.
+            <remarks>
+            Due to conservative stack scanning in Mono, this cannot be guarenteed.</remarks>
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.SegmentedBitArray">
+            <summary>
+            Represents a bit array that is split into sub-segments, and which can
+            be accessed via the segment index and the sub-index.
+            <example>
+            If we want to store a bit for each value in the domain of a finite variable domain, we
+            create a segment for each variable with a size corresponding to its domain.
+            </example>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.#ctor(System.Collections.Generic.IReadOnlyList{System.Int32},System.Boolean)">
+            <summary>
+            Create a new bit array that is split into segments defined by <paramref name="segmentSizes"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.#ctor(Configit.Core.Utils.SegmentedBitArray)">
+            <summary>
+            Copy constructor that maintains the bit values
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.#ctor(System.Collections.Generic.IReadOnlyList{System.Int32},System.Collections.Generic.IReadOnlyList{System.Int32},System.Boolean)">
+            <summary>
+            Constructor used if <paramref name="segmentOffsets"/> are already known
+            (provided for performance reasons, to avoid re-computing this if info is 
+            already available)
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.CopyTo(Configit.Core.Utils.SegmentedBitArray)">
+            <summary>
+            Copies all value entries in this array to <paramref name="other"/> array.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.ComputeOffsets(System.Collections.Generic.IReadOnlyList{System.Int32})">
+            <summary>
+            Compute offsets of each segment, given the size of each segment. 
+            Used by constructor if offsets is not provided
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.Set(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Set bit in specified segment with specified segment index to the provided value
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.Get(System.Int32,System.Int32)">
+            <summary>
+            Get bit value of specified index in specified segment
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.Any(System.Int32,System.Boolean)">
+            <summary>
+            Tests whether any bit in the segment is set to the provided value.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.Singleton(System.Int32)">
+            <summary>
+            Returns the position (within the segment) of the sole bit set in the range, or -1 no 
+            bits are set, and -2 if multiple bits are set.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.GetSegment(System.Int32)">
+            <summary>
+            Get all bits as Boolean values for specified segment
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.SetSegment(System.Int32,System.Collections.Generic.IEnumerable{System.Boolean})">
+            <summary>
+            Set all bits for specified <paramref name="segment"/>
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.SetAllInSegment(System.Int32,System.Boolean)">
+            <summary>
+            Set all entries for a given segment to a given value.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.SegmentedBitArray.SetAll(System.Boolean)">
+            <summary>
+            Sets all entries to a given value
+            </summary>
+        </member>
+        <member name="P:Configit.Core.Utils.SegmentedBitArray.Length">
+            <summary>
+            Returns the total length (sum of all segments) of the bit array
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.StringExtensions">
+            <summary>
+            Extension methods for string class
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.StringExtensions.GuidIfNull(System.String)">
+            <summary>
+            Returns a string representing a new <see cref="T:System.Guid"/> if
+            <param name="id"/> is null.
+            </summary>
+        </member>
+        <member name="T:Configit.Core.Utils.ThreadSafeCache`2">
+            <summary>
+            A simple thread-safe cache wrapper intended for LruCache
+            It makes no assumptions about whether lookups are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.ThreadSafeCache`2.#ctor(System.Collections.Generic.IDictionary{`0,`1})">
+            <summary>
+            Create a thread safe cache on top of an <see cref="T:System.Collections.Generic.IDictionary`2"/>
+            </summary>
+            <param name="cache">A backing dictionary to make thread safe</param>
+        </member>
+        <member name="M:Configit.Core.Utils.ThreadSafeCache`2.ContainsKey(`0)">
+            <summary>
+            Checks for the presence of a given key in the cache without inserting
+            it if missing.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.ThreadSafeCache`2.TryGet(`0,`1@)">
+            <summary>
+            Thread safe version of <see cref="M:System.Collections.Generic.IDictionary`2.TryGetValue(`0,`1@)"/>. 
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.ThreadSafeCache`2.Add(`0,`1)">
+            <summary>
+            Adds a entry to the cache, overwriting any previous entry.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.ThreadSafeCache`2.GetOrCreate(`0,System.Func{`0,`1})">
+            <summary>
+            Returns the value for for a given key, calling the supplied creator
+            function if necessary.
+            </summary>
+        </member>
+        <member name="M:Configit.Core.Utils.ThreadSafeCache`2.GetEnumerator">
+            <summary>
+            Creates an enumerator over the pairs in the cache. The enumerated
+            values are copied to a separate list before being enumerated, so
+            the enumeration will not reflect added elements, and there will
+            potentially be a significant performance overhead in doing so.
+            </summary>
+        </member>
+    </members>
+</doc>
